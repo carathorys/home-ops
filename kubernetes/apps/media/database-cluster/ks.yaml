@@ -13,8 +13,8 @@ spec:
   path: ./kubernetes/apps/media/database-cluster/cluster
   postBuild:
     substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
+      # - name: cluster-secrets
+      #   kind: Secret
       - name: media-cluster-secrets
         kind: Secret
   prune: true
