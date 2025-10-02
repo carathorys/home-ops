@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/postgresql.cnpg.io/database_v1.json
+
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: sonarr-logs
+spec:
+  cluster:
+    name: postgres
+  name: ${SONARR_DATABASE}-logs
+  owner: ${SONARR_USERNAME}
+  ensure: present
+  allowConnections: true
