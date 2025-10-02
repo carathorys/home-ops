@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres
+  labels:
+    app.kubernetes.io/name: postgres-db
+spec:
+  # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql versioning=redhat
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.5-1
+  instances: 1
+  primaryUpdateStrategy: supervised
+  storage:
+    size: 100Gi
+    storageClass: nfs-dynamic
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: postgres-superuser
+  managed:
+    roles:
+      - connectionLimit: -1
+        ensure: present
+        name: "${RADARR_USERNAME}"
+        comment: Radarr app user
+        inherit: false
+        login: true
+        superuser: false
+        createdb: false
+        passwordSecret:
+          name: radarr-user
+      - connectionLimit: -1
+        ensure: present
+        name: "${SONARR_USERNAME}"
+        comment: sonarr app user
+        inherit: false
+        login: true
+        superuser: false
+        createdb: false
+        passwordSecret:
+          name: sonarr-user
+      - connectionLimit: -1
+        ensure: present
+        name: "${JELLYSEERR_USERNAME}"
+        comment: Jellyseerr app user
+        inherit: false
+        login: true
+        superuser: false
+        createdb: false
+        passwordSecret:
+          name: jellyseerr-user
+      - connectionLimit: -1
+        ensure: present
+        name: "${PROWLARR_USERNAME}"
+        comment: Prowlarr app user
+        inherit: false
+        login: true
+        superuser: false
+        createdb: false
+        passwordSecret:
+          name: prowlarr-user
+  postgresql:
+    parameters:
+      max_connections: "300"
+      shared_buffers: 512MB
+  monitoring:
+    enablePodMonitor: true

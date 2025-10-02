@@ -1,0 +1,167 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app cluster
+  namespace: &namespace media
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 1h
+  path: ./kubernetes/apps/media/database-cluster/cluster
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+      - name: media-cluster-secrets
+        kind: Secret
+  dependsOn:
+    - name: secrets
+      namespace: media
+  prune: true
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
+
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app jellyseerr-db
+#   namespace: &namespace media
+# spec:
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   interval: 1h
+#   path: ./kubernetes/apps/media/database-cluster/jellyseerr-db
+#   postBuild:
+#     substituteFrom:
+#       - name: cluster-secrets
+#         kind: Secret
+#       - name: media-cluster-secrets
+#         kind: Secret
+#   dependsOn:
+#     - name: cluster
+#       namespace: media
+#     - name: secrets
+#       namespace: media
+#   prune: true
+#   retryInterval: 2m
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   targetNamespace: *namespace
+#   timeout: 5m
+#   wait: false
+
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app prowlarr-db
+#   namespace: &namespace media
+# spec:
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   interval: 1h
+#   path: ./kubernetes/apps/media/database-cluster/prowlarr-db
+#   postBuild:
+#     substituteFrom:
+#       - name: cluster-secrets
+#         kind: Secret
+#       - name: media-cluster-secrets
+#         kind: Secret
+#   dependsOn:
+#     - name: cluster
+#       namespace: media
+#     - name: secrets
+#       namespace: media
+#   prune: true
+#   retryInterval: 2m
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   targetNamespace: *namespace
+#   timeout: 5m
+#   wait: false
+
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app radarr-db
+#   namespace: &namespace media
+# spec:
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   interval: 1h
+#   path: ./kubernetes/apps/media/database-cluster/radarr-db
+#   postBuild:
+#     substituteFrom:
+#       - name: cluster-secrets
+#         kind: Secret
+#       - name: media-cluster-secrets
+#         kind: Secret
+#   dependsOn:
+#     - name: cluster
+#       namespace: media
+#     - name: secrets
+#       namespace: media
+#   prune: true
+#   retryInterval: 2m
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   targetNamespace: *namespace
+#   timeout: 5m
+#   wait: false
+
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app sonarr-db
+#   namespace: &namespace media
+# spec:
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   interval: 1h
+#   path: ./kubernetes/apps/media/database-cluster/sonarr-db
+#   postBuild:
+#     substituteFrom:
+#       - name: cluster-secrets
+#         kind: Secret
+#       - name: media-cluster-secrets
+#         kind: Secret
+#   dependsOn:
+#     - name: cluster
+#       namespace: media
+#     - name: secrets
+#       namespace: media
+#   prune: true
+#   retryInterval: 2m
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   targetNamespace: *namespace
+#   timeout: 5m
+#   wait: false
