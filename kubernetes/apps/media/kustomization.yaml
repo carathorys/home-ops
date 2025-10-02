@@ -7,4 +7,4 @@ components: []
 resources:
   - ./namespace.yaml
   - ./secrets/ks.yaml
-  - ./cluster/ks.yaml
+  - ./database-cluster/ks.yaml
