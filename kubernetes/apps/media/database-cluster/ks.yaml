@@ -17,9 +17,6 @@ spec:
         kind: Secret
       - name: media-cluster-secrets
         kind: Secret
-  dependsOn:
-    - name: secrets
-      namespace: media
   prune: true
   retryInterval: 2m
   sourceRef:
