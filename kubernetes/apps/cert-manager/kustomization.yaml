@@ -2,8 +2,8 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: secrets
+namespace: cert-manager
 components:
   - ../../components/common
 resources:
-  - ./external-secrets/ks.yaml
+  - ./cert-manager/ks.yaml

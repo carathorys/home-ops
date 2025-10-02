@@ -1,0 +1,6 @@
+machine:
+  network:
+    disableSearchDomain: true
+    nameservers:
+      - 192.168.0.81
+      - 182.168.0.84
