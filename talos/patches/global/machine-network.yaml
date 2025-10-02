@@ -2,5 +2,4 @@ machine:
   network:
     disableSearchDomain: true
     nameservers:
-      - 192.168.0.81
-      - 192.168.0.84
+      - 10.36.0.1
