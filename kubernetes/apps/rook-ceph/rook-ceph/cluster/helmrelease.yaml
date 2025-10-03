@@ -116,15 +116,15 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: "k8s-4"
+          - name: "kube-wrkr-01"
             devices:
-              - name: "/dev/disk/by-id/nvme-Samsung_SSD_980_PRO_1TB_S5P2NS0RB31561F"
-          - name: "k8s-5"
+              - name: "/dev/vda"
+          - name: "kube-wrkr-03"
             devices:
-              - name: "/dev/disk/by-id/nvme-Samsung_SSD_980_PRO_1TB_S5P2NJ0RB00690R"
-          - name: "k8s-6"
+              - name: "/dev/vda"
+          - name: "kube-wrkr-05"
             devices:
-              - name: "/dev/disk/by-id/nvme-Samsung_SSD_980_PRO_1TB_S5P2NJ0RB00744X"
+              - name: "/dev/vda"
 
     cephBlockPools:
       - name: ceph-blockpool
