@@ -55,7 +55,7 @@ spec:
     route:
       dashboard:
         host:
-          name: rook.zinn.ca
+          name: rook.gallay.hu
           path: /
           pathType: PathPrefix
         parentRefs:
@@ -241,5 +241,5 @@ spec:
       #     enabled: true
       #     ingressClassName: internal-nginx
       #     host:
-      #       name: s3-rook.zinn.ca
+      #       name: s3-rook.gallay.hu
       #       path: /
