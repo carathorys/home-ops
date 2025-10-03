@@ -11,6 +11,10 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/rook-ceph/rook-ceph/operator
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -32,6 +36,10 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -71,6 +79,10 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/rook-ceph/rook-ceph/add-ons
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   sourceRef:
     kind: GitRepository
     name: flux-system

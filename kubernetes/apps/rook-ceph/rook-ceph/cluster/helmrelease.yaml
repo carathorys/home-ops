@@ -55,7 +55,7 @@ spec:
     route:
       dashboard:
         host:
-          name: rook.gallay.hu
+          name: rook.${SECRET_DOMAIN}
           path: /
           pathType: PathPrefix
         parentRefs:
@@ -241,5 +241,5 @@ spec:
       #     enabled: true
       #     ingressClassName: internal-nginx
       #     host:
-      #       name: s3-rook.gallay.hu
+      #       name: s3-rook.${SECRET_DOMAIN}
       #       path: /
