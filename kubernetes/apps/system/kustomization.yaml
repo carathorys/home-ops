@@ -6,4 +6,5 @@ namespace: system
 components:
   - ../../components/common
 resources:
+  - ./node-feature-discovery/ks.yaml
   - ./snapshot-controller/ks.yaml
