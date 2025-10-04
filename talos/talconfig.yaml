@@ -109,6 +109,40 @@ nodes:
           - network: "0.0.0.0/0"
             gateway: "10.36.0.1"
         mtu: 1500
+  - hostname: "kube-wrkr-04"
+    ipAddress: "10.36.1.104"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/aeec243e3a4c2a14f9ba74b1a8c7662f03eea658a7ea5f1c26fdd491280c88f8
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:e0:09:04"
+        dhcp: false
+        addresses:
+          - "10.36.1.104/16"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "10.36.0.1"
+        mtu: 1500
+  - hostname: "kube-wrkr-05"
+    ipAddress: "10.36.1.105"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/aeec243e3a4c2a14f9ba74b1a8c7662f03eea658a7ea5f1c26fdd491280c88f8
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:e0:09:05"
+        dhcp: false
+        addresses:
+          - "10.36.1.105/16"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "10.36.0.1"
+        mtu: 1500
 
 # Global patches
 patches:
