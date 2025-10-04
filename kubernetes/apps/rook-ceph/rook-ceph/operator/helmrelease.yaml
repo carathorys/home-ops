@@ -26,7 +26,6 @@ spec:
   values:
     image:
       repository: ghcr.io/rook/ceph
-      tag: v20.1.0
     csi:
       # NOTE: Enable the driver and shapshotter if you want to use CephFS
       # enableCephfsDriver: false
