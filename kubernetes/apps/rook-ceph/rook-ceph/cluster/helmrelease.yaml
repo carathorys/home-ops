@@ -31,7 +31,8 @@ spec:
 
     cephClusterSpec:
       cephVersion:
-        image: quay.io/ceph/ceph:v20.1.0@sha256:ded43bb35add6b79df49a86b5c91a16f3d4d137665f6f1a722b4739386da6f12
+      image: quay.io/ceph/ceph:v19.2.3
+
 
       cephConfig:
         global:
