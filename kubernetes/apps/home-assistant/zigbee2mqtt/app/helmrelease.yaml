@@ -98,11 +98,11 @@ spec:
     persistence:
       zigbee-device:
         type: hostPath
-        hostPath: /dev/ttyACM0
+        hostPath: /dev/ttyS0
         advancedMounts:
           main:
             main:
-              - path: /dev/ttyACM0
+              - path: /dev/ttyS0
                 readOnly: false
       zigbee2mqtt:
         type: persistentVolumeClaim
