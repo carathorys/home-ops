@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/monitoring.coreos.com/podmonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: &app home-assistant
+spec:
+  podMetricsEndpoints:
+    - interval: 1m
+      path: /api/prometheus
+      port: http
+      scrapeTimeout: 30s
+      bearerTokenSecret:
+        name: home-assistant-secret
+        key: HASS_BEARER_TOKEN
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: *app
+      app.kubernetes.io/name: *app
