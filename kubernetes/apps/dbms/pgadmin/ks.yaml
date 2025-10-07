@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/dbms/pgadmin/app
+  path: ./kubernetes/apps/dbms/pgadmin/app
   sourceRef:
     kind: GitRepository
     name: flux-system
