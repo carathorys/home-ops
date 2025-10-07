@@ -31,10 +31,10 @@ spec:
           reloader.stakater.com/auto: "true"
         pod:
           securityContext:
-            runAsUser: 65534
-            runAsGroup: 65533
+            runAsUser: "${APP_UID}"
+            runAsGroup: "${APP_GID}"
             runAsNonRoot: true
-            fsGroup: 65533
+            fsGroup: "${APP_GID}"
             fsGroupChangePolicy: OnRootMismatch
         containers:
           main:
@@ -147,12 +147,3 @@ spec:
                 subPath: code-server-tmp
               - path: /nonexistent
                 subPath: nonexistent
-
-      zigbee-device:
-        type: hostPath
-        hostPath: /dev/serial/by-id/usb-ITEAD_SONOFF_Zigbee_3.0_USB_Dongle_Plus_V2_20220718182808-if00
-        advancedMounts:
-          main:
-            main:
-              - path: /dev/ttyACM0
-                readOnly: false
