@@ -30,8 +30,8 @@ spec:
           main:
             securityContext:
               privileged: true
-              runAsUser: 1000
-              runAsGroup: 20
+              runAsUser: ${APP_UID}
+              runAsGroup: ${APP_GID}
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
               tag: 2.6.1 # {"$imagepolicy": "flux-system:zigbee2mqtt:tag"}
@@ -47,7 +47,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: true
               ZIGBEE2MQTT_CONFIG_EXPERIMENTAL_NEW_API: true
               ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: &httpPort 8080
-              ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee2mqtt.gallay.hu
+              ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://z2m.${SECRET_DOMAIN}
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_DISCOVERY_TOPIC: homeassistant
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_EXPERIMENTAL_EVENT_ENTITIES: true
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_LEGACY_ENTITY_ATTRIBUTES: false
@@ -57,38 +57,19 @@ spec:
               ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: true
               ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: 60
               ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: true
-              ZIGBEE2MQTT_CONFIG_MQTT_SERVER: "mqtt://mosquitto.home-assistant.svc.cluster.local:1883"
+              ZIGBEE2MQTT_CONFIG_MQTT_SERVER: "mqtt://mosquitto:1883"
               ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
               ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: false
-
     service:
       main:
         type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 192.168.0.2
         ports:
           http:
             port: *httpPort
             protocol: TCP
-    ingress:
-      main:
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
-        hosts:
-          - host: &zigbee2mqtt-host "{{ .Release.Name }}.gallay.hu"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: main
-                  port: http
-        tls:
-          - hosts:
-              - *zigbee2mqtt-host
-            secretName: zigbee2mqtt-tls-secret
     route:
       internal:
-        hostnames: [*zigbee2mqtt-host]
+        hostnames: ["z2m.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal
             namespace: kube-system
