@@ -5,7 +5,6 @@ kind: Kustomization
 namespace: home-assistant
 components:
   - ../../components/common
-  - ../../components/repos/app-template
 resources:
   - ./home-assistant/ks.yaml
   - ./mosquitto/ks.yaml
