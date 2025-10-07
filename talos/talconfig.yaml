@@ -9,7 +9,7 @@ endpoint: https://10.36.0.99:6443
 additionalApiServerCertSans: &sans
   - "127.0.0.1"
   - "10.36.0.99"
-  - "homelab.gallay.hu"
+  - "homelab.${SECRET_DOMAIN}"
 additionalMachineCertSans: *sans
 
 clusterPodNets: ["10.42.0.0/16"]

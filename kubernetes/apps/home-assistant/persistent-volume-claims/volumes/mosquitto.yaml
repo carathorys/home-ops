@@ -11,7 +11,7 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: nfs.gallay.hu
+    server: nfs.${SECRET_DOMAIN}
     path: "/media/services/mosquitto"
   mountOptions:
     - nfsvers=4.2

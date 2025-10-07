@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/name: *app
     app.kubernetes.io/instance: *app
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: postgres.gallay.hu
-    coredns.io/hostname: postgres.gallay.hu
+    external-dns.alpha.kubernetes.io/hostname: postgres.${SECRET_DOMAIN}
+    coredns.io/hostname: postgres.${SECRET_DOMAIN}
     # lbipam.cilium.io/ips: 10.12.1.10
 spec:
   type: LoadBalancer
