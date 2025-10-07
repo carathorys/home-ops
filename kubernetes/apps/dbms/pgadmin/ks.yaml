@@ -18,7 +18,7 @@ spec:
   dependsOn:
     - name: external-secrets
       namespace: secrets
-    - name: cloudnative-pg
+    - name: cloudnative-pg-operator
       namespace: dbms
   components: []
     # - ../../../../components/volsync
