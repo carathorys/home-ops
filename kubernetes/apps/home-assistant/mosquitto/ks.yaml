@@ -27,6 +27,9 @@ spec:
       APP: *app
       APP_UID: "1000"
       APP_GID: "1000"
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   prune: true
   wait: false
   interval: 30m
