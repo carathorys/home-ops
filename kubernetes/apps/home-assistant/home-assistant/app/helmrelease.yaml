@@ -147,14 +147,4 @@ spec:
                 subPath: code-server-tmp
               - path: /nonexistent
                 subPath: nonexistent
-      sshkey:
-        enabled: true
-        type: secret
-        name: home-assistant-secret
-        items:
-          - key: id_rsa
-            path: id_rsa
-        defaultMode: 256
-        globalMounts:
-          - path: /root/.ssh
-            readOnly: true
+
