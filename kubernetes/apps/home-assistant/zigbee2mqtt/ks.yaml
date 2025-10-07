@@ -17,7 +17,7 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: external-secrets
-      namespace: external-secrets
+      namespace: secrets
     - name: persistent-volume-claims
       namespace: home-assistant
     - name: mosquitto
