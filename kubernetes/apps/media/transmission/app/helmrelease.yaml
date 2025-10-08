@@ -34,13 +34,9 @@ spec:
             ports:
               - containerPort: *peerPort
                 protocol: TCP
-                hostIP: 0.0.0.0
-                name: peer-tcp
                 hostPort: *peerPort
               - containerPort: *peerPort
                 protocol: UDP
-                hostIP: 0.0.0.0
-                name: peer-udp
                 hostPort: *peerPort
     service:
       main:
