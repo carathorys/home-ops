@@ -16,3 +16,4 @@ resources:
   - ./transmission/ks.yaml
   - ./flood/ks.yaml
   - ./emby/ks.yaml
+  - ./plex/ks.yaml
