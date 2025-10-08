@@ -50,7 +50,7 @@ spec:
         type: LoadBalancer
         ports:
           http:
-            port: 5505
+            port: 5055
             protocol: TCP
     route:
       internal:
