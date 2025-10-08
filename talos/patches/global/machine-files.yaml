@@ -1,4 +1,7 @@
 machine:
+  udev:
+    rules:
+      - KERNEL=="ttyACM[0-9]*", MODE="0666"
   files:
     - op: create
       path: /etc/cri/conf.d/20-customization.part

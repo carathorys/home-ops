@@ -9,7 +9,7 @@ endpoint: https://10.36.0.99:6443
 additionalApiServerCertSans: &sans
   - "127.0.0.1"
   - "10.36.0.99"
-  - "homelab.${SECRET_DOMAIN}"
+  - "homelab.gallay.hu"
 additionalMachineCertSans: *sans
 
 clusterPodNets: ["10.42.0.0/16"]
@@ -39,25 +39,25 @@ nodes:
         mtu: 1500
         vip:
           ip: "10.36.0.99"
-  # - hostname: "kube-ctrl-02"
-  #   ipAddress: "10.36.1.2"
-  #   installDisk: "/dev/sda"
-  #   machineSpec:
-  #     secureboot: false
-  #   talosImageURL: factory.talos.dev/installer/aeec243e3a4c2a14f9ba74b1a8c7662f03eea658a7ea5f1c26fdd491280c88f8
-  #   controlPlane: true
-  #   networkInterfaces:
-  #     - deviceSelector:
-  #         hardwareAddr: "bc:24:11:7d:af:02"
-  #       dhcp: false
-  #       addresses:
-  #         - "10.36.1.2/16"
-  #       routes:
-  #         - network: "0.0.0.0/0"
-  #           gateway: "10.36.0.1"
-  #       mtu: 1500
-  #       vip:
-  #         ip: "10.36.0.99"
+  - hostname: "kube-ctrl-02"
+    ipAddress: "10.36.1.2"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/aeec243e3a4c2a14f9ba74b1a8c7662f03eea658a7ea5f1c26fdd491280c88f8
+    controlPlane: true
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:7d:af:02"
+        dhcp: false
+        addresses:
+          - "10.36.1.2/16"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "10.36.0.1"
+        mtu: 1500
+        vip:
+          ip: "10.36.0.99"
   - hostname: "kube-wrkr-01"
     ipAddress: "10.36.1.101"
     installDisk: "/dev/sda"
