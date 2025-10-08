@@ -1,0 +1,99 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sonarr
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: ${APP}
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            runAsNonRoot: true
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          main:
+            image:
+              repository: lscr.io/linuxserver/sonarr
+              tag: 4.0.15 # {"$imagepolicy": "flux-system:sonarr:tag"}
+            envFrom:
+              - secretRef:
+                  name: sonarr-secrets
+            env:
+              TZ: "Europe/Budapest"
+              PUID: ${APP_UID}
+              PGID: ${APP_GID}
+              SONARR__AUTH__APIKEY: "${SONARR_API_KEY}"
+              SONARR__POSTGRES__HOST: "postgres.media.svc.cluster.local"
+              SONARR__POSTGRES__USER: "${SONARR_USERNAME}"
+              SONARR__POSTGRES__PASSWORD: "${SONARR_PASSWORD}"
+              SONARR__POSTGRES__MAINDB: "${SONARR_DATABASE}-db"
+              SONARR__POSTGRES__LOGDB: "${SONARR_DATABASE}-logs"
+    service:
+      main:
+        type: LoadBalancer
+        ports:
+          http:
+            port: 8989
+            protocol: TCP
+    route:
+      internal:
+        hostnames: ["${APP}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs: [{}]
+    persistence:
+      config:
+        type: persistentVolumeClaim
+        existingClaim: sonarr
+        advancedMounts:
+          main:
+            main:
+              - path: /config
+                readOnly: false
+      tv:
+        type: persistentVolumeClaim
+        existingClaim: tv
+        advancedMounts:
+          main:
+            main:
+              - path: /tv
+                readOnly: false
+      kids-tv:
+        type: persistentVolumeClaim
+        existingClaim: kids-tv
+        advancedMounts:
+          main:
+            main:
+              - path: /mnt/Gyerek/Sorozatok
+                readOnly: false
+      downloads:
+        type: persistentVolumeClaim
+        existingClaim: downloads
+        advancedMounts:
+          main:
+            main:
+              - path: /downloads
+                readOnly: false
