@@ -43,8 +43,7 @@ spec:
     service:
       main:
         type: LoadBalancer
-        externalIPs:
-          - 10.36.2.1
+        loadBalancerIP: 10.36.2.1
         ports:
           http:
             port: 9091
