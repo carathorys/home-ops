@@ -30,14 +30,7 @@ spec:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
               PGID: ${APP_GID}
-              PEERPORT: &peerPort 32673
-            ports:
-              - containerPort: *peerPort
-                protocol: TCP
-                hostPort: *peerPort
-              - containerPort: *peerPort
-                protocol: UDP
-                hostPort: *peerPort
+              PEERPORT: &peerPort 54149
     service:
       main:
         type: LoadBalancer
@@ -48,12 +41,10 @@ spec:
           peer-tcp:
             port: *peerPort
             protocol: TCP
-            nodePort: *peerPort
             targetPort: *peerPort
           peer-udp:
             port: *peerPort
             protocol: UDP
-            nodePort: *peerPort
             targetPort: *peerPort
     route:
       internal:
@@ -62,6 +53,16 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
+        rules:
+          - backendRefs: [{}]
+      external:
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: trnt-tcp
+          - name: external
+            namespace: kube-system
+            sectionName: trnt-udp
         rules:
           - backendRefs: [{}]
     persistence:
