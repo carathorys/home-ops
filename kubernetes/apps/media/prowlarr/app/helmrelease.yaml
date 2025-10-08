@@ -1,0 +1,75 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: prowlarr
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            runAsNonRoot: true
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          main:
+            image:
+              repository: lscr.io/linuxserver/prowlarr
+              tag: 2.0.5 # {"$imagepolicy": "flux-system:prowlarr:tag"}
+            envFrom:
+              - secretRef:
+                  name: ${APP}-secrets
+            env:
+              TZ: "Europe/Budapest"
+              PUID: ${APP_UID}
+              PGID: ${APP_GID}
+              PROWLARR__AUTH__APIKEY: "${PROWLARR_API_KEY}"
+              PROWLARR__POSTGRES__HOST: "postgres.media.svc.cluster.local"
+              PROWLARR__POSTGRES__USER: "${PROWLARR_USERNAME}"
+              PROWLARR__POSTGRES__PASSWORD: "${PROWLARR_PASSWORD}"
+              PROWLARR__POSTGRES__MAINDB: "${PROWLARR_DATABASE}-db"
+              PROWLARR__POSTGRES__LOGDB: "${PROWLARR_DATABASE}-logs"
+    service:
+      main:
+        type: LoadBalancer
+        ports:
+          http:
+            port: 9696
+            protocol: TCP
+    route:
+      internal:
+        hostnames: ["${APP}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs: [{}]
+    persistence:
+      config:
+        type: persistentVolumeClaim
+        existingClaim: prowlarr
+        advancedMounts:
+          main:
+            main:
+              - path: /config
+                readOnly: false

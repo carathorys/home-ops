@@ -9,3 +9,4 @@ resources:
   - ./secrets/ks.yaml
   - ./database-cluster/ks.yaml
   - ./persistent-volume-claims/ks.yaml
+  - ./prowlarr/ks.yaml
