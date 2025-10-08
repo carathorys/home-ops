@@ -34,8 +34,10 @@ spec:
             ports:
               - containerPort: *peerPort
                 protocol: TCP
+                hostPort: *peerPort
               - containerPort: *peerPort
                 protocol: UDP
+                hostPort: *peerPort
     service:
       main:
         type: LoadBalancer
