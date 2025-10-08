@@ -43,6 +43,7 @@ spec:
     service:
       main:
         type: LoadBalancer
+        loadBalancerIP: proxy
         ports:
           http:
             port: 9091
