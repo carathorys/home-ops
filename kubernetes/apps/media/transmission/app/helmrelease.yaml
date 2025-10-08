@@ -38,15 +38,14 @@ spec:
           http:
             port: 9091
             protocol: TCP
-          peerTcpPort:
+          peer-tcp-port:
             port: *peerPort
             protocol: TCP
             targetPort: *peerPort
-          peerUdpPort:
+          peer-udp-port:
             port: *peerPort
             protocol: UDP
             targetPort: *peerPort
-
     route:
       internal:
         hostnames: ["${APP}.${SECRET_DOMAIN}"]
