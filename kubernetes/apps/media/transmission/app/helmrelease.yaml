@@ -30,7 +30,7 @@ spec:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
               PGID: ${APP_GID}
-              PEERPORT: &peerPort 54149
+              PEERPORT: &peerPort 32673
             ports:
               - containerPort: *peerPort
                 protocol: TCP
@@ -52,12 +52,12 @@ spec:
           peer-tcp:
             port: *peerPort
             protocol: TCP
-            nodePort: 32673
+            nodePort: *peerPort
             targetPort: *peerPort
           peer-udp:
             port: *peerPort
             protocol: UDP
-            nodePort: 32673
+            nodePort: *peerPort
             targetPort: *peerPort
     route:
       internal:
