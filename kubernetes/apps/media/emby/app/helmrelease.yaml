@@ -27,7 +27,7 @@ spec:
           main:
             image:
               repository: lscr.io/linuxserver/emby
-              tag: 4.8.11 # {"$imagepolicy": "flux-system:emby:tag"}
+              tag: 4.9.1 # {"$imagepolicy": "flux-system:emby:tag"}
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
