@@ -52,10 +52,12 @@ spec:
           peer-tcp:
             port: *peerPort
             protocol: TCP
+            nodePort: 32673
             targetPort: *peerPort
           peer-udp:
             port: *peerPort
             protocol: UDP
+            nodePort: 32673
             targetPort: *peerPort
     route:
       internal:
