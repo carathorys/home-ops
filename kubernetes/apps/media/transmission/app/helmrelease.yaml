@@ -1,0 +1,81 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: ${APP}
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: lscr.io/linuxserver/transmission
+              tag: version-4.0.6-r4 # {"$imagepolicy": "flux-system:transmission:tag"}
+            env:
+              TZ: "Europe/Budapest"
+              PUID: ${APP_UID}
+              PGID: ${APP_GID}
+    service:
+      main:
+        type: LoadBalancer
+        ports:
+          http:
+            port: 9091
+            protocol: TCP
+    route:
+      internal:
+        hostnames: ["${APP}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs: [{}]
+    persistence:
+      config:
+        type: persistentVolumeClaim
+        existingClaim: transmission
+        advancedMounts:
+          main:
+            main:
+              - path: /config
+                readOnly: false
+      movies:
+        type: persistentVolumeClaim
+        existingClaim: movies
+        advancedMounts:
+          main:
+            main:
+              - path: /movies
+                readOnly: false
+      kids-movies:
+        type: persistentVolumeClaim
+        existingClaim: kids-movies
+        advancedMounts:
+          main:
+            main:
+              - path: /mnt/Gyerek/Filmek
+                readOnly: false
+      downloads:
+        type: persistentVolumeClaim
+        existingClaim: downloads
+        advancedMounts:
+          main:
+            main:
+              - path: /downloads
+                readOnly: false
