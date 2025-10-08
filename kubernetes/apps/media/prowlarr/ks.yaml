@@ -18,7 +18,7 @@ spec:
   dependsOn:
     - name: external-secrets
       namespace: secrets
-    - name: database-cluster
+    - name: cluster
       namespace: media
     - name: secrets
       namespace: media
