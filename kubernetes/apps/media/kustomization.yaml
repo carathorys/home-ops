@@ -13,3 +13,5 @@ resources:
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
   - ./jellyseerr/ks.yaml
+  - ./transmission/ks.yaml
+  - ./flood/ks.yaml
