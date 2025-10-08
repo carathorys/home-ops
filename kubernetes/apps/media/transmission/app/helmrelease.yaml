@@ -30,6 +30,7 @@ spec:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
               PGID: ${APP_GID}
+              PEERPORT: &peerPort 54149
     service:
       main:
         type: LoadBalancer
@@ -37,6 +38,15 @@ spec:
           http:
             port: 9091
             protocol: TCP
+          peerTcpPort:
+            port: *peerPort
+            protocol: TCP
+            nodePort: *peerPort
+          peerUdpPort:
+            port: *peerPort
+            protocol: UDP
+            nodePort: *peerPort
+
     route:
       internal:
         hostnames: ["${APP}.${SECRET_DOMAIN}"]
