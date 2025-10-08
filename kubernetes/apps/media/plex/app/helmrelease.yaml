@@ -45,7 +45,7 @@ spec:
         type: LoadBalancer
         ports:
           http:
-            port: 32400
+            port: &port 32400
             protocol: TCP
     route:
       internal:
@@ -54,16 +54,13 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs: [{}]
-      external:
-        hostnames: ["${APP}.${SECRET_DOMAIN}"]
-        parentRefs:
           - name: external
             namespace: kube-system
             sectionName: https
         rules:
-          - backendRefs: [{}]
+          - backendRefs:
+              - identifier: main
+                port: *port
     persistence:
       dri:
         type: hostPath

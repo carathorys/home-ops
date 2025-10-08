@@ -44,7 +44,7 @@ spec:
         type: LoadBalancer
         ports:
           http:
-            port: 8096
+            port: &port 8096
             protocol: TCP
     route:
       internal:
@@ -53,8 +53,13 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
+          - name: external
+            namespace: kube-system
+            sectionName: https
         rules:
-          - backendRefs: [{}]
+          - backendRefs:
+              - identifier: main
+                port: *port
     persistence:
       dri:
         type: hostPath
