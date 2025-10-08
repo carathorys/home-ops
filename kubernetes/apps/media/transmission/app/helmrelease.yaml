@@ -38,11 +38,11 @@ spec:
           http:
             port: 9091
             protocol: TCP
-          peer-tcp:
+          trnt-tcp:
             port: *peerPort
             protocol: TCP
             targetPort: *peerPort
-          peer-udp:
+          trnt-udp:
             port: *peerPort
             protocol: UDP
             targetPort: *peerPort
@@ -64,7 +64,9 @@ spec:
             namespace: kube-system
             sectionName: trnt-udp
         rules:
-          - backendRefs: [{}]
+          - backendRefs:
+            - identifier: main
+              port: *peerPort
     persistence:
       config:
         type: persistentVolumeClaim
