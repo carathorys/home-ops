@@ -33,8 +33,8 @@ spec:
         containers:
           main:
             image:
-              repository: lscr.io/linuxserver/jellyseerr
-              tag: 5.27.5 # {"$imagepolicy": "flux-system:jellyseerr:tag"}
+              repository: docker.io/fallenbagel/jellyseerr
+              tag: 2.7.3 # {"$imagepolicy": "flux-system:jellyseerr:tag"}
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
