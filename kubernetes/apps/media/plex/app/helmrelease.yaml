@@ -30,7 +30,7 @@ spec:
               tag: 1.42.2 # {"$imagepolicy": "flux-system:plex:tag"}
             env:
               TZ: "Europe/Budapest"
-              ADVERTISE_IP: "https://${APP}.${SECRET_DOMAIN}:443"
+              ADVERTISE_IP: "https://${APP}:443,https://${APP}.${SECRET_DOMAIN}:443"
               ALLOWED_NETWORKS: "192.168.0.0/24"
               PUID: ${APP_UID}
               PGID: ${APP_GID}
@@ -43,17 +43,23 @@ spec:
     service:
       main:
         type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 192.168.0.2
         ports:
           http:
             port: 32400
             protocol: TCP
     route:
       internal:
-        hostnames: ["${APP}.${SECRET_DOMAIN}"]
+        hostnames: ["${APP}", "${APP}.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs: [{}]
+      external:
+        hostnames: ["${APP}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: external
             namespace: kube-system
             sectionName: https
         rules:
