@@ -41,10 +41,12 @@ spec:
           peer-tcp-port:
             port: *peerPort
             protocol: TCP
+            nodePort: *peerPort
             targetPort: *peerPort
           peer-udp-port:
             port: *peerPort
             protocol: UDP
+            nodePort: *peerPort
             targetPort: *peerPort
     route:
       internal:
