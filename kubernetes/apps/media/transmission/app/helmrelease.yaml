@@ -31,6 +31,11 @@ spec:
               PUID: ${APP_UID}
               PGID: ${APP_GID}
               PEERPORT: &peerPort 54149
+            ports:
+              - containerPort: *peerPort
+                protocol: TCP
+              - containerPort: *peerPort
+                protocol: UDP
     service:
       main:
         type: LoadBalancer
