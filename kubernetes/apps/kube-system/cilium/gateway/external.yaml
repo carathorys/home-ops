@@ -15,6 +15,18 @@ spec:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"
   listeners:
+    - name: trnt-tcp
+      protocol: TCP
+      port: 54149
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: trnt-udp
+      protocol: UDP
+      port: 54149
+      allowedRoutes:
+        namespaces:
+          from: Same
     - name: http
       protocol: HTTP
       port: 80
