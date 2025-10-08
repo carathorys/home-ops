@@ -11,5 +11,5 @@ resources:
   - ./persistent-volume-claims/ks.yaml
   - ./prowlarr/ks.yaml
   - ./radarr/ks.yaml
-  - ./sonarr/ks.yaml
-  - ./jellyseerr/ks.yaml
+  # - ./sonarr/ks.yaml
+  # - ./jellyseerr/ks.yaml
