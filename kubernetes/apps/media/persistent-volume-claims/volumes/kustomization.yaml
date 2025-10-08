@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - downloads.yaml
+  - movies.yaml
+  - tv.yaml
+  - kids-movies.yaml
+  - kids-tv.yaml
+  - music-video.yaml
+  - music-sound.yaml
+  - transmission.yaml
+  - flood.yaml
+  - jellyseerr.yaml
+  - radarr.yaml
+  - prowlarr.yaml
+  - sonarr.yaml
