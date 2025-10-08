@@ -33,11 +33,11 @@ spec:
               PEERPORT: &peerPort 54149
             ports:
               - protocol: UDP
-                containerPort: 54149
-                hostPort: 54149
+                containerPort: *peerPort
+                hostPort: *peerPort
               - protocol: TCP
-                containerPort: 54149
-                hostPort: 54149
+                containerPort: *peerPort
+                hostPort: *peerPort
 
 
     service:
@@ -48,11 +48,11 @@ spec:
           http:
             port: 9091
             protocol: TCP
-          trnt-tcp:
+          tcp:
             port: *peerPort
             protocol: TCP
             targetPort: *peerPort
-          trnt-udp:
+          udp:
             port: *peerPort
             protocol: UDP
             targetPort: *peerPort
