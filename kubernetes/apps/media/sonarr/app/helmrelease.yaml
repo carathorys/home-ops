@@ -35,9 +35,6 @@ spec:
             image:
               repository: lscr.io/linuxserver/sonarr
               tag: 4.0.15 # {"$imagepolicy": "flux-system:sonarr:tag"}
-            envFrom:
-              - secretRef:
-                  name: sonarr-secrets
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
