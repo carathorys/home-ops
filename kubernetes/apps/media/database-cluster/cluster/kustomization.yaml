@@ -6,4 +6,4 @@ resources:
   - ./secrets.yaml
   - ./cluster.yaml
   - ./prometheus-rule.yaml
-  # - ./service.yaml
+  - ./service.yaml
