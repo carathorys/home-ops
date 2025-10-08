@@ -64,9 +64,7 @@ spec:
             namespace: kube-system
             sectionName: trnt-udp
         rules:
-          - backendRefs:
-            - identifier: main
-              port: *peerPort
+          - backendRefs: [{}]
     persistence:
       config:
         type: persistentVolumeClaim
