@@ -34,7 +34,7 @@ spec:
           main:
             image:
               repository: lscr.io/linuxserver/radarr
-              tag: 5.27.5 # {"$imagepolicy": "flux-system:radarr:tag"}
+              tag: 5.28.0 # {"$imagepolicy": "flux-system:radarr:tag"}
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
