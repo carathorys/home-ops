@@ -52,7 +52,7 @@ spec:
         ports:
           http:
             port: 8123
-            primary: true
+            protocol: TCP
     serviceMonitor:
       main:
         serviceName: home-assistant
