@@ -19,11 +19,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # dependsOn:
-  #   - name: rook-ceph-cluster
-  #     namespace: rook-ceph
-  #   - name: volsync
-  #     namespace: system
   values:
     controllers:
       main:
@@ -51,35 +46,13 @@ spec:
                 enabled: false
               startup:
                 enabled: false
-          code-server:
-            image:
-              repository: ghcr.io/coder/code-server
-              tag: 4.105.1@sha256:2d48970bd2084aa34a522d772b6a437981ea80407465b3bf7958553985c570e1
-            args:
-              [
-                "--auth",
-                "none",
-                "--disable-telemetry",
-                "--disable-update-check",
-                "--user-data-dir",
-                "/config/.vscode",
-                "--extensions-dir",
-                "/config/.vscode",
-                "--port",
-                "8080",
-                "/config"
-              ]
-            env:
-              TZ: "America/Toronto"
     service:
       main:
-        type: ClusterIP
+        type: LoadBalancer
         ports:
           http:
             port: &appPort 8123
             primary: true
-          code-server:
-            port: &codePort 8080
     serviceMonitor:
       main:
         serviceName: home-assistant
@@ -98,16 +71,6 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: main
-                port: *appPort
-      external-app:
-        annotations:
-          external-dns/is-public: "true"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        hostnames: ["home-assistant.${SECRET_DOMAIN}"]
-        parentRefs:
           - name: external
             namespace: kube-system
             sectionName: https
@@ -115,16 +78,6 @@ spec:
           - backendRefs:
               - identifier: main
                 port: *appPort
-      code-server:
-        hostnames: ["ha-code.${SECRET_DOMAIN}"]
-        parentRefs:
-          - name: internal
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: main
-                port: *codePort
     persistence:
       config:
         enabled: true
@@ -142,8 +95,3 @@ spec:
             main:
               - path: /tmp
                 subPath: hass-tmp
-            code-server:
-              - path: /tmp
-                subPath: code-server-tmp
-              - path: /nonexistent
-                subPath: nonexistent
