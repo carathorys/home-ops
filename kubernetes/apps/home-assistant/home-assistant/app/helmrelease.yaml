@@ -75,9 +75,8 @@ spec:
             namespace: kube-system
             sectionName: https
         rules:
-          - backendRefs:
-              - identifier: main
-                port: *appPort
+          - backendRefs: [{}]
+
     persistence:
       config:
         enabled: true
