@@ -51,7 +51,7 @@ spec:
         type: LoadBalancer
         ports:
           http:
-            port: &appPort 8123
+            port: 8123
             primary: true
     serviceMonitor:
       main:
