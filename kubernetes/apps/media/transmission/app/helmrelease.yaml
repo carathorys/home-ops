@@ -24,8 +24,8 @@ spec:
         containers:
           main:
             image:
-              repository: lscr.io/linuxserver/transmission
-              tag: version-4.0.6-r4 # {"$imagepolicy": "flux-system:transmission:tag"}
+              repository: ghcr.io/linuxserver/transmission
+              tag: version-4.0.6-r4
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}

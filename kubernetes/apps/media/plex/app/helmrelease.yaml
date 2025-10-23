@@ -26,8 +26,8 @@ spec:
         containers:
           main:
             image:
-              repository: lscr.io/linuxserver/plex
-              tag: 1.42.2 # {"$imagepolicy": "flux-system:plex:tag"}
+              repository: ghcr.io/linuxserver/plex
+              tag: version-1.42.2.10156-f737b826c
             env:
               TZ: "Europe/Budapest"
               ADVERTISE_IP: "https://${APP}:443,https://${APP}.${SECRET_DOMAIN}:443"
