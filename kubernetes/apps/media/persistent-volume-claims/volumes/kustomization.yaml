@@ -14,5 +14,5 @@ resources:
   - flood.yaml
   - jellyseerr.yaml
   - radarr.yaml
-  - prowlarr.yaml
+  - jackett.yaml
   - sonarr.yaml

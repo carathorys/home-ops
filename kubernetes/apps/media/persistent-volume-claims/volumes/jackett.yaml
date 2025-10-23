@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: prowlarr
+  name: jackett
 spec:
-  storageClassName: prowlarr
+  storageClassName: jackett
   capacity:
     storage: 1Mi
   accessModes:
@@ -12,7 +12,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: nfs.${SECRET_DOMAIN}
-    path: "/media/services/prowlarr"
+    path: "/media/services/jackett"
   mountOptions:
     - nfsvers=4.2
     - nconnect=8
@@ -25,9 +25,9 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: prowlarr
+  name: jackett
 spec:
-  storageClassName: prowlarr
+  storageClassName: jackett
   accessModes:
     - ReadWriteMany
   resources:

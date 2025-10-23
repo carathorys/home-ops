@@ -8,7 +8,7 @@ metadata:
 spec:
   cluster:
     name: postgres
-  name: ${PROWLARR_DATABASE}-db
-  owner: ${PROWLARR_USERNAME}
+  name: ${JACKETT_DATABASE}-db
+  owner: ${JACKETT_USERNAME}
   ensure: present
   allowConnections: true

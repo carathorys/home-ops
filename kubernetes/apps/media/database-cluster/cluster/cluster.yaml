@@ -51,14 +51,14 @@ spec:
           name: jellyseerr-user
       - connectionLimit: -1
         ensure: present
-        name: "${PROWLARR_USERNAME}"
-        comment: Prowlarr app user
+        name: "${JACKETT_USERNAME}"
+        comment: Jackett app user
         inherit: false
         login: true
         superuser: false
         createdb: false
         passwordSecret:
-          name: prowlarr-user
+          name: jackett-user
   postgresql:
     parameters:
       max_connections: "300"
