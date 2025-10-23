@@ -68,5 +68,5 @@ spec:
         advancedMounts:
           main:
             main:
-              - path: /app/config
+              - path: /config
                 readOnly: false
