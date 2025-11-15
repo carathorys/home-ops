@@ -86,6 +86,14 @@ spec:
             main:
               - path: /mnt/Gyerek/Sorozatok
                 readOnly: false
+      data-archive:
+        type: persistentVolumeClaim
+        existingClaim: data-archive
+        advancedMounts:
+          main:
+            main:
+              - path: /data-archive
+                readOnly: true
       downloads:
         type: persistentVolumeClaim
         existingClaim: downloads
