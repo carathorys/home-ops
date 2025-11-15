@@ -93,7 +93,7 @@ spec:
           main:
             main:
               - path: /data-archive
-                readOnly: true
+                readOnly: false
       downloads:
         type: persistentVolumeClaim
         existingClaim: downloads
