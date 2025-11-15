@@ -1,0 +1,35 @@
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-archive
+spec:
+  storageClassName: data-archive
+  capacity:
+    storage: 1Mi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: nfs.${SECRET_DOMAIN}
+    path: "/data"
+  mountOptions:
+    - nfsvers=4.2
+    - nconnect=8
+    - hard
+    - noatime
+    - nodiratime
+    - nolock
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-archive
+spec:
+  storageClassName: data-archive
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Mi
