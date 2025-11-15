@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/name: postgres-db
 spec:
   # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql versioning=redhat
-  imageName: ghcr.io/cloudnative-pg/postgresql:18-system-bookworm
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.5-1
   instances: 2
   primaryUpdateStrategy: supervised
   storage:
