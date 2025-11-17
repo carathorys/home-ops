@@ -27,7 +27,7 @@ spec:
           main:
             image:
               repository: ghcr.io/linuxserver/plex
-              tag: version-1.42.2.10156-f737b826c
+              tag: 1.42.2
             env:
               TZ: "Europe/Budapest"
               ADVERTISE_IP: "https://${APP}:443,https://${APP}.${SECRET_DOMAIN}:443"
