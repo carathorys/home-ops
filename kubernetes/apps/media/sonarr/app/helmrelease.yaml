@@ -34,7 +34,7 @@ spec:
           main:
             image:
               repository: ghcr.io/linuxserver/sonarr
-              tag: version-4.0.15.2941
+              tag: 4.0.16
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
