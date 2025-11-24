@@ -11,4 +11,4 @@ spec:
     operation: copy
   ref:
     tag: v1.3.0
-  url: oci://`ghcr.io/dragonflydb/dragonfly-operator/helm/dragonfly-operator`
+  url: oci://ghcr.io/dragonflydb/dragonfly-operator/helm/dragonfly-operator
