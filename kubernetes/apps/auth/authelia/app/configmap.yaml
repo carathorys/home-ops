@@ -10,18 +10,6 @@ data:
       password_reset:
         disable: false
       refresh_interval: 5m
-      ldap:
-        implementation: custom
-        timeout: 5s
-        start_tls: false
-        additional_users_dn: ou=users
-        users_filter: (&({username_attribute}={input})(objectClass=person))
-        additional_groups_dn: ou=groups
-        groups_filter: (member={dn})
-        group_name_attribute: cn
-        username_attribute: uid
-        mail_attribute: mail
-        display_name_attribute: displayName
 
     session:
       same_site: lax
@@ -38,10 +26,10 @@ data:
       encryption_key: ${AUTHELIA_STORAGE_ENCRYPTION_KEY}
       postgres:
         timeout: 5s
-        address: tcp://postgres.auth.svc.cluster.local:5432
-        database: authelia
-        username: authelia
-        password: ${AUTHELIA_POSTGRES_PASSWORD}
+        address: tcp://postgres-rw:5432
+        database: ${AUTHELIA_DATABASE}
+        username: ${AUTHELIA_USER}
+        password: ${AUTHELIA_PASS}
 
     notifier:
       disable_startup_check: false
