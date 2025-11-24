@@ -55,7 +55,7 @@ data:
       ban_time: '5 minutes'
 
     storage:
-      encryption_key: ${AUTHELIA_STORAGE_ENCRYPTION_KEY}-secret
+      encryption_key: ${AUTHELIA_STORAGE_ENCRYPTION_KEY}-with-a-very-long-text-based-secret
       postgres:
         timeout: 5s
         address: tcp://postgres-rw:5432
