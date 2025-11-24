@@ -27,16 +27,6 @@ data:
       file:
         path: '/config/users_database.yml'
 
-    access_control:
-      default_policy: 'deny'
-      rules:
-        # Rules applied to everyone
-        - domain: 'public.gallay.hu'
-          policy: 'bypass'
-        - domain: 'traefik.gallay.hu'
-          policy: 'one_factor'
-        - domain: 'secure.gallay.hu'
-          policy: 'two_factor'
 
     session:
       # This secret can also be set using the env variables AUTHELIA_SESSION_SECRET_FILE
