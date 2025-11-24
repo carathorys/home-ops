@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/dragonflydb.io/dragonfly_v1alpha1.json
+
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  labels:
+  name: dragonfly-cluster
+spec:
+  replicas: 2
+  authentication:
+    passwordFromSecret:
+      key: password
+      name: authelia-dragonfly
+  resources:
+    requests:
+      cpu: 500m
+      memory: 500Mi
+    limits:
+      cpu: 600m
+      memory: 1Gi
