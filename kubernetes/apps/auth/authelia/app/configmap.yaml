@@ -47,7 +47,6 @@ data:
         port: 6379
         password: ${DRAGONFLY_PASS}
         database_index: 0
-        key_prefix: "authelia_session:"
 
     regulation:
       max_retries: 3
