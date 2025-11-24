@@ -21,6 +21,12 @@ data:
           domain: ${SECRET_DOMAIN}
           authelia_url: https://auth.${SECRET_DOMAIN}
           default_redirection_url: https://${SECRET_DOMAIN}
+      redis:
+        host: dragonfly-cluster
+        port: 6379
+        password: ${DRAGONFLY_PASS}
+        database_index: 0
+        key_prefix: "authelia_session:"
 
     storage:
       encryption_key: ${AUTHELIA_STORAGE_ENCRYPTION_KEY}
