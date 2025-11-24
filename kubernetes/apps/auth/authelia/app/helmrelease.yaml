@@ -1,133 +1,21 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: &app ${APP}
-spec:
   interval: 1h
-  chartRef:
-    kind: OCIRepository
-    name: *app
+  chart:
+    spec:
+      chart: nfs-subdir-external-provisioner
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: nfs-subdir-external-provisioner
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+  uninstall:
+    keepHistory: false
   values:
-    controllers:
-      main:
-        annotations:
-          reloader.stakater.com/auto: "true"
-
-        containers:
-          main:
-            image:
-              repository: ghcr.io/authelia/authelia
-              tag: 4.39.13
-
-            env:
-              AUTHELIA_AUTHENTICATION_BACKEND_PASSWORD_RESET_DISABLE: "true"
-              AUTHELIA_DEFAULT_REDIRECTION_URL: https://auth.${SECRET_DOMAIN}
-              AUTHELIA_DUO_API_DISABLE: "true"
-              AUTHELIA_LOG_LEVEL: info
-              AUTHELIA_SERVER_ADDRESS: tcp://0.0.0.0:9091
-              AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "false"
-              AUTHELIA_SESSION_DOMAIN: ${SECRET_DOMAIN}
-              AUTHELIA_SESSION_NAME: authelia-session
-              AUTHELIA_SESSION_REDIS_HOST: dragonfly-cluster
-              AUTHELIA_SESSION_REDIS_PORT: "6379"
-              AUTHELIA_SESSION_REDIS_PASSWORD: ${DRAGONFLY_PASS}
-              AUTHELIA_STORAGE_POSTGRES_ADDRESS: tcp://postgres-rw:5432
-              AUTHELIA_STORAGE_POSTGRES_DATABASE: ${AUTHELIA_DATABASE}
-              AUTHELIA_STORAGE_POSTGRES_USERNAME: ${AUTHELIA_USER}
-              AUTHELIA_STORAGE_POSTGRES_PASSWORD: ${AUTHELIA_PASS}
-            envFrom:
-              - secretRef:
-                  name: auth-cluster-secrets
-
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /api/health
-                    port: 9091
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /api/health
-                    port: 9091
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              startup:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /api/health
-                    port: 9091
-                  initialDelaySeconds: 0
-                  periodSeconds: 5
-                  timeoutSeconds: 1
-                  failureThreshold: 30
-
-            resources:
-              requests:
-                cpu: 10m
-                memory: 128Mi
-              limits:
-                memory: 512Mi
-
-    service:
-      main:
-        controller: main
-        ports:
-          http:
-            port: 9091
-          metrics:
-            port: 9959
-
-    serviceMonitor:
-      main:
-        serviceName: *app
-        enabled: true
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
-
-    route:
-      internal:
-        enabled: true
-        parentRefs:
-          - name: internal
-            namespace: kube-system
-            sectionName: https
-          - name: external
-            namespace: kube-system
-            sectionName: https
-        hostnames:
-          - auth.${SECRET_DOMAIN}
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /
-            backendRefs:
-              - name: *app
-                port: 9091
-    persistence:
-      config:
-        type: configMap
-        name: authelia-config
-        globalMounts:
-          - path: /config/configuration.yml
-            subPath: configuration.yml
-            readOnly: true

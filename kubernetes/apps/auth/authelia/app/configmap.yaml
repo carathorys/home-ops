@@ -30,7 +30,7 @@ data:
 
     session:
       # This secret can also be set using the env variables AUTHELIA_SESSION_SECRET_FILE
-      secret: 'insecure_session_secret'
+      secret: ${AUTHELIA_SESSION_SECRET}
       same_site: lax
       inactivity: 5m
       expiration: 1h
@@ -55,7 +55,7 @@ data:
       ban_time: '5 minutes'
 
     storage:
-      encryption_key: ${AUTHELIA_STORAGE_ENCRYPTION_KEY}-with-a-very-long-text-based-secret
+      encryption_key: ${AUTHELIA_STORAGE_ENCRYPTION_KEY}
       postgres:
         timeout: 5s
         address: tcp://postgres-rw:5432
