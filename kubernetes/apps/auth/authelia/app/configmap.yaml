@@ -35,13 +35,14 @@ data:
       inactivity: 5m
       expiration: 1h
       remember_me: 1M
-      cookies:
-        - name: authelia_session
-          domain: ${SECRET_DOMAIN}
-          authelia_url: https://auth.${SECRET_DOMAIN}
-          default_redirection_url: https://${SECRET_DOMAIN}
-          expiration: '1 hour'
-          inactivity: '5 minutes'
+      # cookies:
+      #   - name: authelia_session
+      #     domain: ${SECRET_DOMAIN}
+      #     authelia_url: https://auth.${SECRET_DOMAIN}
+      #     default_redirection_url: https://${SECRET_DOMAIN}
+      #     expiration: '1 hour'
+      #     inactivity: '5 minutes'
+
       redis:
         host: dragonfly-cluster
         port: 6379
