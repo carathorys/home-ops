@@ -3886,10 +3886,10 @@ spec:
       # -- Additional secrets to mount to the Pod.
       additionalSecrets:
         authelia-dragonfly:
-          path: 'authelia-dragonfly/session.redis.password.txt'
+          path: 'authelia-dragonfly'
           items:
             - key: 'password'
-              path: ''
+              path: 'session.redis.password.txt'
       # additionalSecrets:
       #   example:
       #     ## Defines the path within the container, i.e. /secrets/<path>
