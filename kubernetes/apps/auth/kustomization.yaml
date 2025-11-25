@@ -8,4 +8,3 @@ components:
 resources:
   - ./secrets/ks.yaml
   - ./database-cluster/ks.yaml
-  - ./authelia/ks.yaml
