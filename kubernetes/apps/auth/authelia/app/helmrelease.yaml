@@ -2791,124 +2791,13 @@ spec:
         # @schema
         # required: false
         # @schema
-        mysql:
-
-          # @schema
-          # required: false
-          # @schema
-          # -- Enable the MySQL Provider (Storage / SQL).
-          enabled: false
-
-          # @schema
-          # required: false
-          # @schema
-          # -- Deploy the MySQL Chart.
-          deploy: false
-
-          # @schema
-          # required: false
-          # @schema
-          # -- Configures the address for the MySQL/MariaDB Server. The address itself is a connector and the scheme must
-          # either be the unix scheme or one of the tcp schemes.
-          address: 'tcp://mysql.databases.svc.cluster.local:3306'
-
-          # @schema
-          # type: [integer, string]
-          # required: false
-          # @schema
-          # -- The SQL connection timeout.
-          timeout: '5 seconds'
-
-          # @schema
-          # required: false
-          # @schema
-          # -- The database name on the database server that the assigned user has access to for the purpose of Authelia.
-          database: 'authelia'
-
-          # @schema
-          # required: false
-          # @schema
-          # -- The username paired with the password used to connect to the database.
-          username: 'authelia'
-
-          # @schema
-          # required: false
-          # @schema
-          password:
-
-            # @schema
-            # required: false
-            # @schema
-            # -- Disables this secret and leaves configuring it entirely up to you.
-            disabled: false
-
-            # @schema
-            # required: false
-            # @schema
-            # -- The secret name. The ~ name is special as it is the secret we generate either automatically or via the
-            # secret_value option below.
-            secret_name: ~
-
-            # @schema
-            # required: false
-            # @schema
-            # -- The value of a generated secret when using the ~ secret_name.
-            value: ''
-
-            # @schema
-            # required: false
-            # @schema
-            # -- The path to the secret. If it has a '/' prefix it's assumed to be an absolute path within the pod. Otherwise
-            # it uses the format '{mountPath}/{secret_name}/{path}' where '{mountPath}' refers to the 'secret.mountPath'
-            # value, '{secret_name}' is the secret_name above, and '{path}' is this value.
-            path: 'storage.mysql.password.txt'
-
-          # @schema
-          # required: false
-          # @schema
-          tls:
-
-            # @schema
-            # required: false
-            # @schema
-            # -- Enables rendering this TLS config.
-            enabled: false
-
-            # @schema
-            # required: false
-            # @schema
-            # -- The server subject name to check the servers certificate against during the validation process.
-            # This option is not required if the certificate has a SAN which matches the host option.
-            server_name: ''
-
-            # @schema
-            # required: false
-            # @schema
-            # -- Skip verifying the server certificate entirely.
-            skip_verify: false
-
-            # @schema
-            # required: false
-            # @schema
-            # -- Minimum TLS version for the connection.
-            minimum_version: 'TLS1.2'
-
-            # @schema
-            # required: false
-            # @schema
-            # -- Maximum TLS version for the connection.
-            maximum_version: 'TLS1.3'
-
-        # @schema
-        # required: false
-        # @schema
         postgres:
 
           # @schema
           # required: false
           # @schema
           # -- Enable the PostgreSQL Provider (Storage / SQL).
-          enabled: false
+          enabled: true
 
           # @schema
           # required: false
@@ -2921,7 +2810,7 @@ spec:
           # @schema
           # -- Configures the address for the PostgreSQL Server. The address itself is a connector and the scheme must
           # either be the unix scheme or one of the tcp schemes.
-          address: 'tcp://postgres.databases.svc.cluster.local:5432'
+          address: 'tcp://postgres-rw.databases.svc.cluster.local:5432'
 
           # @schema
           # required: false
@@ -2948,7 +2837,7 @@ spec:
           # required: false
           # @schema
           # -- The database name on the database server that the assigned user has access to for the purpose of Authelia.
-          database: 'authelia'
+          database: '${AUTHELIA_DATABASE}'
 
           # @schema
           # required: false
@@ -2961,7 +2850,7 @@ spec:
           # required: false
           # @schema
           # -- The username paired with the password used to connect to the database.
-          username: 'authelia'
+          username: '${AUTHELIA_USER}'
 
           # @schema
           # required: false
@@ -2979,7 +2868,7 @@ spec:
             # @schema
             # -- The secret name. The ~ name is special as it is the secret we generate either automatically or via the
             # secret_value option below.
-            secret_name: ~
+            secret_name: AUTHELIA_DATABASE
 
             # @schema
             # required: false
@@ -3890,6 +3779,11 @@ spec:
           items:
             - key: 'password'
               path: 'session.redis.password.txt'
+        auth-cluster-secrets:
+          path: 'auth-cluster-secrets'
+          items:
+            - key: AUTHELIA_PASS
+              path: 'storage.postgres.password.txt'
       # additionalSecrets:
       #   example:
       #     ## Defines the path within the container, i.e. /secrets/<path>
