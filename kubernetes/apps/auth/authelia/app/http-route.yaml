@@ -24,7 +24,7 @@ spec:
       kind: Service
       name: authelia-app
       namespace: auth
-      port: 80
+      port: 9091
       weight: 1
     matches:
     - path:
