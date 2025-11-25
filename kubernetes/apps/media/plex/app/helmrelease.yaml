@@ -70,7 +70,7 @@ spec:
           - path: /dev/dri
       config:
         type: nfs
-        server: nfs.gallay.hu
+        server: nfs.${SECRET_DOMAIN}
         path: /srv/nfs4/media/services/plex
         globalMounts:
           - path: /config

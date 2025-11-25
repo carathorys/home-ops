@@ -2452,20 +2452,20 @@ spec:
         #       required: false
         # @schema
         # -- Session Cookies list.
-        cookies: []
-        # cookies:
-          # -
+        # cookies: []
+        cookies:
+          -
             ## The subdomain to prefix the domain with. For example using `domain` value `example.com` and `subdomain`
             ## `auth` should yield the URL `https://auth.example.com`. This option does not affect the cookie domain.
-            # subdomain: 'auth'
+            subdomain: 'auth'
 
             ## The domain for cookie and to build the Authelia URL.
-            # domain: ''
+            domain: '${SECRET_DOMAIN}'
 
             ## The path to suffix the domain with. For example using `domain` value `example.com` and `subdomain` value
             ## `auth` and `path` value `auth` should yield the URL `https://auth.example.com/auth`.
             ## This option does not affect the cookie domain.
-            # path: ''
+            path: ''
 
             ## Default Redirection URL for this domain when there is no forwarding application.
             # default_redirection_url: ''
@@ -2940,7 +2940,7 @@ spec:
           # required: false
           # @schema
           # -- Enables the File System Provider (Notifier).
-          enabled: false
+          enabled: true
 
           # @schema
           # required: false
