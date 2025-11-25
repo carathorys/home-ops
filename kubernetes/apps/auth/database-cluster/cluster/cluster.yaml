@@ -17,18 +17,6 @@ spec:
   enableSuperuserAccess: true
   superuserSecret:
     name: postgres-superuser
-  managed:
-    roles:
-      - connectionLimit: -1
-        ensure: present
-        name: "${AUTHELIA_USER}"
-        comment: Authelia app user
-        inherit: false
-        login: true
-        superuser: false
-        createdb: false
-        passwordSecret:
-          name: authelia-user
   postgresql:
     synchronous:
       method: any
