@@ -2868,7 +2868,7 @@ spec:
             # @schema
             # -- The secret name. The ~ name is special as it is the secret we generate either automatically or via the
             # secret_value option below.
-            secret_name: AUTHELIA_DATABASE
+            secret_name: auth-cluster-secrets
 
             # @schema
             # required: false
