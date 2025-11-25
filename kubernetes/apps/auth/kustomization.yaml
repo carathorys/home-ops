@@ -5,6 +5,6 @@ kind: Kustomization
 namespace: auth
 components:
   - ../../components/common
-resources:
-  - ./secrets/ks.yaml
-  - ./database-cluster/ks.yaml
+resources: []
+  # - ./secrets/ks.yaml
+  # - ./database-cluster/ks.yaml
