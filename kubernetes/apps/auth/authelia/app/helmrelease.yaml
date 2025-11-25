@@ -2810,7 +2810,7 @@ spec:
           # @schema
           # -- Configures the address for the PostgreSQL Server. The address itself is a connector and the scheme must
           # either be the unix scheme or one of the tcp schemes.
-          address: 'tcp://postgres-rw.databases.svc.cluster.local:5432'
+          address: 'tcp://postgres-rw.auth.svc.cluster.local:5432'
 
           # @schema
           # required: false
