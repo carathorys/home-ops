@@ -974,6 +974,30 @@ spec:
       # @schema
       # required: false
       # @schema
+
+      administration:
+        ## Explicitly enable Dynamic Configuration, either via CLI only or CLI and UI via enable_ui.
+        enable: false
+
+        ## Explicitly enable the Admin UI on this Authelia instance. If 'enable' is configured another process could also be
+        ## separately configured with this enabled.
+        enable_ui: false
+
+        ## Configure the listener address for the UI. If it's exactly the same host and port component as above with a
+        ## different path, listen on the same listener as above. If it's exactly the same, error.
+        address: 'tcp://:9092'
+
+        ## URL enabling the button/link in the portal for the UI.
+        url: 'https://auth-admin.example.com'
+
+        ## List of users who are allowed to view the admin UI. In addition to the groups.
+        users:
+          - 'carathorys'
+
+        ## List of groups who are allowed to view the admin UI. In addition to the users.
+        groups:
+          - 'admins'
+
       log:
 
         # @schema
@@ -1995,7 +2019,7 @@ spec:
           # required: false
           # @schema
           # -- Enables reloading the database by watching it for changes.
-          watch: false
+          watch: true
 
           # @schema
           # required: false
@@ -2007,7 +2031,7 @@ spec:
             # @schema
             # -- Allows users to login using their email address. If enabled two users must not have the same emails and
             # their usernames must not be an email.
-            email: false
+            email: true
 
             # @schema
             # required: false
@@ -3775,219 +3799,3 @@ spec:
       #       - key: 'key-example'
       #         path: 'path-example'
       #   example-without-items: {}
-
-
-    # @schema
-    # required: false
-    # additionalProperties: true
-    # @schema
-    # -- Configure postgresql database subchart under this key.
-    # This will be deployed when storage.postgres.deploy is set to true
-    # Currently settings need to be manually copied from here to the storage.postgres section
-    # For more options and to see the @default please see [postgresql chart documentation](https://github.com/bitnami/charts/tree/main/bitnami/postgresql)
-    # @default -- `{}`
-    postgresql:
-
-      # @schema
-      # required: false
-      # additionalProperties: true
-      # @schema
-      auth:
-
-        # @schema
-        # required: false
-        # @schema
-        postgresPassword: 'authelia'
-
-        # @schema
-        # required: false
-        # @schema
-        username: 'authelia'
-
-        # @schema
-        # required: false
-        # @schema
-        password: 'authelia'
-
-        # @schema
-        # required: false
-        # @schema
-        database: 'authelia'
-
-      # @schema
-      # required: false
-      # additionalProperties: true
-      # @schema
-      primary:
-
-        # @schema
-        # required: false
-        # additionalProperties: true
-        # @schema
-        persistence:
-
-          # @schema
-          # required: false
-          # @schema
-          enabled: false
-
-          # @schema
-          # required: false
-          # @schema
-          storageClass: ''
-
-          # @schema
-          # required: false
-          # @schema
-          size: '1Gi'
-
-        # @schema
-        # required: false
-        # additionalProperties: true
-        # @schema
-        resources: {}
-
-    # @schema
-    # required: false
-    # additionalProperties: true
-    # @schema
-    # -- Configure redis database subchart under this key.
-    # This will be deployed when session.redis.deploy is set to true
-    # Currently settings need to be manually copied from here to the session.redis section
-    # For more options and to see the @default please see [redis chart documentation](https://github.com/bitnami/charts/tree/main/bitnami/redis)
-    # @default -- `{}`
-    redis:
-
-      # @schema
-      # required: false
-      # @schema
-      architecture: 'standalone'
-
-      # @schema
-      # required: false
-      # additionalProperties: true
-      # @schema
-      auth:
-
-        # @schema
-        # required: false
-        # @schema
-        enabled: false
-
-        # @schema
-        # required: false
-        # @schema
-        sentinel: true
-
-        # @schema
-        # required: false
-        # @schema
-        password: 'redis'
-
-        # @schema
-        # required: false
-        # @schema
-        existingSecret: ''
-
-        # @schema
-        # required: false
-        # @schema
-        existingSecretPasswordKey: ''
-
-        # @schema
-        # required: false
-        # @schema
-        usePasswordFiles: false
-
-      # @schema
-      # required: false
-      # additionalProperties: true
-      # @schema
-      master:
-
-        # @schema
-        # required: false
-        # additionalProperties: true
-        # @schema
-        resources: {}
-
-        # @schema
-        # required: false
-        # @schema
-        priorityClassName: ''
-
-        # @schema
-        # required: false
-        # additionalProperties: true
-        # @schema
-        persistence:
-
-          # @schema
-          # required: false
-          # @schema
-          enabled: false
-
-          # @schema
-          # required: false
-          # @schema
-          storageClass: ''
-
-          # @schema
-          # required: false
-          # @schema
-          accessModes:
-            - 'ReadWriteOnce'
-
-          # @schema
-          # required: false
-          # @schema
-          size: '1Gi'
-
-      # @schema
-      # required: false
-      # additionalProperties: true
-      # @schema
-      replica:
-
-        # @schema
-        # required: false
-        # @schema
-        replicaCount: 3
-
-        # @schema
-        # required: false
-        # additionalProperties: true
-        # @schema
-        resources: {}
-
-        # @schema
-        # required: false
-        # @schema
-        priorityClassName: ''
-
-        # @schema
-        # required: false
-        # additionalProperties: true
-        # @schema
-        persistence:
-
-          # @schema
-          # required: false
-          # @schema
-          enabled: false
-
-          # @schema
-          # required: false
-          # @schema
-          storageClass: ''
-
-          # @schema
-          # required: false
-          # @schema
-          accessModes:
-            - 'ReadWriteOnce'
-
-          # @schema
-          # required: false
-          # @schema
-          size: '1Gi'
