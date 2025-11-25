@@ -8,7 +8,7 @@ metadata:
 spec:
   cluster:
     name: postgres
-  name: ${AUTHELIA_DATABASE}-db
+  name: ${AUTHELIA_DATABASE}
   owner: ${AUTHELIA_USERNAME}
   ensure: present
   allowConnections: true
