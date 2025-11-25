@@ -2532,7 +2532,7 @@ configMap:
         # -- The path to the secret. If it has a '/' prefix it's assumed to be an absolute path within the pod. Otherwise
         # it uses the format '{mountPath}/{secret_name}/{path}' where '{mountPath}' refers to the 'secret.mountPath'
         # value, '{secret_name}' is the secret_name above, and '{path}' is this value.
-        path: 'password.txt'
+        path: 'session.redis.passwordpassword.txt'
 
       # @schema
       # required: false
@@ -3861,10 +3861,10 @@ secret:
   # -- Additional secrets to mount to the Pod.
   additionalSecrets:
     authelia-dragonfly:
-      path: '/secrets/authelia-dragonfly/password.txt'
+      path: '/secrets/authelia-dragonfly/session.redis.password.txt'
       items:
         - key: 'password'
-          path: dragonfly-password
+          path: ''
   # additionalSecrets:
   #   example:
   #     ## Defines the path within the container, i.e. /secrets/<path>
