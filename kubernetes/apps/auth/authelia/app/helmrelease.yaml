@@ -3884,7 +3884,12 @@ spec:
       #               required: false
       # @schema
       # -- Additional secrets to mount to the Pod.
-      additionalSecrets: {}
+      additionalSecrets:
+        authelia-dragonfly:
+          path: ''
+          items:
+            - key: 'password'
+              path: dragonfly-password
       # additionalSecrets:
       #   example:
       #     ## Defines the path within the container, i.e. /secrets/<path>
