@@ -39,12 +39,30 @@ spec:
               KC_HEALTH_ENABLED: "true"
               KC_METRICS_ENABLED: "true"
               KC_DB: postgres
-              KC_DB_URL_HOST: ${host}
-              KC_DB_URL_PORT: "${port}"
-              KC_DB_USERNAME: ${user}
-              KC_DB_PASSWORD: ${password}
-              KC_BOOTSTRAP_ADMIN_USERNAME: "${ADMIN_EMAIL}"
-              KC_BOOTSTRAP_ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
+              KC_DB_URL_HOST:
+                secretKeyRef:
+                  key: postgres-app
+                  name: host
+              KC_DB_URL_PORT:
+                secretKeyRef:
+                  key: postgres-app
+                  name: port
+              KC_DB_USERNAME:
+                secretKeyRef:
+                  key: postgres-app
+                  name: username
+              KC_DB_PASSWORD:
+                secretKeyRef:
+                  key: postgres-app
+                  name: password
+              KC_BOOTSTRAP_ADMIN_USERNAME:
+                secretKeyRef:
+                  key: admin-secret
+                  name: ADMIN_EMAIL
+              KC_BOOTSTRAP_ADMIN_PASSWORD:
+                secretKeyRef:
+                  key: admin-secret
+                  name: ADMIN_PASSWORD
               KC_HOSTNAME: ${APP}.${SECRET_DOMAIN}
               KC_HTTP_RELATIVE_PATH: /
               KC_PROXY: edge
