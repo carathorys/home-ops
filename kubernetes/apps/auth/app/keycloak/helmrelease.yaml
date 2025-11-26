@@ -96,6 +96,13 @@ spec:
             main:
               - path: /tmp
                 readOnly: false
+      keycloak-data:
+        type: emptyDir
+        advancedMounts:
+          main:
+            main:
+              - path: /opt/keycloak/data
+                readOnly: false
     #   config:
     #     type: persistentVolumeClaim
     #     existingClaim: jackett
