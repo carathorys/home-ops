@@ -35,7 +35,8 @@ spec:
             image:
               repository: quay.io/keycloak/keycloak
               tag: 26.4.6
-            command: /opt/keycloak/bin/kc.sh start --help
+
+            command: start
             env:
               KC_HEALTH_ENABLED: "true"
               KC_METRICS_ENABLED: "true"
