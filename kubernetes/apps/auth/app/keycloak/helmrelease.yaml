@@ -51,27 +51,6 @@ spec:
             image:
               repository: *repo
               tag: *version
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                - ALL
-            command:
-              - /opt/keycloak/bin/kc.sh
-              - build
-              - --http-enabled=true
-        containers:
-          main:
-            image:
-              repository: *repo
-              tag: *version
-            command:
-              - /opt/keycloak/bin/kc.sh
-              - start
-              - --proxy-headers=xforwarded
-              - --http-enabled=true
-              - --optimized
             env:
               KC_HEALTH_ENABLED: "true"
               KC_METRICS_ENABLED: "true"
@@ -92,6 +71,27 @@ spec:
               KC_HOSTNAME: ${APP}.${SECRET_DOMAIN}
               KC_HTTP_RELATIVE_PATH: /
               KC_PROXY: edge
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                - ALL
+            command:
+              - /opt/keycloak/bin/kc.sh
+              - build
+        containers:
+          main:
+            image:
+              repository: *repo
+              tag: *version
+            command:
+              - /opt/keycloak/bin/kc.sh
+              - start
+              - --proxy-headers=xforwarded
+              - --http-enabled=true
+              - --optimized
     service:
       main:
         type: LoadBalancer
