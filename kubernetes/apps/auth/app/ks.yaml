@@ -12,6 +12,10 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/auth/app/keycloak
   postBuild:
+    substitute:
+      APP: *app
+      APP_UID: "2000"
+      APP_GID: "2000"
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
@@ -21,10 +25,6 @@ spec:
         kind: Secret
       - name: postgres-app
         kind: Secret
-    substitute:
-      APP: *app
-      APP_UID: "2000"
-      APP_GID: "2000"
   dependsOn:
     - name: sql-cluster
       namespace: *namespace
