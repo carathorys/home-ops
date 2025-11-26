@@ -55,6 +55,7 @@ spec:
               - start
               - --proxy-headers=xforwarded
               - --http-enabled=true
+              - --optimized
             env:
               KC_HEALTH_ENABLED: "true"
               KC_METRICS_ENABLED: "true"
