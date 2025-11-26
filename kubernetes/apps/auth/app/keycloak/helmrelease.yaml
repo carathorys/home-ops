@@ -56,11 +56,11 @@ spec:
                 secretKeyRef:
                   name: postgres-app
                   key: password
-              KC_BOOTSTRAP_ADMIN_USERNAME:
+              KEYCLOAK_ADMIN:
                 secretKeyRef:
                   name: admin-secret
                   key: ADMIN_EMAIL
-              KC_BOOTSTRAP_ADMIN_PASSWORD:
+              KEYCLOAK_ADMIN_PASSWORD:
                 secretKeyRef:
                   name: admin-secret
                   key: ADMIN_PASSWORD
