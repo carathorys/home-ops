@@ -65,13 +65,13 @@ spec:
             sectionName: https
         rules:
           - backendRefs: [{}]
-    persistence:
-      config:
-        type: persistentVolumeClaim
-        existingClaim: jackett
-        advancedMounts:
-          main:
-            main:
-              - path: /config
-                readOnly: false
+    # persistence:
+    #   config:
+    #     type: persistentVolumeClaim
+    #     existingClaim: jackett
+    #     advancedMounts:
+    #       main:
+    #         main:
+    #           - path: /config
+    #             readOnly: false
 
