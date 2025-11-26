@@ -35,8 +35,11 @@ spec:
             image:
               repository: quay.io/keycloak/keycloak
               tag: 26.4.6
-
-            command: start
+            command:
+              - /opt/keycloak/bin/kc.sh
+              - start
+              - --proxy-headers
+              - forwarded
             env:
               KC_HEALTH_ENABLED: "true"
               KC_METRICS_ENABLED: "true"
