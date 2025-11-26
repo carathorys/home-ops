@@ -53,8 +53,7 @@ spec:
             command:
               - /opt/keycloak/bin/kc.sh
               - start
-              - --proxy-headers
-              - forwarded
+              - --proxy-headers=xforwarded
               - --http-enabled=true
             env:
               KC_HEALTH_ENABLED: "true"
