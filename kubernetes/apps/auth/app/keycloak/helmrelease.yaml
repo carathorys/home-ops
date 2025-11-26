@@ -88,7 +88,14 @@ spec:
             sectionName: https
         rules:
           - backendRefs: [{}]
-    # persistence:
+    persistence:
+      temp:
+        type: emptyDir
+        advancedMounts:
+          main:
+            main:
+              - path: /tmp
+                readOnly: false
     #   config:
     #     type: persistentVolumeClaim
     #     existingClaim: jackett
