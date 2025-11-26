@@ -15,11 +15,6 @@ spec:
     size: 30Gi
     storageClass: nfs-dynamic
   enableSuperuserAccess: true
-  bootstrap:
-    initdb:
-      owner: ${APP_USER}
-      secret:
-        name: auth-db-secrets
   superuserSecret:
     name: postgres-superuser
   postgresql:
