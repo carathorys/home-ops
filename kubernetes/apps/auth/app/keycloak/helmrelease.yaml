@@ -86,6 +86,26 @@ spec:
             image:
               repository: *repo
               tag: *version
+            env:
+              KC_HEALTH_ENABLED: "true"
+              KC_METRICS_ENABLED: "true"
+              KC_DB: postgres
+              KC_DB_URL_HOST:
+                secretKeyRef:
+                  name: postgres-app
+                  key: host
+              KC_DB_URL:
+                secretKeyRef:
+                  name: postgres-app
+                  key: fqdn-jdbc-uri
+              KC_BOOTSTRAP_ADMIN_USERNAME: admin
+              KC_BOOTSTRAP_ADMIN_PASSWORD:
+                secretKeyRef:
+                  name: admin-secret
+                  key: ADMIN_PASSWORD
+              KC_HOSTNAME: ${APP}.${SECRET_DOMAIN}
+              KC_HTTP_RELATIVE_PATH: /
+              KC_PROXY: edge
             command:
               - /opt/keycloak/bin/kc.sh
               - start
