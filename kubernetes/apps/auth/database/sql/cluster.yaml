@@ -17,7 +17,9 @@ spec:
   enableSuperuserAccess: true
   bootstrap:
     initdb:
-      owner: ${POSTGRES_USER}
+      owner: ${APP_USER}
+      secret:
+        name: auth-db-secrets
   superuserSecret:
     name: postgres-superuser
   postgresql:
