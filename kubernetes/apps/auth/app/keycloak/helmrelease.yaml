@@ -30,11 +30,26 @@ spec:
             runAsNonRoot: true
             fsGroup: ${APP_GID}
             fsGroupChangePolicy: OnRootMismatch
+        initContainers:
+          copy-opt:
+            image:
+              repository: &repo quay.io/keycloak/keycloak
+              tag: &version 26.4.6
+            # imagePullPolicy: IfNotPresent
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                - ALL
+            command: ["sh", "-c"]
+            args:
+              - "mkdir -p /tmp/opt/keycloak && cp -R /opt/keycloak/* /tmp/opt/keycloak/"
         containers:
           main:
             image:
-              repository: quay.io/keycloak/keycloak
-              tag: 26.4.6
+              repository: *repo
+              tag: *version
             command:
               - /opt/keycloak/bin/kc.sh
               - start
@@ -102,6 +117,16 @@ spec:
           main:
             main:
               - path: /opt/keycloak/data
+                readOnly: false
+      workspace:
+        type: emptyDir
+        advancedMounts:
+          main:
+            copy-opt:
+              - path: /tmp/opt
+                readOnly: false
+            main:
+              - path: /opt
                 readOnly: false
     #   config:
     #     type: persistentVolumeClaim
