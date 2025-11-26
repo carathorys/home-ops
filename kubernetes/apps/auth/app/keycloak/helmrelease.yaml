@@ -45,8 +45,28 @@ spec:
             command: ["sh", "-c"]
             args:
               - "mkdir -p /tmp/opt/keycloak && cp -R /opt/keycloak/* /tmp/opt/keycloak/"
+          build:
+            dependsOn:
+              - copy-opt
+            image:
+              repository: *repo
+              tag: *version
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                - ALL
+            command:
+              - /opt/keycloak/bin/kc.sh
+              - build
+              - --proxy-headers=xforwarded
+              - --http-enabled=true
         containers:
           main:
+            dependsOn:
+              - copy-opt
+              - build
             image:
               repository: *repo
               tag: *version
@@ -113,6 +133,9 @@ spec:
           main:
             copy-opt:
               - path: /tmp/opt
+                readOnly: false
+            build:
+              - path: /opt
                 readOnly: false
             main:
               - path: /opt
