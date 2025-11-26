@@ -64,23 +64,15 @@ spec:
                 secretKeyRef:
                   name: postgres-app
                   key: host
-              KC_DB_URL_PORT:
+              KC_DB_URL:
                 secretKeyRef:
                   name: postgres-app
-                  key: port
-              KC_DB_USERNAME:
-                secretKeyRef:
-                  name: postgres-app
-                  key: username
-              KC_DB_PASSWORD:
-                secretKeyRef:
-                  name: postgres-app
-                  key: password
-              KEYCLOAK_ADMIN:
+                  key: fqdn-jdbc-uri
+              KC_BOOTSTRAP_ADMIN_USERNAME:
                 secretKeyRef:
                   name: admin-secret
                   key: ADMIN_EMAIL
-              KEYCLOAK_ADMIN_PASSWORD:
+              KC_BOOTSTRAP_ADMIN_PASSWORD:
                 secretKeyRef:
                   name: admin-secret
                   key: ADMIN_PASSWORD
