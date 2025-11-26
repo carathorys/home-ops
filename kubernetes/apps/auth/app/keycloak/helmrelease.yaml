@@ -49,24 +49,23 @@ spec:
                   name: port
               KC_DB_USERNAME:
                 secretKeyRef:
-                  key: postgres-app
-                  name: username
+                  name: postgres-app
+                  key: username
               KC_DB_PASSWORD:
                 secretKeyRef:
-                  key: postgres-app
-                  name: password
+                  name: postgres-app
+                  key: password
               KC_BOOTSTRAP_ADMIN_USERNAME:
                 secretKeyRef:
-                  key: admin-secret
-                  name: ADMIN_EMAIL
+                  name: admin-secret
+                  key: ADMIN_EMAIL
               KC_BOOTSTRAP_ADMIN_PASSWORD:
                 secretKeyRef:
-                  key: admin-secret
-                  name: ADMIN_PASSWORD
+                  name: admin-secret
+                  key: ADMIN_PASSWORD
               KC_HOSTNAME: ${APP}.${SECRET_DOMAIN}
               KC_HTTP_RELATIVE_PATH: /
               KC_PROXY: edge
-
     service:
       main:
         type: LoadBalancer
