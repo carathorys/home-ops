@@ -41,12 +41,12 @@ spec:
               KC_DB: postgres
               KC_DB_URL_HOST:
                 secretKeyRef:
-                  key: postgres-app
-                  name: host
+                  name: postgres-app
+                  key: host
               KC_DB_URL_PORT:
                 secretKeyRef:
-                  key: postgres-app
-                  name: port
+                  name: postgres-app
+                  key: port
               KC_DB_USERNAME:
                 secretKeyRef:
                   name: postgres-app
