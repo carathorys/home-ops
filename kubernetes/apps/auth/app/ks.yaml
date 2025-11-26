@@ -23,7 +23,7 @@ spec:
         kind: Secret
       - name: admin-secret
         kind: Secret
-      - name: postgres-app
+      - name: auth-db-secrets
         kind: Secret
   dependsOn:
     - name: sql-cluster
