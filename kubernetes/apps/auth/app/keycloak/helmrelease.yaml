@@ -64,9 +64,6 @@ spec:
               - --http-enabled=true
         containers:
           main:
-            dependsOn:
-              - copy-opt
-              - build
             image:
               repository: *repo
               tag: *version
