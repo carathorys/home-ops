@@ -4,7 +4,6 @@
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
-  labels:
   name: dragonfly-cluster
 spec:
   replicas: 2
