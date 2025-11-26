@@ -60,7 +60,6 @@ spec:
             command:
               - /opt/keycloak/bin/kc.sh
               - build
-              - --proxy-headers=xforwarded
               - --http-enabled=true
         containers:
           main:
