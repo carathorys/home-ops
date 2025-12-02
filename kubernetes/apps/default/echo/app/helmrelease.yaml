@@ -79,13 +79,13 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: http
-        rules:
-          - filters:
-              - type: ExtensionRef
-                extensionRef:
-                  group: gateway.networking.k8s.io
-                  kind: HTTPRoute
-                  name: ak-outpost-echo
+        # rules:
+        #   - filters:
+        #       - type: ExtensionRef
+        #         extensionRef:
+        #           group: gateway.networking.k8s.io
+        #           kind: HTTPRoute
+        #           name: ak-outpost-echo
             backendRefs:
               - identifier: app
                 port: *port
