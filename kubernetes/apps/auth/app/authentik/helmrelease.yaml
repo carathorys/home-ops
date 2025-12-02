@@ -48,7 +48,7 @@ spec:
         user: file:///postgres-creds/username
         password: file:///postgres-creds/password
     server:
-      replicas: 1
+      replicas: 2
       service:
         type: LoadBalancer
       # metrics:
@@ -69,4 +69,4 @@ spec:
           rules:
             - backendRefs: [{}]
     worker:
-      replicas: 1
+      replicas: 2
