@@ -30,7 +30,7 @@ spec:
           valueFrom:
             secretKeyRef:
               key: postgres-app
-              name: database
+              name: dbname
         - name: AUTHENTIK_POSTGRESQL__HOST
           valueFrom:
             secretKeyRef:
