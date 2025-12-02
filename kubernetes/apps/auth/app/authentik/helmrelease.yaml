@@ -58,6 +58,7 @@ spec:
       route:
         main:
           enabled: true
+          httpsRedirect: true
           hostnames: ["auth.${SECRET_DOMAIN}"]
           parentRefs:
             - name: internal
