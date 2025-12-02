@@ -29,28 +29,28 @@ spec:
         - name: AUTHENTIK_POSTGRESQL__NAME
           valueFrom:
             secretKeyRef:
-              key: postgres-app
-              name: dbname
+              name: postgres-app
+              key: dbname
         - name: AUTHENTIK_POSTGRESQL__HOST
           valueFrom:
             secretKeyRef:
-              key: postgres-app
-              name: host
+              name: postgres-app
+              key: host
         - name: AUTHENTIK_POSTGRESQL__PASSWORD
           valueFrom:
             secretKeyRef:
-              key: postgres-app
-              name: password
+              name: postgres-app
+              key: password
         - name: AUTHENTIK_POSTGRESQL__PORT
           valueFrom:
             secretKeyRef:
-              key: postgres-app
-              name: port
+              name: postgres-app
+              key: port
         - name: AUTHENTIK_POSTGRESQL__USER
           valueFrom:
             secretKeyRef:
-              key: postgres-app
-              name: username
+              name: postgres-app
+              key: username
     authentik:
       secret_key: "${SECRET_KEY}"
       # This sends anonymous usage-data, stack traces on errors and
