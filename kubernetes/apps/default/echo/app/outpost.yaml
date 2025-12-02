@@ -1,0 +1,15 @@
+---
+apiVersion: akproxy.goauthentik.io/v1
+kind: Outpost
+metadata:
+  name: echo
+  namespace: default
+spec:
+  name: echo
+  type: proxy
+  providers:
+    - echo
+  config:
+    authentik_host: "https://auth.${SECRET_DOMAIN}"
+    authentik_host_insecure: false
+    log_level: info

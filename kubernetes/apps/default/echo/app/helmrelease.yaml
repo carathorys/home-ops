@@ -77,6 +77,12 @@ spec:
             namespace: kube-system
             sectionName: https
         rules:
-          - backendRefs:
+          - filters:
+              - type: ExtensionRef
+                extensionRef:
+                  group: gateway.networking.k8s.io
+                  kind: HTTPRoute
+                  name: echo-authentik-outpost
+            backendRefs:
               - identifier: app
                 port: *port
