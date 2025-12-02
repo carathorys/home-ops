@@ -47,6 +47,8 @@ spec:
         name: file:///postgres-creds/dbname
         user: file:///postgres-creds/username
         password: file:///postgres-creds/password
+      outposts:
+        container_image_base: ghcr.io/goauthentik/proxys
     server:
       replicas: 2
       service:
