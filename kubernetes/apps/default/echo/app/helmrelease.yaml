@@ -71,19 +71,32 @@ spec:
           - port: http
     route:
       app:
+        annotations:
+          authentik.goauthentik.io/protected: "true"
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
         parentRefs:
           - name: external
             namespace: kube-system
             sectionName: https
         rules:
-          - filters:
-              - type: ExtensionRef
-                extensionRef:
-                  group: gateway.networking.k8s.io
-                  kind: HTTPRoute
-                  name: authentik-server
-                  namespace: auth
+          # Rule 1: Route /outpost.goauthentik.io/* paths to the outpost
+          # These paths handle auth callbacks and session management
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /outpost.goauthentik.io/
             backendRefs:
-              - identifier: app
-                port: *port
+              - name: ak-outpost-apps-outpost  # Outpost service name
+                namespace: authentik
+                port: 9000
+
+          # Rule 2: Route all other traffic through the outpost
+          # The outpost will proxy authenticated requests to the backend
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+            backendRefs:
+              - name: ak-outpost-apps-outpost  # Outpost service name
+                namespace: authentik
+                port: 9000
