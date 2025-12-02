@@ -22,6 +22,7 @@ spec:
   dependsOn:
     - name: sql-cluster
       namespace: *namespace
+      readyExpr: ".status.conditions[?(@.type=='Ready')].status=='True'"
   prune: true
   retryInterval: 2m
   sourceRef:
