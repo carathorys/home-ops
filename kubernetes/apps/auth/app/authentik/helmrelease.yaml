@@ -34,8 +34,8 @@ spec:
         enabled: true
         host: file:///postgres-creds/host
         port: file:///postgres-creds/port
-        database: file:///postgres-creds/dbname
-        username: file:///postgres-creds/username
+        name: file:///postgres-creds/dbname
+        user: file:///postgres-creds/username
         password: file:///postgres-creds/password
     server:
       replicas: 1
