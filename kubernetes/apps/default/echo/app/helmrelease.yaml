@@ -82,7 +82,8 @@ spec:
                 extensionRef:
                   group: gateway.networking.k8s.io
                   kind: HTTPRoute
-                  name: ak-outpost-echo
+                  name: authentik-server
+                  namespace: auth
             backendRefs:
               - identifier: app
                 port: *port
