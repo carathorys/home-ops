@@ -21,6 +21,7 @@ spec:
   values:
     controllers:
       main:
+        replicas: 2
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -35,7 +36,6 @@ spec:
             image:
               repository: &repo quay.io/keycloak/keycloak
               tag: &version 26.4.6
-            # imagePullPolicy: IfNotPresent
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -156,12 +156,3 @@ spec:
             main:
               - path: /opt
                 readOnly: false
-    #   config:
-    #     type: persistentVolumeClaim
-    #     existingClaim: jackett
-    #     advancedMounts:
-    #       main:
-    #         main:
-    #           - path: /config
-    #             readOnly: false
-
