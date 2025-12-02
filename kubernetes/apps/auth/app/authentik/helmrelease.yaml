@@ -24,6 +24,15 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    global:
+      volumes:
+        - name: postgres-creds
+          secret:
+            secretName: postgres-app
+      volumeMounts:
+        - name: postgres-creds
+          mountPath: /postgres-creds
+          readOnly: true
     authentik:
       secret_key: "${SECRET_KEY}"
       # This sends anonymous usage-data, stack traces on errors and
@@ -58,21 +67,6 @@ spec:
             #   sectionName: https
           rules:
             - backendRefs: [{}]
-      volumes:
-        - name: postgres-creds
-          secret:
-            secretName: postgres-app
-      volumeMounts:
-        - name: postgres-creds
-          mountPath: /postgres-creds
-          readOnly: true
+
     workers:
       replicas: 1
-      volumes:
-        - name: postgres-creds
-          secret:
-            secretName: postgres-app
-      volumeMounts:
-        - name: postgres-creds
-          mountPath: /postgres-creds
-          readOnly: true
