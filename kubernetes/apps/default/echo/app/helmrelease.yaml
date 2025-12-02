@@ -87,7 +87,7 @@ spec:
                   value: /outpost.goauthentik.io/
             backendRefs:
               - name: ak-outpost-echo  # Outpost service name
-                namespace: authentik
+                namespace: auth
                 port: 9000
 
           # Rule 2: Route all other traffic through the outpost
@@ -98,5 +98,5 @@ spec:
                   value: /
             backendRefs:
               - name: ak-outpost-echo  # Outpost service name
-                namespace: authentik
+                namespace: auth
                 port: 9000
