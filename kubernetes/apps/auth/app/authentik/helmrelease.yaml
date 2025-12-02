@@ -39,6 +39,7 @@ spec:
       # performance data to authentik.error-reporting.a7k.io, and is fully opt-in
       error_reporting:
         enabled: true
+      log_level: debug
       postgresql:
         enabled: true
         host: file:///postgres-creds/host
