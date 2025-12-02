@@ -22,8 +22,6 @@ spec:
   dependsOn:
     - name: sql-cluster
       namespace: *namespace
-    - name: nosql-cluster
-      namespace: *namespace
   prune: true
   retryInterval: 2m
   sourceRef:
