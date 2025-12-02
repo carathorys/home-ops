@@ -67,6 +67,5 @@ spec:
             #   sectionName: https
           rules:
             - backendRefs: [{}]
-
-    workers:
+    worker:
       replicas: 1
