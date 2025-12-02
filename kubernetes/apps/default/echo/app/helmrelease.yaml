@@ -76,9 +76,6 @@ spec:
           - name: external
             namespace: kube-system
             sectionName: https
-          - name: internal
-            namespace: kube-system
-            sectionName: http
         # rules:
         #   - filters:
         #       - type: ExtensionRef
