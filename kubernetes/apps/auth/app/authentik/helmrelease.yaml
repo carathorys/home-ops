@@ -26,7 +26,7 @@ spec:
   values:
     global:
       env:
-        - name: AUTHENTIK_POSTGRESQL__DATABASE
+        - name: AUTHENTIK_POSTGRESQL__NAME
           valueFrom:
             secretKeyRef:
               key: postgres-app
@@ -46,7 +46,7 @@ spec:
             secretKeyRef:
               key: postgres-app
               name: port
-        - name: AUTHENTIK_POSTGRESQL__USERNAME
+        - name: AUTHENTIK_POSTGRESQL__USER
           valueFrom:
             secretKeyRef:
               key: postgres-app
