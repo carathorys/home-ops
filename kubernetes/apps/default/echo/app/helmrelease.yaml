@@ -86,7 +86,7 @@ spec:
                   type: PathPrefix
                   value: /outpost.goauthentik.io/
             backendRefs:
-              - name: ak-outpost-apps-outpost  # Outpost service name
+              - name: ak-outpost-echo  # Outpost service name
                 namespace: authentik
                 port: 9000
 
@@ -97,6 +97,6 @@ spec:
                   type: PathPrefix
                   value: /
             backendRefs:
-              - name: ak-outpost-apps-outpost  # Outpost service name
+              - name: ak-outpost-echo  # Outpost service name
                 namespace: authentik
                 port: 9000
