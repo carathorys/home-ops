@@ -19,6 +19,8 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
+      - name: auth-app-secrets
+        kind: Secret
   dependsOn:
     - name: sql-cluster
       namespace: *namespace
