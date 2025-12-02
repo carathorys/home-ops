@@ -69,20 +69,23 @@ spec:
       app:
         endpoints:
           - port: http
-    # route:
-    #   app:
-    #     hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
-    #     parentRefs:
-    #       - name: external
-    #         namespace: kube-system
-    #         sectionName: https
-    #     rules:
-    #       - filters:
-    #           - type: ExtensionRef
-    #             extensionRef:
-    #               group: gateway.networking.k8s.io
-    #               kind: HTTPRoute
-    #               name: ak-outpost-echo
-    #         backendRefs:
-    #           - identifier: app
-    #             port: *port
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+          - name: internal
+            namespace: kube-system
+            sectionName: http
+        rules:
+          - filters:
+              - type: ExtensionRef
+                extensionRef:
+                  group: gateway.networking.k8s.io
+                  kind: HTTPRoute
+                  name: ak-outpost-echo
+            backendRefs:
+              - identifier: app
+                port: *port
