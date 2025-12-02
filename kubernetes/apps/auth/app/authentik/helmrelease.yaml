@@ -25,7 +25,7 @@ spec:
     keepHistory: false
   values:
     global:
-      env:
+      env: &env_vars
         - name: AUTHENTIK_POSTGRESQL__NAME
           valueFrom:
             secretKeyRef:
@@ -63,6 +63,7 @@ spec:
       replicas: 1
       service:
         type: LoadBalancer
+      env: *env_vars
       metrics:
         enabled: true
         serviceMonitor:
@@ -82,3 +83,4 @@ spec:
             - backendRefs: [{}]
     workers:
       replicas: 1
+      env: *env_vars
