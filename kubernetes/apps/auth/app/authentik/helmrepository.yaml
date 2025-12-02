@@ -6,4 +6,4 @@ metadata:
   name: ${APP}
 spec:
   interval: 1h
-  url: https://https://charts.goauthentik.io
+  url: https://charts.goauthentik.io
