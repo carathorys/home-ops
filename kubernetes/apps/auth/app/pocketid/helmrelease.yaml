@@ -98,3 +98,13 @@ spec:
             app:
               - path: /var/secrets/pocket-id
                 subPath: encryption-key
+      app-data:
+        enabled: true
+        size: 10Gi
+        storageClass: nfs-dynamic
+
+        advancedMounts:
+          app:
+            app:
+              - path: /app/data
+                readOnly: false
