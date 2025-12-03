@@ -2169,7 +2169,7 @@ spec:
           # required: false
           # @schema
           # -- The database name on the database server that the assigned user has access to for the purpose of Authelia.
-          database: '${AUTHELIA_DATABASE}'
+          database: 'app'
 
           # @schema
           # required: false
@@ -2182,7 +2182,7 @@ spec:
           # required: false
           # @schema
           # -- The username paired with the password used to connect to the database.
-          username: '${AUTHELIA_USER}'
+          username: 'app'
 
           # @schema
           # required: false
@@ -2200,7 +2200,7 @@ spec:
             # @schema
             # -- The secret name. The ~ name is special as it is the secret we generate either automatically or via the
             # secret_value option below.
-            secret_name: auth-cluster-secrets
+            secret_name: postgres-app
 
             # @schema
             # required: false
