@@ -1892,7 +1892,7 @@ spec:
             # @schema
             # -- (string) The secret name. The ~ name is special as it is the secret we generate either automatically or via the
             # secret_value option below.
-            secret_name: authelia-dragonfly
+            secret_name: auth-cluster-secrets
 
             # @schema
             # required: false
@@ -3027,7 +3027,7 @@ spec:
       # @schema
       # -- Additional secrets to mount to the Pod.
       additionalSecrets:
-        authelia-dragonfly:
+        auth-cluster-secrets:
           path: 'auth-cluster-secrets'
           items:
             - key: 'DRAGONFLY_PASS'
