@@ -21,7 +21,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-
     controllers:
       echo:
         strategy: RollingUpdate
@@ -79,9 +78,3 @@ spec:
         identifier: postgres-app
         items:
           - key: fqdn-uri
-
-
-
-
-
-
