@@ -59,7 +59,6 @@ spec:
               SMTP_USER: "${SMTP_USER}"
               UI_CONFIG_DISABLED: "true"
               APP_NAME: "Gallay.HU"
-              ACCENT_COLOR: "#1befdd"
               EMAILS_VERIFIED: "true"
               ALLOW_OWN_ACCOUNT_EDIT: "false"
               EMAIL_LOGIN_NOTIFICATION_ENABLED: "true"
