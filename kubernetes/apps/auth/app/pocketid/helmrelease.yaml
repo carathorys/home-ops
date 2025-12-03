@@ -101,8 +101,6 @@ spec:
       app-data:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
-        size: 10Gi
-        name: pocket-id-data
         storageClass: nfs-dynamic
         advancedMounts:
           app:
