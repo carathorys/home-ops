@@ -44,7 +44,7 @@ spec:
               APP_URL: https://auth.${SECRET_DOMAIN}
               DB_CONNECTION_STRING_FILE: /var/secrets/db/connection-string
               ENCRYPTION_KEY_FILE: /var/secrets/encryption/key
-              INTERNAL_APP_URL: ${APP}.auth.svc.cluster.local
+              # INTERNAL_APP_URL: ${APP}.auth.svc.cluster.local
               LOG_JSON: true
               PORT: &port 1411
               PGID: ${APP_GID}
