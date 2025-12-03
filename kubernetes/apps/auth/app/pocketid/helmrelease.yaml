@@ -45,9 +45,9 @@ spec:
               DB_PROVIDER: postgres
               DB_CONNECTION_STRING_FILE: /var/secrets/db/connection-string
               ENCRYPTION_KEY_FILE: /var/secrets/encryption/key
-              # INTERNAL_APP_URL: ${APP}.auth.svc.cluster.local
+              INTERNAL_APP_URL: http://${APP}.auth.svc.cluster.local:${PORT}
               LOG_JSON: true
-              PORT: &port 1411
+              PORT: ${PORT}
               PGID: ${APP_GID}
               PUID: ${APP_UID}
               TRUST_PROXY: true
@@ -89,7 +89,7 @@ spec:
         rules:
           - backendRefs:
               - identifier: app
-                port: *port
+                port: ${PORT}
     # yaml-language-server: $schema=https://github.com/bjw-s-labs/helm-charts/raw/9eb6d448787f8a83e500d20c62b7a22e9dacbc67/charts/library/common/values.schema.json
     persistence:
       db-connection-string:
