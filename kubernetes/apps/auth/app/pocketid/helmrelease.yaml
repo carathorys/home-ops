@@ -42,6 +42,7 @@ spec:
               TZ: "Europe/Budapest"
               ANALYTICS_DISABLED: true
               APP_URL: https://auth.${SECRET_DOMAIN}
+              DB_PROVIDER: postgres
               DB_CONNECTION_STRING_FILE: /var/secrets/db/connection-string
               ENCRYPTION_KEY_FILE: /var/secrets/encryption/key
               # INTERNAL_APP_URL: ${APP}.auth.svc.cluster.local
