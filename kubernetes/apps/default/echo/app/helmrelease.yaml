@@ -72,12 +72,12 @@ spec:
         parentRefs:
           - name: cilium-gateway
             namespace: gateway-namespace
-          - name: external
-            namespace: kube-system
-            sectionName: https
-          - name: internal
-            namespace: kube-system
-            sectionName: https
+          # - name: external
+          #   namespace: kube-system
+          #   sectionName: https
+          # - name: internal
+          #   namespace: kube-system
+          #   sectionName: https
         rules:
           - backendRefs:
               - identifier: app

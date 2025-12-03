@@ -70,5 +70,5 @@ spec:
               - endpoint:
                   address:
                     socket_address:
-                      address: authentik-outpost.authentik.svc.cluster.local
+                      address: ak-outpost-auth-outpost.authentik.svc.cluster.local
                       port_value: 9000
