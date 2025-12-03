@@ -41,7 +41,7 @@ spec:
             env:
               TZ: "Europe/Budapest"
               ANALYTICS_DISABLED: true
-              APP_URL: &app-url "auth.${SECRET_DOMAIN}"
+              APP_URL: https://auth.${SECRET_DOMAIN}
               DB_CONNECTION_STRING_FILE: /var/secrets/db/connection-string
               ENCRYPTION_KEY_FILE: /var/secrets/encryption/key
               INTERNAL_APP_URL: ${APP}.auth.svc.cluster.local
@@ -70,7 +70,7 @@ spec:
           - port: http
     route:
       app:
-        hostnames: [*app-url]
+        hostnames: ["auth.${SECRET_DOMAIN}"]
         parentRefs:
           # - name: external
           #   namespace: kube-system
