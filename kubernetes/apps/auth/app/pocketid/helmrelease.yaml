@@ -74,8 +74,9 @@ spec:
                 port: *port
     persistence:
       db-connection-string:
+        enabled: true
         type: secret
         name: postgres-app
         items:
           - key: fqdn-uri
-        path: /var/secrets/pocket-id/db-connection-string
+            path: /var/secrets/pocket-id/db-connection-string
