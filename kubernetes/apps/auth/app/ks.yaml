@@ -3,14 +3,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app pocketid
+  name: &app authentik
   namespace: &namespace auth
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/auth/app/pocketid
+  path: ./kubernetes/apps/auth/app/authentik
   postBuild:
     substitute:
       APP: *app
@@ -24,8 +24,6 @@ spec:
   dependsOn:
     - name: sql-cluster
       namespace: *namespace
-    - name: dragonfly-cluster
-      namespace: *namespace
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -35,3 +33,42 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: false
+
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app pocketid
+#   namespace: &namespace auth
+# spec:
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   interval: 1h
+#   path: ./kubernetes/apps/auth/app/pocketid
+#   postBuild:
+#     substitute:
+#       APP: *app
+#       APP_UID: "2001"
+#       APP_GID: "2001"
+#     substituteFrom:
+#       - name: cluster-secrets
+#         kind: Secret
+#       - name: auth-cluster-secrets
+#         kind: Secret
+#   dependsOn:
+#     - name: sql-cluster
+#       namespace: *namespace
+#     - name: dragonfly-cluster
+#       namespace: *namespace
+#   prune: true
+#   retryInterval: 2m
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   targetNamespace: *namespace
+#   timeout: 5m
+#   wait: false
+
