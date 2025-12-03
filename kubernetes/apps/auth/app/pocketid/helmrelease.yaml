@@ -73,7 +73,7 @@ spec:
               - identifier: app
                 port: *port
     persistence:
-      dbConnectionString:
+      db-connection-string:
         type: secret
         name: postgres-app
         items:
