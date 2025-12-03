@@ -101,6 +101,7 @@ spec:
       app-data:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
+        size: 1Gi
         storageClass: nfs-dynamic
         advancedMounts:
           app:
