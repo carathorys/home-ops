@@ -2130,95 +2130,16 @@ spec:
           # @schema
           # -- Enable the PostgreSQL Provider (Storage / SQL).
           enabled: true
-
-          # @schema
-          # required: false
-          # @schema
-          # -- Deploy the PostgreSQL Chart.
           deploy: false
-
-          # @schema
-          # required: false
-          # @schema
-          # -- Configures the address for the PostgreSQL Server. The address itself is a connector and the scheme must
-          # either be the unix scheme or one of the tcp schemes.
           address: 'tcp://postgres-rw.auth.svc.cluster.local:5432'
-
-          # @schema
-          # required: false
-          # @schema
-          # -- This specifies a list of additional fallback PostgreSQL instances to use should issues occur with the primary
-          # instance which is configured with the address and tls options.
-          servers: []
-          # servers:
-            # - address: 'tcp://postgres2:5432'
-            #   tls:
-            #     server_name: 'postgres2.local'
-            # - address: 'tcp://postgres3:5432'
-            #   tls:
-            #     server_name: 'postgres3.local'
-
-          # @schema
-          # type: [integer, string]
-          # required: false
-          # @schema
-          # -- The SQL connection timeout.
-          timeout: '5 seconds'
-
-          # @schema
-          # required: false
-          # @schema
-          # -- The database name on the database server that the assigned user has access to for the purpose of Authelia.
           database: 'app'
-
-          # @schema
-          # required: false
-          # @schema
-          # -- The database schema name to use on the database server that the assigned user has access to for the purpose
-          # of Authelia. By default this is the public schema.
           schema: 'public'
-
-          # @schema
-          # required: false
-          # @schema
-          # -- The username paired with the password used to connect to the database.
           username: 'app'
-
-          # @schema
-          # required: false
-          # @schema
           password:
-
-            # @schema
-            # required: false
-            # @schema
-            # -- Disables this secret and leaves configuring it entirely up to you.
             disabled: false
-
-            # @schema
-            # required: false
-            # @schema
-            # -- The secret name. The ~ name is special as it is the secret we generate either automatically or via the
-            # secret_value option below.
             secret_name: postgres-app
-
-            # @schema
-            # required: false
-            # @schema
-            # -- The value of a generated secret when using the ~ secret_name.
             value: ''
-
-            # @schema
-            # required: false
-            # @schema
-            # -- The path to the secret. If it has a '/' prefix it's assumed to be an absolute path within the pod. Otherwise
-            # it uses the format '{mountPath}/{secret_name}/{path}' where '{mountPath}' refers to the 'secret.mountPath'
-            # value, '{secret_name}' is the secret_name above, and '{path}' is this value.
             path: 'storage.postgres.password.txt'
-
-          # @schema
-          # required: false
-          # @schema
           tls:
 
             # @schema
