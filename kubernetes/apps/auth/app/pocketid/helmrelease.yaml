@@ -78,3 +78,4 @@ spec:
         name: postgres-app
         items:
           - key: fqdn-uri
+        path: /var/secrets/pocket-id/db-connection-string
