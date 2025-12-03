@@ -42,8 +42,8 @@ spec:
               TZ: "Europe/Budapest"
               ANALYTICS_DISABLED: true
               APP_URL: &app-url "auth.${SECRET_DOMAIN}"
-              DB_CONNECTION_STRING_FILE: /var/secrets/pocket-id/db-connection-string
-              ENCRYPTION_KEY_FILE: /var/secrets/pocket-id/encryption-key
+              DB_CONNECTION_STRING_FILE: /var/secrets/db/connection-string
+              ENCRYPTION_KEY_FILE: /var/secrets/encryption/key
               INTERNAL_APP_URL: ${APP}.auth.svc.cluster.local
               LOG_JSON: true
               PORT: &port 1411
