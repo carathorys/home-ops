@@ -70,12 +70,14 @@ spec:
           authentik.goauthentik.io/protected: "true"
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
         parentRefs:
-          - name: external
-            namespace: kube-system
-            sectionName: https
-          - name: internal
-            namespace: kube-system
-            sectionName: https
+          - name: cilium-gateway
+            namespace: gateway-namespace
+          # - name: external
+          #   namespace: kube-system
+          #   sectionName: https
+          # - name: internal
+          #   namespace: kube-system
+          #   sectionName: https
         rules:
           - backendRefs:
               - identifier: app
