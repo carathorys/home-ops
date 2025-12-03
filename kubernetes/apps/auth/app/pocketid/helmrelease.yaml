@@ -84,8 +84,7 @@ spec:
         advancedMounts:
           app:
             app:
-              - path: /var/secrets/pocket-id
-                subPath: db-connection-string
+              - path: /var/secrets/pocket-id/db-connection-string
       encryption-key:
         enabled: true
         type: secret
@@ -96,8 +95,7 @@ spec:
         advancedMounts:
           app:
             app:
-              - path: /var/secrets/pocket-id
-                subPath: encryption-key
+              - path: /var/secrets/pocket-id/encryption-key
       app-data:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce

@@ -8,4 +8,4 @@ components:
 resources:
   - ./secrets/ks.yaml
   - ./database/ks.yaml
-  - ./app/ks.yaml
+  # - ./app/ks.yaml
