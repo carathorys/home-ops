@@ -51,6 +51,13 @@ spec:
               PGID: ${APP_GID}
               PUID: ${APP_UID}
               TRUST_PROXY: true
+              SMTP_TLS: "tls"
+              SMTP_HOST: "${SMTP_HOST}"
+              SMTP_PORT: "${SMTP_PORT}"
+              SMTP_FROM: "${SMTP_FROM}"
+              SMTP_PASSWORD: "${SMTP_PASSWORD}"
+              EMAIL_LOGIN_NOTIFICATION_ENABLED: true
+              EMAIL_ONE_TIME_ACCESS_AS_UNAUTHENTICATED_ENABLED: true
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
