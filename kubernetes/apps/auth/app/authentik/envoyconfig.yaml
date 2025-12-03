@@ -33,7 +33,7 @@ spec:
                       transport_api_version: V3
                       http_service:
                         server_uri:
-                          uri: http://authentik-outpost.authentik.svc.cluster.local:9000
+                          uri: http://ak-outpost-auth-outpost.authentik.svc.cluster.local:9000
                           cluster: authentik-outpost
                         timeout: 10s
                         authorization_request:
