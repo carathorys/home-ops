@@ -75,6 +75,6 @@ spec:
     persistence:
       dbConnectionString:
         type: secret
-        identifier: postgres-app
+        name: postgres-app
         items:
           - key: fqdn-uri
