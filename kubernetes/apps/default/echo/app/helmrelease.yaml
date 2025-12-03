@@ -64,21 +64,21 @@ spec:
       app:
         endpoints:
           - port: http
-    route:
-      app:
-        annotations:
-          authentik.goauthentik.io/protected: "true"
-        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
-        parentRefs:
-          - name: cilium-gateway
-            namespace: gateway-namespace
-          # - name: external
-          #   namespace: kube-system
-          #   sectionName: https
-          # - name: internal
-          #   namespace: kube-system
-          #   sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
+    # route:
+    #   app:
+    #     annotations:
+    #       authentik.goauthentik.io/protected: "true"
+    #     hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+    #     parentRefs:
+    #       - name: cilium-gateway
+    #         namespace: gateway-namespace
+    #       # - name: external
+    #       #   namespace: kube-system
+    #       #   sectionName: https
+    #       # - name: internal
+    #       #   namespace: kube-system
+    #       #   sectionName: https
+    #     rules:
+    #       - backendRefs:
+    #           - identifier: app
+    #             port: *port
