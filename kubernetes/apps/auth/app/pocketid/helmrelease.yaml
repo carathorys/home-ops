@@ -22,7 +22,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      echo:
+      app:
         strategy: RollingUpdate
         containers:
           app:
@@ -78,9 +78,12 @@ spec:
         enabled: true
         type: secret
         name: postgres-app
+
         items:
           - key: fqdn-uri
             path: db-connection-string
         advancedMounts:
-          - name: pocket-id-secrets
-            mountPath: /var/secrets/pocket-id
+          app:
+            app:
+              - path: /var/secrets/pocket-id
+                subPath: db-connection-string
