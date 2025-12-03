@@ -1879,6 +1879,11 @@ spec:
           # required: false
           # @schema
           password:
+
+            # @schema
+            # required: false
+            # @schema
+            # -- Disables this secret and leaves configuring it entirely up to you.
             disabled: false
 
             # @schema
