@@ -80,16 +80,19 @@ spec:
                 memory: 1Gi
     service:
       app:
+        type: LoadBalancer
         ports:
           http:
             port: ${PORT}
+            protocol: TCP
+
     serviceMonitor:
       app:
         endpoints:
           - port: http
     route:
       app:
-        hostnames: ["auth.${SECRET_DOMAIN}"]
+        hostnames: ["auth", "auth.${SECRET_DOMAIN}"]
         parentRefs:
           - name: external
             namespace: kube-system
