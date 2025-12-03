@@ -71,7 +71,7 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            port: ${PORT}
     serviceMonitor:
       app:
         endpoints:
