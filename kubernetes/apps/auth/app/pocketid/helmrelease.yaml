@@ -23,6 +23,15 @@ spec:
   values:
     controllers:
       app:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            runAsNonRoot: true
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: OnRootMismatch
         strategy: RollingUpdate
         containers:
           app:
@@ -30,6 +39,7 @@ spec:
               repository: ghcr.io/pocket-id/pocket-id
               tag: v1.16.0
             env:
+              TZ: "Europe/Budapest"
               ANALYTICS_DISABLED: true
               APP_URL: &app-url "auth.${SECRET_DOMAIN}"
               DB_CONNECTION_STRING_FILE: /var/secrets/pocket-id/db-connection-string
@@ -37,8 +47,8 @@ spec:
               INTERNAL_APP_URL: ${APP}.auth.svc.cluster.local
               LOG_JSON: true
               PORT: &port 1411
-              # PGID: ${APP_GID}
-              # PUID: ${APP_UID}
+              PGID: ${APP_GID}
+              PUID: ${APP_UID}
               TRUST_PROXY: true
             securityContext:
               allowPrivilegeEscalation: false
