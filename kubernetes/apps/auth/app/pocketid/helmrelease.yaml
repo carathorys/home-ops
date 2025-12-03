@@ -90,22 +90,22 @@ spec:
         name: postgres-app
         items:
           - key: fqdn-uri
-            path: db-connection-string
+            path: connection-string
         advancedMounts:
           app:
             app:
-              - path: /var/secrets/pocket-id/db-connection-string
+              - path: /var/secrets/db/connection-string
       encryption-key:
         enabled: true
         type: secret
         name: auth-cluster-secrets
         items:
           - key: SECRET_KEY
-            path: encryption-key
+            path: key
         advancedMounts:
           app:
             app:
-              - path: /var/secrets/pocket-id/encryption-key
+              - path: /var/secrets/encryption/key
       app-data:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
