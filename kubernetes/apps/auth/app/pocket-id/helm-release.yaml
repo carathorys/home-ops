@@ -1,0 +1,86 @@
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: ${APP}
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+  uninstall:
+    keepHistory: false
+  values:
+
+    controllers:
+      echo:
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: ghcr.io/pocket-id/pocket-id
+              tag: v1.16.0
+            env:
+              ANALYTICS_DISABLED: true
+              APP_URL: &app-url "auth.${SECRET_DOMAIN}"
+              ENCRYPTION_KEY_FILE: /var/secrets/pocket-id/encryption-key
+              DB_CONNECTION_STRING_FILE: /var/secrets/pocket-id/db-connection-string
+              INTERNAL_APP_URL: ${APP}.auth.svc.cluster.local
+              LOG_JSON: true
+              PGID: ${APP_GID}
+              PUID: ${APP_UID}
+              TRUST_PROXY: true
+              PORT: &port 1411
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 64Mi
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: http
+    route:
+      app:
+        hostnames: [*app-url]
+        parentRefs:
+          # - name: external
+          #   namespace: kube-system
+          #   sectionName: https
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+    persistence:
+      dbConnectionString:
+        type: secret
+        identifier: postgres-app
+        items:
+          - key: fqdn-uri
+
+
+
+
+
