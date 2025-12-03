@@ -3028,9 +3028,9 @@ spec:
       # -- Additional secrets to mount to the Pod.
       additionalSecrets:
         authelia-dragonfly:
-          path: 'authelia-dragonfly'
+          path: 'auth-cluster-secrets'
           items:
-            - key: 'password'
+            - key: 'DRAGONFLY_PASS'
               path: 'session.redis.password.txt'
         postgres-app:
           path: 'postgres-app'
