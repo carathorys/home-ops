@@ -46,18 +46,24 @@ spec:
               DB_CONNECTION_STRING_FILE: /var/secrets/db/connection-string
               ENCRYPTION_KEY_FILE: /var/secrets/encryption/key
               INTERNAL_APP_URL: http://${APP}.auth.svc.cluster.local:${PORT}
-              LOG_JSON: true
+              LOG_JSON: "true"
               PORT: ${PORT}
               PGID: ${APP_GID}
               PUID: ${APP_UID}
-              TRUST_PROXY: true
-              SMTP_TLS: "tls"
+              TRUST_PROXY: "true"
+              SMTP_TLS: "${SMTP_TLS}"
               SMTP_HOST: "${SMTP_HOST}"
               SMTP_PORT: "${SMTP_PORT}"
               SMTP_FROM: "${SMTP_FROM}"
               SMTP_PASSWORD: "${SMTP_PASSWORD}"
-              EMAIL_LOGIN_NOTIFICATION_ENABLED: true
-              EMAIL_ONE_TIME_ACCESS_AS_UNAUTHENTICATED_ENABLED: true
+              SMTP_USER: "${SMTP_USER}"
+              UI_CONFIG_DISABLED: "true"
+              ALLOW_OWN_ACCOUNT_EDIT: "false"
+              EMAIL_LOGIN_NOTIFICATION_ENABLED: "true"
+              EMAIL_ONE_TIME_ACCESS_AS_UNAUTHENTICATED_ENABLED: "true"
+              TRACING_ENABLED: "true"
+              METRICS_ENABLED: "true"
+              OTEL_METRICS_EXPORTER: prometheus
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
