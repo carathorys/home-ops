@@ -72,15 +72,15 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
-        # yaml-language-server: $schema=https://github.com/bjw-s-labs/helm-charts/raw/9eb6d448787f8a83e500d20c62b7a22e9dacbc67/charts/library/common/values.schema.json
-        persistence:
-          db-connection-string:
-            enabled: true
-            type: secret
-            name: postgres-app
-            items:
-              - key: fqdn-uri
-                path: db-connection-string
-            advancedMounts:
-              - name: pocket-id-secrets
-                mountPath: /var/secrets/pocket-id
+    # yaml-language-server: $schema=https://github.com/bjw-s-labs/helm-charts/raw/9eb6d448787f8a83e500d20c62b7a22e9dacbc67/charts/library/common/values.schema.json
+    persistence:
+      db-connection-string:
+        enabled: true
+        type: secret
+        name: postgres-app
+        items:
+          - key: fqdn-uri
+            path: db-connection-string
+        advancedMounts:
+          - name: pocket-id-secrets
+            mountPath: /var/secrets/pocket-id
