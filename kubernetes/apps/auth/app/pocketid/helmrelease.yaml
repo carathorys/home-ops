@@ -36,9 +36,9 @@ spec:
               ENCRYPTION_KEY_FILE: /var/secrets/pocket-id/encryption-key
               INTERNAL_APP_URL: ${APP}.auth.svc.cluster.local
               LOG_JSON: true
-              PGID: ${APP_GID}
               PORT: &port 1411
-              PUID: ${APP_UID}
+              # PGID: ${APP_GID}
+              # PUID: ${APP_UID}
               TRUST_PROXY: true
             securityContext:
               allowPrivilegeEscalation: false
