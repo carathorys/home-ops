@@ -3032,10 +3032,10 @@ spec:
           items:
             - key: 'password'
               path: 'session.redis.password.txt'
-        auth-cluster-secrets:
-          path: 'auth-cluster-secrets'
+        postgres-app:
+          path: 'postgres-app'
           items:
-            - key: AUTHELIA_PASS
+            - key: password
               path: 'storage.postgres.password.txt'
       # additionalSecrets:
       #   example:
