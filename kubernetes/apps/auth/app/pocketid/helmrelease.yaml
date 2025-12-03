@@ -94,7 +94,7 @@ spec:
         advancedMounts:
           app:
             app:
-              - path: /var/secrets/db/connection-string
+              - path: /var/secrets/db
       encryption-key:
         enabled: true
         type: secret
@@ -105,7 +105,7 @@ spec:
         advancedMounts:
           app:
             app:
-              - path: /var/secrets/encryption/key
+              - path: /var/secrets/encryption
       app-data:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
