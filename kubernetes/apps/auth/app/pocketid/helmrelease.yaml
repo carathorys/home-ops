@@ -91,9 +91,9 @@ spec:
       app:
         hostnames: ["auth.${SECRET_DOMAIN}"]
         parentRefs:
-          # - name: external
-          #   namespace: kube-system
-          #   sectionName: https
+          - name: external
+            namespace: kube-system
+            sectionName: https
           - name: internal
             namespace: kube-system
             sectionName: https
