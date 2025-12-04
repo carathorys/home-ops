@@ -1,5 +1,6 @@
 kubernetes-kube-ctrl-01.yaml
 kubernetes-kube-ctrl-02.yaml
+kubernetes-kube-ctrl-03.yaml
 kubernetes-kube-wrkr-01.yaml
 kubernetes-kube-wrkr-02.yaml
 kubernetes-kube-wrkr-03.yaml
