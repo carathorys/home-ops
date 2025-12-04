@@ -7,33 +7,14 @@ metadata:
   labels:
     app.kubernetes.io/name: postgres-db
 spec:
-  # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql versioning=redhat
   imageName: ghcr.io/cloudnative-pg/postgresql:18-standard-trixie
-  instances: 1
-  primaryUpdateStrategy: unsupervised
+  instances: 3
+  primaryUpdateStrategy: supervised
   storage:
     size: 30Gi
     storageClass: nfs-dynamic
   enableSuperuserAccess: true
   superuserSecret:
     name: postgres-superuser
-  postgresql:
-    synchronous:
-      method: any
-      number: 1
-    parameters:
-      max_connections: "300"
-      shared_buffers: 512MB
   monitoring:
     enablePodMonitor: true
-  probes:
-    startup:
-      type: streaming
-      maximumLag: 32Mi
-      periodSeconds: 5
-      failureThreshold: 120
-    readiness:
-      type: streaming
-      maximumLag: 0
-      periodSeconds: 10
-      failureThreshold: 6
