@@ -1,0 +1,133 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: ${APP}
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/jellyfin/jellyfin
+              tag: 10.11.4
+            env:
+              TZ: "Europe/Budapest"
+              PUID: ${APP_UID}
+              PGID: ${APP_GID}
+              ADVERTISE_IP: "https://${APP}:443,https://${APP}.${SECRET_DOMAIN}:443"
+            resources:
+              requests:
+                cpu: 100m
+                memory: 2Gi
+              limits:
+                memory: 10Gi
+    service:
+      main:
+        type: LoadBalancer
+        ports:
+          http:
+            port: &port 8096
+            protocol: TCP
+    route:
+      internal:
+        hostnames: ["${APP}", "${APP}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: *port
+    persistence:
+      dri:
+        type: hostPath
+        hostPath: /dev/dri
+        globalMounts:
+          - path: /dev/dri
+      config:
+        type: nfs
+        server: nfs.${SECRET_DOMAIN}
+        path: /media/services/jellyfin
+        globalMounts:
+          - path: /config
+      movies:
+        type: persistentVolumeClaim
+        existingClaim: movies
+        advancedMounts:
+          main:
+            main:
+              - path: /movies
+                readOnly: true
+      tv:
+        type: persistentVolumeClaim
+        existingClaim: tv
+        advancedMounts:
+          main:
+            main:
+              - path: /tv
+                readOnly: true
+      kids-movies:
+        type: persistentVolumeClaim
+        existingClaim: kids-movies
+        advancedMounts:
+          main:
+            main:
+              - path: /mnt/Gyerek/Filmek
+                readOnly: true
+      kids-tv:
+        type: persistentVolumeClaim
+        existingClaim: kids-tv
+        advancedMounts:
+          main:
+            main:
+              - path: /mnt/Gyerek/Sorozatok
+                readOnly: true
+      music-video:
+        type: persistentVolumeClaim
+        existingClaim: music-video
+        advancedMounts:
+          main:
+            main:
+              - path: /music/video
+                readOnly: true
+      music-sound:
+        type: persistentVolumeClaim
+        existingClaim: music-sound
+        advancedMounts:
+          main:
+            main:
+              - path: /music/sound
+                readOnly: true
+      transcode:
+        type: emptyDir
+        globalMounts:
+          - path: /transcoding
+      jellyfin-cache:
+        existingClaim: jellyfin-cache
+        advancedMounts:
+          main:
+            main:
+              - path: /config/cache
+                readOnly: false
