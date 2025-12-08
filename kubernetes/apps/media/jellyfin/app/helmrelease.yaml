@@ -25,6 +25,12 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           main:
+            securityContext:
+              runAsUser: ${APP_UID}
+              runAsGroup: ${APP_GID}
+              runAsNonRoot: true
+              fsGroup: ${APP_GID}
+              fsGroupChangePolicy: OnRootMismatch
             image:
               repository: ghcr.io/jellyfin/jellyfin
               tag: 10.11.4
@@ -33,6 +39,7 @@ spec:
               PUID: ${APP_UID}
               PGID: ${APP_GID}
               ADVERTISE_IP: "https://${APP}:443,https://${APP}.${SECRET_DOMAIN}:443"
+              JELLYFIN_PublishedServerUrl: http://${APP}.${SECRET_DOMAIN}
             resources:
               requests:
                 cpu: 100m
