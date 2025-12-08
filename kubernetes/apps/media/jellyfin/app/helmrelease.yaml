@@ -138,3 +138,7 @@ spec:
             main:
               - path: /config/cache
                 readOnly: false
+      jellyfin-config:
+        type: emptyDir
+        globalMounts:
+          - path: /config/data/jellyfin.db
