@@ -21,6 +21,7 @@ spec:
   values:
     controllers:
       main:
+        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -138,7 +139,10 @@ spec:
             main:
               - path: /config/cache
                 readOnly: false
-      jellyfin-config:
-        type: emptyDir
+      jellyfin-data:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 10Gi
+        storageClass: nfs-dynamic
         globalMounts:
-          - path: /config/data/jellyfin.db
+          - path: /config/data
