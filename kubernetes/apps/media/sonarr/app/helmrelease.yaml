@@ -52,15 +52,15 @@ spec:
           http:
             port: 8989
             protocol: TCP
-    route:
-      internal:
-        hostnames: ["${APP}.${SECRET_DOMAIN}"]
-        parentRefs:
-          - name: internal
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs: [{}]
+    # route:
+    #   internal:
+    #     hostnames: ["${APP}.${SECRET_DOMAIN}"]
+    #     parentRefs:
+    #       - name: internal
+    #         namespace: kube-system
+    #         sectionName: https
+    #     rules:
+    #       - backendRefs: [{}]
 
     persistence:
       config:
