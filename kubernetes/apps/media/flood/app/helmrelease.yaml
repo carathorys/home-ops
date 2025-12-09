@@ -31,8 +31,8 @@ spec:
         containers:
           main:
             image:
-              repository: docker.io/jesec/flood
-              tag: 4.11.0 # {"$imagepolicy": "flux-system:flood:tag"}
+              repository: docker.io/jesec/rtorrent-flood
+              tag: master-distroless
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
