@@ -25,6 +25,9 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           main:
+            securityContext:
+              privileged: true
+
             image:
               repository: ghcr.io/linuxserver/emby
               tag: 4.9.1.90-ls260
@@ -32,7 +35,6 @@ spec:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
               PGID: ${APP_GID}
-
               ADVERTISE_IP: "https://${APP}:443,https://${APP}.${SECRET_DOMAIN}:443"
             resources:
               requests:
