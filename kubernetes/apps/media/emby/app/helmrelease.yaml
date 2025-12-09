@@ -124,16 +124,6 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /transcoding
-
-      init:
-        type: nfs
-        server: nfs.${SECRET_DOMAIN}
-        path: /media/services/emby/init.script
-        advancedMounts:
-          main:
-            main:
-              - path: /custom-cont-init.d:ro
-                readOnly: true
       emby-cache:
         existingClaim: emby-cache
         advancedMounts:
