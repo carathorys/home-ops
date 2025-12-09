@@ -27,7 +27,6 @@ spec:
           main:
             securityContext:
               privileged: true
-
             image:
               repository: ghcr.io/linuxserver/emby
               tag: 4.9.1.90-ls260

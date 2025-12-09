@@ -25,6 +25,8 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           main:
+            securityContext:
+              privileged: true
             image:
               repository: ghcr.io/linuxserver/plex
               tag: 1.42.2
