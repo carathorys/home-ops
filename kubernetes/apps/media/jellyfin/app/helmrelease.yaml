@@ -22,12 +22,13 @@ spec:
     controllers:
       main:
         type: statefulset
-        replicas: 0
+        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           main:
             securityContext:
+              privileged: true
               runAsUser: ${APP_UID}
               runAsGroup: ${APP_GID}
               runAsNonRoot: true
