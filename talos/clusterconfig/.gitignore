@@ -8,3 +8,4 @@ kubernetes-kube-wrkr-04.yaml
 kubernetes-kube-wrkr-05.yaml
 talosconfig
 kubernetes-hummianet.yaml
+kubernetes-widagoth.yaml

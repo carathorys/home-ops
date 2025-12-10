@@ -20,6 +20,25 @@ cniConfig:
   name: none
 
 nodes:
+  - hostname: "widagoth"
+    controlPlane: true
+    ipAddress: "192.168.10.2"
+    installDisk: "/dev/nvme0n1"
+    machineSpec:
+      secureboot: true
+    talosImageURL: ghcr.io/talos-rpi5/installer:v1.11.5
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "2c:cf:67:da:3a:ee"
+        dhcp: false
+        addresses:
+          - "192.168.10.2/16"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "192.168.0.1"
+        mtu: 1500
+
+
   - hostname: "kube-ctrl-01"
     ipAddress: "192.168.10.1"
     installDisk: "/dev/sda"
