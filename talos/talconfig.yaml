@@ -38,7 +38,23 @@ nodes:
             gateway: "192.168.0.1"
         mtu: 1500
 
-
+  - hostname: "hummianet"
+    controlPlane: false
+    ipAddress: "192.168.20.2"
+    installDisk: "/dev/nvme0n1"
+    machineSpec:
+      secureboot: true
+    talosImageURL: factory.talos.dev/installer/9fa5fc623b8c2a6b64245353f1bbfa7329a635d9b37524911d0086fc49730ee6
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "00:e0:4c:68:02:a0"
+        dhcp: false
+        addresses:
+          - "192.168.20.2/16"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "192.168.0.1"
+        mtu: 1500
   - hostname: "kube-ctrl-01"
     ipAddress: "192.168.10.1"
     installDisk: "/dev/sda"
@@ -58,25 +74,7 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.1.1"
-  # - hostname: "kube-ctrl-02"
-  #   ipAddress: "192.168.10.2"
-  #   installDisk: "/dev/sda"
-  #   machineSpec:
-  #     secureboot: false
-  #   talosImageURL: factory.talos.dev/installer/a7bcadbc1b6d03c0e687be3a5d9789ef7113362a6a1a038653dfd16283a92b6b
-  #   controlPlane: true
-  #   networkInterfaces:
-  #     - deviceSelector:
-  #         hardwareAddr: "bc:24:11:7d:af:02"
-  #       dhcp: false
-  #       addresses:
-  #         - "192.168.10.2/16"
-  #       routes:
-  #         - network: "0.0.0.0/0"
-  #           gateway: "192.168.0.1"
-  #       mtu: 1500
-  #       vip:
-  #         ip: "192.168.1.1"
+
   - hostname: "kube-ctrl-03"
     ipAddress: "192.168.10.3"
     installDisk: "/dev/sda"
@@ -126,24 +124,6 @@ nodes:
         dhcp: false
         addresses:
           - "192.168.20.3/16"
-        routes:
-          - network: "0.0.0.0/0"
-            gateway: "192.168.0.1"
-        mtu: 1500
-
-  - hostname: "hummianet"
-    ipAddress: "192.168.20.2"
-    installDisk: "/dev/nvme0n1"
-    machineSpec:
-      secureboot: true
-    talosImageURL: factory.talos.dev/installer/9fa5fc623b8c2a6b64245353f1bbfa7329a635d9b37524911d0086fc49730ee6
-    controlPlane: false
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "00:e0:4c:68:02:a0"
-        dhcp: false
-        addresses:
-          - "192.168.20.2/16"
         routes:
           - network: "0.0.0.0/0"
             gateway: "192.168.0.1"
