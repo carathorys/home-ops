@@ -13,7 +13,7 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: external-secrets
-      namespace: external-secrets
+      namespace: secrets
   prune: true
   wait: true
   interval: 1h
