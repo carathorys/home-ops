@@ -8,4 +8,4 @@ components:
 resources:
   - ./nfs-subdir-external-provisioner/ks.yaml
   - ./node-feature-discovery/ks.yaml
-  # - ./snapshot-controller/ks.yaml
+  - ./snapshot-controller/ks.yaml
