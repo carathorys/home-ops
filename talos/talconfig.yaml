@@ -5,9 +5,10 @@ clusterName: kubernetes
 talosVersion: "${talosVersion}"
 kubernetesVersion: "${kubernetesVersion}"
 
-endpoint: https://homelab.gallay.hu:6443
+endpoint: https://192.168.1.1:6443
 additionalApiServerCertSans: &sans
   - "127.0.0.1"
+  - "192.168.1.1"
   - "homelab.gallay.hu"
 additionalMachineCertSans: *sans
 
@@ -30,6 +31,8 @@ nodes:
       - deviceSelector:
           hardwareAddr: "2c:cf:67:da:3b:96"
         dhcp: false
+        vip:
+          ip: "192.168.1.1"
         addresses:
           - "192.168.10.1/16"
         routes:
@@ -48,6 +51,8 @@ nodes:
       - deviceSelector:
           hardwareAddr: "2c:cf:67:da:3a:ee"
         dhcp: false
+        vip:
+          ip: "192.168.1.1"
         addresses:
           - "192.168.10.2/16"
         routes:
