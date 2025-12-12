@@ -5,10 +5,9 @@ clusterName: kubernetes
 talosVersion: "${talosVersion}"
 kubernetesVersion: "${kubernetesVersion}"
 
-endpoint: https://192.168.1.1:6443
+endpoint: https://homelab.gallay.hu:6443
 additionalApiServerCertSans: &sans
   - "127.0.0.1"
-  - "192.168.1.1"
   - "homelab.gallay.hu"
 additionalMachineCertSans: *sans
 
@@ -20,13 +19,31 @@ cniConfig:
   name: none
 
 nodes:
+  - hostname: "arriron"
+    controlPlane: true
+    ipAddress: "192.168.10.1"
+    installDisk: "/dev/nvme0n1"
+    # machineSpec:
+    #   secureboot: false
+    talosImageURL: ghcr.io/talos-rpi5/installer
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "2c:cf:67:da:3b:96"
+        dhcp: false
+        addresses:
+          - "192.168.10.1/16"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "192.168.0.1"
+        mtu: 1500
+
   - hostname: "widagoth"
     controlPlane: true
     ipAddress: "192.168.10.2"
     installDisk: "/dev/nvme0n1"
-    machineSpec:
-      secureboot: true
-    talosImageURL: ghcr.io/talos-rpi5/installer:v1.11.5
+    # machineSpec:
+    #   secureboot: false
+    talosImageURL: ghcr.io/talos-rpi5/installer
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "2c:cf:67:da:3a:ee"
@@ -38,72 +55,16 @@ nodes:
             gateway: "192.168.0.1"
         mtu: 1500
 
-  - hostname: "hummianet"
+  - hostname: "avarath"
     controlPlane: false
-    ipAddress: "192.168.20.2"
-    installDisk: "/dev/nvme0n1"
-    machineSpec:
-      secureboot: true
-    talosImageURL: factory.talos.dev/installer/9fa5fc623b8c2a6b64245353f1bbfa7329a635d9b37524911d0086fc49730ee6
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "00:e0:4c:68:02:a0"
-        dhcp: false
-        addresses:
-          - "192.168.20.2/16"
-        routes:
-          - network: "0.0.0.0/0"
-            gateway: "192.168.0.1"
-        mtu: 1500
-  - hostname: "kube-ctrl-01"
-    ipAddress: "192.168.10.1"
-    installDisk: "/dev/sda"
-    machineSpec:
-      secureboot: false
-    talosImageURL: factory.talos.dev/installer/a7bcadbc1b6d03c0e687be3a5d9789ef7113362a6a1a038653dfd16283a92b6b
-    controlPlane: true
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "bc:24:11:7d:af:01"
-        dhcp: false
-        addresses:
-          - "192.168.10.1/16"
-        routes:
-          - network: "0.0.0.0/0"
-            gateway: "192.168.0.1"
-        mtu: 1500
-        vip:
-          ip: "192.168.1.1"
-
-  - hostname: "kube-ctrl-03"
-    ipAddress: "192.168.10.3"
-    installDisk: "/dev/sda"
-    machineSpec:
-      secureboot: false
-    talosImageURL: factory.talos.dev/installer/a7bcadbc1b6d03c0e687be3a5d9789ef7113362a6a1a038653dfd16283a92b6b
-    controlPlane: true
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "bc:24:11:7d:af:03"
-        dhcp: false
-        addresses:
-          - "192.168.10.3/16"
-        routes:
-          - network: "0.0.0.0/0"
-            gateway: "192.168.0.1"
-        mtu: 1500
-        vip:
-          ip: "192.168.1.1"
-  - hostname: "kube-wrkr-01"
     ipAddress: "192.168.20.1"
-    installDisk: "/dev/sda"
-    machineSpec:
-      secureboot: false
-    talosImageURL: factory.talos.dev/installer/a7bcadbc1b6d03c0e687be3a5d9789ef7113362a6a1a038653dfd16283a92b6b
-    controlPlane: false
+    installDisk: "/dev/nvme1n1"
+    # machineSpec:
+    #   secureboot: false
+    talosImageURL: factory.talos.dev/installer/9c1d1b442d73f96dcd04e81463eb20000ab014062d22e1b083e1773336bc1dd5
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "bc:24:11:e0:09:01"
+          hardwareAddr: "58:47:ca:72:00:f3"
         dhcp: false
         addresses:
           - "192.168.20.1/16"
@@ -111,19 +72,21 @@ nodes:
           - network: "0.0.0.0/0"
             gateway: "192.168.0.1"
         mtu: 1500
-  - hostname: "kube-wrkr-03"
-    ipAddress: "192.168.20.3"
-    installDisk: "/dev/sda"
-    machineSpec:
-      secureboot: false
-    talosImageURL: factory.talos.dev/installer/a7bcadbc1b6d03c0e687be3a5d9789ef7113362a6a1a038653dfd16283a92b6b
+
+  - hostname: "hummianet"
     controlPlane: false
+    ipAddress: "192.168.20.2"
+    installDisk: "/dev/nvme0n1"
+
+    machineSpec:
+      secureboot: true
+    talosImageURL: factory.talos.dev/installer/9c1d1b442d73f96dcd04e81463eb20000ab014062d22e1b083e1773336bc1dd5
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "bc:24:11:e0:09:03"
+          hardwareAddr: "00:e0:4c:68:01:e2"
         dhcp: false
         addresses:
-          - "192.168.20.3/16"
+          - "192.168.20.2/16"
         routes:
           - network: "0.0.0.0/0"
             gateway: "192.168.0.1"
