@@ -11,6 +11,10 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   dependsOn:
     - name: external-secrets
       namespace: secrets
@@ -31,6 +35,10 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   dependsOn:
     - name: grafana
     - name: rook-ceph-cluster
