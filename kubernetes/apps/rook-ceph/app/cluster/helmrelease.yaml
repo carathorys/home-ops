@@ -80,7 +80,7 @@ spec:
             memory: 256Mi
       storage:
         useAllNodes: false
-        useAllDevices: false
+        useAllDevices: true
         config:
           osdsPerDevice: "5"
         nodes:
