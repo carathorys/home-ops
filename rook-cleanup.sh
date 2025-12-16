@@ -1,5 +1,13 @@
 #!/bin/bash
 
+kubectl delete crds cephblockpools.ceph.rook.io cephbucketnotifications.ceph.rook.io cephbuckettopics.ceph.rook.io \
+                      cephclients.ceph.rook.io cephclusters.ceph.rook.io cephfilesystemmirrors.ceph.rook.io \
+                      cephfilesystems.ceph.rook.io cephfilesystemsubvolumegroups.ceph.rook.io \
+                      cephnfses.ceph.rook.io cephobjectrealms.ceph.rook.io cephobjectstores.ceph.rook.io \
+                      cephobjectstoreusers.ceph.rook.io cephobjectzonegroups.ceph.rook.io cephobjectzones.ceph.rook.io \
+                      cephrbdmirrors.ceph.rook.io objectbucketclaims.objectbucket.io objectbuckets.objectbucket.io
+
+
 NODES=("avarath" "hummianet" "arriron" "widagoth")
 
 for i in "${NODES[@]}"
