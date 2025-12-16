@@ -2,6 +2,9 @@ machine:
   udev:
     rules:
       - KERNEL=="ttyACM[0-9]*", MODE="0666"
+      - ACTION=="add", ENV{ID_TYPE}=="disk", ENV{ID_BUS}=="usb", ENV{ID_BUS}="scsi"
+      - ACTION=="change", ENV{ID_TYPE}=="disk", ENV{ID_BUS}=="usb", ENV{ID_BUS}="scsi"
+      - ACTION=="online", ENV{ID_TYPE}=="disk", ENV{ID_BUS}=="usb", ENV{ID_BUS}="scsi"
   files:
     - op: create
       path: /etc/cri/conf.d/20-customization.part
