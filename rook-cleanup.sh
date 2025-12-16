@@ -15,7 +15,8 @@ kubectl delete crds cephblockpools.ceph.rook.io cephbucketnotifications.ceph.roo
                       cephfilesystems.ceph.rook.io cephfilesystemsubvolumegroups.ceph.rook.io \
                       cephnfses.ceph.rook.io cephobjectrealms.ceph.rook.io cephobjectstores.ceph.rook.io \
                       cephobjectstoreusers.ceph.rook.io cephobjectzonegroups.ceph.rook.io cephobjectzones.ceph.rook.io \
-                      cephrbdmirrors.ceph.rook.io objectbucketclaims.objectbucket.io objectbuckets.objectbucket.io
+                      cephrbdmirrors.ceph.rook.io objectbucketclaims.objectbucket.io objectbuckets.objectbucket.io \
+                      cephblockpoolradosnamespaces.ceph.rook.io cephcosidrivers.ceph.rook.io
 
 
 NODES=("avarath" "hummianet" "arriron" "widagoth")
