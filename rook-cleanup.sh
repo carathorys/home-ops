@@ -4,11 +4,12 @@ kubectl --namespace rook-ceph patch cephcluster rook-ceph --type merge -p '{"spe
 kubectl delete storageclasses ceph-block ceph-bucket ceph-filesystem
 kubectl --namespace rook-ceph delete cephblockpools ceph-blockpool
 kubectl --namespace rook-ceph delete cephobjectstore ceph-objectstore
+kubectl --namespace rook-ceph delete cephfilesystemsubvolumegroup ceph-filesystem-csi
 kubectl --namespace rook-ceph delete cephfilesystem ceph-filesystem
 kubectl --namespace rook-ceph delete cephcluster rook-ceph
 
 helm --namespace rook-ceph uninstall rook-ceph-cluster
-helm --namespace rook-ceph uninstall rook-ceph
+helm --namespace rook-ceph uninstall rook-ceph-operator
 
 kubectl delete crds cephblockpools.ceph.rook.io cephbucketnotifications.ceph.rook.io cephbuckettopics.ceph.rook.io \
                       cephclients.ceph.rook.io cephclusters.ceph.rook.io cephfilesystemmirrors.ceph.rook.io \
