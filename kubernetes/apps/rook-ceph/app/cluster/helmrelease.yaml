@@ -82,7 +82,7 @@ spec:
         useAllNodes: false
         useAllDevices: false
         config:
-          osdsPerDevice: "2"
+          osdsPerDevice: "4"
         nodes:
           - name: "hummianet"
             devices:
