@@ -127,9 +127,12 @@ spec:
         globalMounts:
           - path: /transcoding
       emby-cache:
-        existingClaim: emby-cache
-        advancedMounts:
-          main:
-            main:
-              - path: /config/cache
-                readOnly: false
+        type: emptyDir
+        globalMounts:
+          - path: /transcoding
+        # existingClaim: emby-cache
+        # advancedMounts:
+        #   main:
+        #     main:
+        #       - path: /config/cache
+        #         readOnly: false
