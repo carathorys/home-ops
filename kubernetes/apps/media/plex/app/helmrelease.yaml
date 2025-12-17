@@ -124,10 +124,6 @@ spec:
             main:
               - path: /music/sound
                 readOnly: true
-      transcode:
-        type: emptyDir
-        globalMounts:
-          - path: /transcode
       logs:
         type: emptyDir
         advancedMounts:
@@ -135,8 +131,10 @@ spec:
             main:
               - path: /config/Library/Application Support/Plex Media Server/Logs
       plex-cache:
-        existingClaim: plex-cache
-        advancedMounts:
-          main:
-            main:
-              - path: /config/Library/Application Support/Plex Media Server/Cache
+        type: emptyDir
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server/Cache
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
