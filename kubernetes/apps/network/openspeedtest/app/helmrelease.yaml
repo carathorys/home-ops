@@ -33,7 +33,7 @@ spec:
               DOMAIN_NAME: openspeedtest.${SECRET_DOMAIN}
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
@@ -65,14 +65,3 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
-    persistence:
-      cache:
-        type: emptyDir
-        globalMounts:
-          - path: /var/cache/nginx
-            readOnly: false
-      tmp:
-        type: emptyDir
-        globalMounts:
-          - path: /tmp
-            readOnly: false
