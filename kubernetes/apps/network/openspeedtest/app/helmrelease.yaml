@@ -65,3 +65,9 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
+    persistence:
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /var/cache
+            readOnly: false
