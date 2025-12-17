@@ -71,3 +71,8 @@ spec:
         globalMounts:
           - path: /var/cache/nginx
             readOnly: false
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            readOnly: false
