@@ -29,8 +29,6 @@ spec:
               repository: docker.io/openspeedtest/latest
               tag: v2.0.6
             env:
-              CHANGE_CONTAINER_PORTS: "true"
-              HTTP_PORT: "8080"
               ENABLE_LETSENCRYPT: "false"
               DOMAIN_NAME: openspeedtest.${SECRET_DOMAIN}
             securityContext:
@@ -41,7 +39,7 @@ spec:
       app:
         ports:
           http:
-            port: &port 8080
+            port: &port 3000
     serviceMonitor:
       app:
         endpoints:
