@@ -109,14 +109,6 @@ spec:
         globalMounts:
           - path: /music/sound
             readOnly: true
-      # emby-ceph-cache:
-      #   # type: emptyDir
-      #   # globalMounts:
-      #   #   - path: /config/cache
-      #   existingClaim: emby-cache
-      #   globalMounts:
-      #     - path: /config/cache
-      #       readOnly: false
       emby-cache:
         type: emptyDir
         globalMounts:
