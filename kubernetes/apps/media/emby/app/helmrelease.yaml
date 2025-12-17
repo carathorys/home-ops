@@ -129,7 +129,7 @@ spec:
         advancedMounts:
           main:
             main:
-              - path: /transcode
+              - path: /transcoding
                 readOnly: false
       emby-cache:
         # type: emptyDir
