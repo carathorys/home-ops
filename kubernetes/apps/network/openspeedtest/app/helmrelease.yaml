@@ -44,7 +44,7 @@ spec:
       app:
         ports:
           http:
-            port: 3000
+            port: &port 8080
     serviceMonitor:
       app:
         endpoints:
@@ -64,4 +64,4 @@ spec:
         rules:
           - backendRefs:
               - identifier: app
-                port: 3000
+                port: *port
