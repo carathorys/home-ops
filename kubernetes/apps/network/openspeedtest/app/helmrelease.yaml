@@ -29,6 +29,7 @@ spec:
               repository: docker.io/openspeedtest/latest
               tag: v2.0.6
             env:
+              HTTP_PORT: 8080
               ENABLE_LETSENCRYPT: false
               DOMAIN_NAME: openspeedtest.${SECRET_DOMAIN}
             securityContext:
