@@ -122,9 +122,15 @@ spec:
               - path: /music/sound
                 readOnly: true
       transcode:
-        type: emptyDir
-        globalMounts:
-          - path: /transcoding
+        # type: emptyDir
+        # globalMounts:
+        #   - path: /transcoding
+        existingClaim: emby-transcoding-cache
+        advancedMounts:
+          main:
+            main:
+              - path: /transcode
+                readOnly: false
       emby-cache:
         # type: emptyDir
         # globalMounts:
