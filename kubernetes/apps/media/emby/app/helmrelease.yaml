@@ -37,9 +37,10 @@ spec:
               ADVERTISE_IP: "https://${APP}:443,https://${APP}.${SECRET_DOMAIN}:443"
             resources:
               requests:
-                cpu: 100m
+                cpu: 2
                 memory: 2Gi
               limits:
+                cpu: 8
                 memory: 10Gi
     service:
       main:
@@ -129,7 +130,7 @@ spec:
       emby-cache:
         type: emptyDir
         globalMounts:
-          - path: /transcoding
+          - path: /config/cache
         # existingClaim: emby-cache
         # advancedMounts:
         #   main:
