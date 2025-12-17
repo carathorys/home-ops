@@ -7,12 +7,12 @@ components:
   - ../../components/common
 resources:
   - ./secrets/ks.yaml
-  - ./database-cluster/ks.yaml
+  # - ./database-cluster/ks.yaml
   - ./persistent-volume-claims/ks.yaml
-  - ./jackett/ks.yaml
-  - ./radarr/ks.yaml
-  - ./sonarr/ks.yaml
-  - ./jellyseerr/ks.yaml
+  # - ./jackett/ks.yaml
+  # - ./radarr/ks.yaml
+  # - ./sonarr/ks.yaml
+  # - ./jellyseerr/ks.yaml
   - ./transmission/ks.yaml
   - ./flood/ks.yaml
   - ./emby/ks.yaml
