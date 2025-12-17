@@ -64,4 +64,4 @@ spec:
         rules:
           - backendRefs:
               - identifier: app
-                port: *port
+                port: 3000
