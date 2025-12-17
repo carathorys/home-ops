@@ -21,13 +21,13 @@ spec:
       namespace: network
   values:
     controllers:
-      echo:
+      ost:
         strategy: RollingUpdate
         containers:
           app:
             image:
-              repository: ghcr.io/mendhak/http-https-echo
-              tag: 38
+              repository: docker.io/openspeedtest/latest
+              tag: v2.0.6
             env:
               ENABLE_LETSENCRYPT: false
               DOMAIN_NAME: openspeedtest.${SECRET_DOMAIN}
