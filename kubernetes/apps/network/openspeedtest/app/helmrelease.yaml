@@ -69,5 +69,5 @@ spec:
       cache:
         type: emptyDir
         globalMounts:
-          - path: /var/cache
+          - path: /var/cache/nginx
             readOnly: false
