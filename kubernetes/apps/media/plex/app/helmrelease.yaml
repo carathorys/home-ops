@@ -124,6 +124,14 @@ spec:
             main:
               - path: /music/sound
                 readOnly: true
+      family-pomaz:
+        type: persistentVolumeClaim
+        existingClaim: family-pomaz
+        advancedMounts:
+          main:
+            main:
+              - path: /media/disk_a/Family/Videos/Pomaz
+                readOnly: true
       logs:
         type: emptyDir
         advancedMounts:

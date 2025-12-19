@@ -5,15 +5,16 @@ kind: Kustomization
 resources:
   - data-archive.yaml
   - downloads.yaml
-  - movies.yaml
-  - tv.yaml
+  - family-pomaz.yaml
+  - flood.yaml
+  - jackett.yaml
+  - jellyseerr.yaml
   - kids-movies.yaml
   - kids-tv.yaml
-  - music-video.yaml
+  - movies.yaml
   - music-sound.yaml
-  - transmission.yaml
-  - flood.yaml
-  - jellyseerr.yaml
+  - music-video.yaml
   - radarr.yaml
-  - jackett.yaml
   - sonarr.yaml
+  - transmission.yaml
+  - tv.yaml
