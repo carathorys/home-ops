@@ -21,7 +21,6 @@ spec:
   values:
     controllers:
       main:
-        replicas: 0
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -65,7 +64,7 @@ spec:
     persistence:
       config:
         type: persistentVolumeClaim
-        existingClaim: radarr
+        existingClaim: radarr-data
         advancedMounts:
           main:
             main:

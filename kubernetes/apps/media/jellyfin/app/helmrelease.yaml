@@ -76,9 +76,9 @@ spec:
         globalMounts:
           - path: /dev/dri
       config:
-        type: nfs
-        server: nfs.${SECRET_DOMAIN}
-        path: /media/services/jellyfin
+        type: persistentVolumeClaim
+        existingClaim: jellyfin-data
+        advancedMounts:
         globalMounts:
           - path: /config
       movies:

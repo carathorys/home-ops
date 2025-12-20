@@ -20,7 +20,6 @@ spec:
     keepHistory: false
   values:
     controllers:
-      replicas: 0
       main:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -66,7 +65,7 @@ spec:
     persistence:
       config:
         type: persistentVolumeClaim
-        existingClaim: sonarr
+        existingClaim: sonarr-data
         advancedMounts:
           main:
             main:

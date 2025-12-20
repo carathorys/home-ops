@@ -21,7 +21,6 @@ spec:
   values:
     controllers:
       main:
-        replicas: 0
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -72,9 +71,8 @@ spec:
         globalMounts:
           - path: /dev/dri
       config:
-        type: nfs
-        server: nfs.${SECRET_DOMAIN}
-        path: /srv/nfs4/media/services/plex
+        type: persistentVolumeClaim
+        existingClaim: plex-data
         globalMounts:
           - path: /config
       movies:
