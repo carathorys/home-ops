@@ -13,7 +13,6 @@ resources:
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
   - ./jellyseerr/ks.yaml
-  # - ./transmission/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./flood/ks.yaml
   - ./emby/ks.yaml

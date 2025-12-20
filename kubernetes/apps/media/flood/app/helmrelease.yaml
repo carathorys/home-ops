@@ -21,6 +21,7 @@ spec:
   values:
     controllers:
       main:
+        replicas: 0
         pod:
           securityContext:
             runAsUser: ${APP_UID}
@@ -56,7 +57,7 @@ spec:
     persistence:
       config:
         type: persistentVolumeClaim
-        existingClaim: flood
+        existingClaim: flood-data
         advancedMounts:
           main:
             main:

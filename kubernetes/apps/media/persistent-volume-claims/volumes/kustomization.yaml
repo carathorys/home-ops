@@ -18,3 +18,5 @@ resources:
   - sonarr.yaml
   - transmission.yaml
   - tv.yaml
+  - emby.yaml
+  - plex.yaml
