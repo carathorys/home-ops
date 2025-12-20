@@ -81,18 +81,11 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: "home-assistant"
-        advancedMounts:
-          main:
-            main:
-              - path: /config
-      new-config:
-        enabled: true
         existingClaim: "home-assistant-data"
         advancedMounts:
           main:
             main:
-              - path: /config-new
+              - path: /config
       tmpfs:
         type: emptyDir
         advancedMounts:
