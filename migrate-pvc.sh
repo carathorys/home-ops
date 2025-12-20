@@ -13,7 +13,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: migrate-pv-$src
-  namespace: home-assistant
+  namespace: media
 spec:
   template:
     spec:
