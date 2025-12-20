@@ -18,6 +18,8 @@ spec:
   dependsOn:
     - name: external-secrets
       namespace: secrets
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
     - name: persistent-volume-claims
       namespace: home-assistant
     - name: mosquitto

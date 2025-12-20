@@ -22,6 +22,7 @@ spec:
   values:
     controllers:
       main:
+        replicas: 0
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -85,8 +86,13 @@ spec:
           main:
             main:
               - path: /config
-            code-server:
-              - path: /config
+      new-config:
+        enabled: true
+        existingClaim: "home-assistant-data"
+        advancedMounts:
+          main:
+            main:
+              - path: /config-new
       tmpfs:
         type: emptyDir
         advancedMounts:
