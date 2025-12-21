@@ -20,7 +20,7 @@ spec:
       namespace: secrets
     - name: persistent-volume-claims
       namespace: media
-    - name: transmission
+    - name: qbittorrent
       namespace: media
   postBuild:
     substituteFrom:
