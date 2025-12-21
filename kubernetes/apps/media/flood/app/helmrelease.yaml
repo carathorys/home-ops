@@ -54,6 +54,7 @@ spec:
         rules:
           - backendRefs: [{}]
     persistence:
+
       config:
         type: persistentVolumeClaim
         existingClaim: flood-data

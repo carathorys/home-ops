@@ -20,25 +20,24 @@ cniConfig:
   name: none
 
 nodes:
-  # - hostname: "arriron"
-  #   controlPlane: true
-  #   ipAddress: "192.168.10.1"
-  #   installDisk: "/dev/nvme0n1"
-  #   # machineSpec:
-  #   #   secureboot: false
-  #   talosImageURL: ghcr.io/talos-rpi5/installer
-  #   networkInterfaces:
-  #     - deviceSelector:
-  #         hardwareAddr: "2c:cf:67:da:3b:96"
-  #       dhcp: false
-  #       vip:
-  #         ip: "192.168.1.1"
-  #       addresses:
-  #         - "192.168.10.1/16"
-  #       routes:
-  #         - network: "0.0.0.0/0"
-  #           gateway: "192.168.0.1"
-  #       mtu: 1500
+  - hostname: "arriron"
+    controlPlane: true
+    ipAddress: "192.168.10.1"
+    installDisk: "/dev/nvme0n1"
+    # machineSpec:
+    #   secureboot: false
+    talosImageURL: ghcr.io/talos-rpi5/installer
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "2c:cf:67:da:3b:96"
+        dhcp: false
+        vip:
+          ip: "192.168.1.1"
+        addresses:
+          - "192.168.10.1/16"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "192.168.0.1"
 
   - hostname: "widagoth"
     controlPlane: true
@@ -58,7 +57,6 @@ nodes:
         routes:
           - network: "0.0.0.0/0"
             gateway: "192.168.0.1"
-        mtu: 1500
 
   - hostname: "avarath"
     controlPlane: true
@@ -76,7 +74,6 @@ nodes:
         routes:
           - network: "0.0.0.0/0"
             gateway: "192.168.0.1"
-        mtu: 1500
         vip:
           ip: "192.168.1.1"
 
@@ -97,7 +94,6 @@ nodes:
         routes:
           - network: "0.0.0.0/0"
             gateway: "192.168.0.1"
-        mtu: 1500
         vip:
           ip: "192.168.1.1"
 
