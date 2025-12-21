@@ -11,3 +11,12 @@ resources:
   - music-sound.yaml
   - music-video.yaml
   - tv.yaml
+
+  - emby.yaml
+  - flood.yaml
+  - jackett.yaml
+  - jellyseerr.yaml
+  - jellyfin.yaml
+  - plex.yaml
+  - radarr.yaml
+  - sonarr.yaml
