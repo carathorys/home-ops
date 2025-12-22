@@ -8,7 +8,6 @@ resources:
   - family-pomaz.yaml
   - kids-movies.yaml
   - kids-tv.yaml
-  - media.yaml
   - movies.yaml
   - music-sound.yaml
   - music-video.yaml
