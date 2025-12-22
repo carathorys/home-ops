@@ -137,7 +137,7 @@ spec:
       isDefault: false
       deletionPolicy: Delete
 
-    cephFileSystems:
+    cephFileSystems: []
       # - name: &cephFileSystemName ceph-filesystem
       #   spec:
       #     metadataPool:
