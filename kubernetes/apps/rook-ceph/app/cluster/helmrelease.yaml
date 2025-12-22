@@ -149,7 +149,7 @@ spec:
               deviceClass: hdd
               replicated:
                 size: 3
-              name: &cephDataPoolName data1
+              name: &cephDataPoolName data0
           metadataServer:
             activeCount: 1
             activeStandby: true
