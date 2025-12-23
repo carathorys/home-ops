@@ -10,17 +10,3 @@ spec:
   resources:
     requests:
       storage: 30Gi
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: home-assistant-data-temp
-spec:
-  storageClassName: ceph-blockpool
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 50Gi
-
