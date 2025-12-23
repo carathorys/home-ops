@@ -21,14 +21,14 @@ spec:
   values:
     controllers:
       main:
-        replicas: 0
+        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           main:
             image:
               repository: docker.io/eclipse-mosquitto
-              tag: 2.0.22 # {"$imagepolicy": "flux-system:mosquitto:tag"}
+              tag: 2.0.22
             env:
               TZ: "Europe/Budapest"
     service:

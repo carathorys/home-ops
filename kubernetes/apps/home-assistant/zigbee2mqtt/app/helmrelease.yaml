@@ -21,7 +21,7 @@ spec:
   values:
     controllers:
       main:
-        replicas: 0
+        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -35,7 +35,7 @@ spec:
               runAsGroup: ${APP_GID}
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
-              tag: 2.7.1 # {"$imagepolicy": "flux-system:zigbee2mqtt:tag"}
+              tag: 2.7.1
             env:
               TZ: "Europe/Budapest"
               Z2M_WATCHDOG: 0.5,3,6,15,30,45,60
