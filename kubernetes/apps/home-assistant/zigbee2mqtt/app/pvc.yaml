@@ -11,15 +11,15 @@ spec:
     requests:
       storage: 5Gi
 
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: zigbee2mqtt-data-temp
-# spec:
-#   storageClassName: ceph-block-pool-fast
-#   accessModes:
-#     - ReadWriteOnce
-#   resources:
-#     requests:
-#       storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zigbee2mqtt-data-temp
+spec:
+  storageClassName: ceph-block-pool-fast
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
