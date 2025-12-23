@@ -11,16 +11,16 @@ spec:
     requests:
       storage: 30Gi
 
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: home-assistant-data-temp
-spec:
-  storageClassName: ceph-block-pool-fast
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 50Gi
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: home-assistant-data-temp
+# spec:
+#   storageClassName: ceph-block-pool-fast
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 50Gi
 
