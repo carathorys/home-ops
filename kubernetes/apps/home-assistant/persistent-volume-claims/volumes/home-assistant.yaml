@@ -11,7 +11,7 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: nfs.${INTERNAL_DOMAIN}
+    server: nfs.${SECRET_DOMAIN}
     path: "/media/services/home-assistant"
   mountOptions:
     - nfsvers=4.2
