@@ -141,12 +141,12 @@ spec:
       - name: &cephFileSystemName ceph-filesystem
         spec:
           metadataPool:
-            dataClass: hdd
+            deviceClass: hdd
             replicated:
               size: 3
           dataPools:
             - failureDomain: host
-              dataClass: hdd
+              deviceClass: hdd
               replicated:
                 size: 3
               name: &cephDataPoolName data0
