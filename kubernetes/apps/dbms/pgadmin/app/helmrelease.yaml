@@ -62,7 +62,7 @@ spec:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 1Gi
-        storageClass: nfs-dynamic
+        storageClass: ceph-block-pool-fast
         advancedMounts:
           main:
             main:

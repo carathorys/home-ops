@@ -6,6 +6,7 @@ set -exu
 
 src=$1
 dst=$2
+ns=$3
 
 echo "Creating job yaml"
 cat <<EOF | kubectl apply -f -
@@ -13,7 +14,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: migrate-pv-$src
-  namespace: media
+  namespace: $ns
 spec:
   template:
     spec:
