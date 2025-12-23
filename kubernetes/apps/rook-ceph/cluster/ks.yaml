@@ -3,36 +3,6 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app rook-ceph-operator
-  namespace: &namespace rook-ceph
-spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  targetNamespace: *namespace
-  path: ./kubernetes/apps/rook-ceph/app/operator
-  prune: true
-  wait: true
-  timeout: 5m
-  interval: 1h
-  retryInterval: 2m
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  dependsOn:
-    - name: external-secrets
-      namespace: secrets
-
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: &app rook-ceph-cluster
   namespace: &namespace rook-ceph
 spec:
@@ -40,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   targetNamespace: *namespace
-  path: ./kubernetes/apps/rook-ceph/app/cluster
+  path: ./kubernetes/apps/rook-ceph/cluster/app
   prune: true
   wait: true
   timeout: 5m
