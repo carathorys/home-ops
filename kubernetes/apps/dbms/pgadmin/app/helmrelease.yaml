@@ -59,7 +59,7 @@ spec:
         rules:
           - backendRefs: [{}]
     persistence:
-      config-on-ceph:
+      config:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 1Gi
