@@ -17,7 +17,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: jackett-data-temp
 spec:
-  storageClassName: ceph-block-pool-fast
+  storageClassName: ceph-blockpool
   accessModes:
     - ReadWriteOnce
   resources:

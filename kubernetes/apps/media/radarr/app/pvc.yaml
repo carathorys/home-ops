@@ -16,7 +16,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: radarr-data-temp
 spec:
-  storageClassName: ceph-block-pool-fast
+  storageClassName: ceph-blockpool
   accessModes:
     - ReadWriteOnce
   resources:
