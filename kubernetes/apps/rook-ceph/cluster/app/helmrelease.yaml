@@ -142,7 +142,7 @@ spec:
       - name: &cephFileSystemName ceph-filesystem
         spec:
           metadataPool:
-            deviceClass: hdd
+            deviceClass: nvme
             replicated:
               size: 3
           dataPools:
