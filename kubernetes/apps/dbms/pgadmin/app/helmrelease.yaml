@@ -23,7 +23,7 @@ spec:
   values:
     controllers:
       main:
-        replicas: 0
+        replicas: 1
         strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
