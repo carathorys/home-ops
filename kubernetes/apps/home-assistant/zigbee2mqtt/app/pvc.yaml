@@ -15,7 +15,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: zigbee2mqtt
+  name: zigbee2mqtt-data-temp
 spec:
   storageClassName: ceph-block-pool-fast
   accessModes:

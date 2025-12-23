@@ -14,7 +14,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mosquitto
+  name: mosquitto-data-temp
 spec:
   storageClassName: ceph-block-pool-fast
   accessModes:
