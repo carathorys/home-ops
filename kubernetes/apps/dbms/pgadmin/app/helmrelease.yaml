@@ -63,7 +63,7 @@ spec:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 1Gi
-        storageClass: ceph-blockpool
+        storageClass: ceph-block
         advancedMounts:
           main:
             main:
