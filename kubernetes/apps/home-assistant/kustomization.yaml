@@ -8,4 +8,5 @@ components:
 resources:
   - ./home-assistant/ks.yaml
   - ./mosquitto/ks.yaml
+  - ./persistent-volume-claims/ks.yaml
   - ./zigbee2mqtt/ks.yaml
