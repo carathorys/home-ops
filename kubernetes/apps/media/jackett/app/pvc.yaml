@@ -10,16 +10,3 @@ spec:
   resources:
     requests:
       storage: 5Gi
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jackett-data-temp
-spec:
-  storageClassName: ceph-blockpool
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi

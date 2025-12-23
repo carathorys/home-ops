@@ -9,16 +9,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: plex-data-temp
-spec:
-  storageClassName: ceph-blockpool
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
       storage: 15Gi
+
