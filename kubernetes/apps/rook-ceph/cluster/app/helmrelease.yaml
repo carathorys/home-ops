@@ -99,11 +99,11 @@ spec:
                 config:
                   osdsPerDevice: "1"
                   deviceClass: hdd
-          - name: "widagoth"
-            devices:
-              - name: "/dev/sda"
-                config:
-                  deviceClass: nvme
+          # - name: "widagoth"
+          #   devices:
+          #     - name: "/dev/sda"
+          #       config:
+          #         deviceClass: nvme
 
     cephBlockPools:
       - name: ceph-blockpool
