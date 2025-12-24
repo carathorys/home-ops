@@ -97,7 +97,7 @@ spec:
                   deviceClass: nvme
               - name: "/dev/disk/by-id/ata-WDC_WD141KFGX-68FH9N0_Y6GJZZDD"
                 config:
-                  osdsPerDevice: "3"
+                  osdsPerDevice: "1"
                   deviceClass: hdd
           - name: "widagoth"
             devices:
@@ -138,7 +138,7 @@ spec:
       isDefault: false
       deletionPolicy: Delete
 
-    cephFileSystems: []
+    cephFileSystems:
       # - name: &cephFileSystemName ceph-filesystem
       #   spec:
       #     metadataPool:
@@ -149,7 +149,7 @@ spec:
       #       - failureDomain: host
       #         deviceClass: hdd
       #         replicated:
-      #           size: 3
+      #           size: 1
       #         name: &cephDataPoolName data0
       #     metadataServer:
       #       activeCount: 1
