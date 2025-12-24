@@ -101,8 +101,9 @@ spec:
                   deviceClass: hdd
           - name: "widagoth"
             devices:
-              - name: "/dev/sda"
+              - name: "/dev/disk/by-id/usb-ROG_ESD-S1C_LBD0AP002573-0:0"
                 config:
+                  osdsPerDevice: "1"
                   deviceClass: nvme
 
     cephBlockPools:
