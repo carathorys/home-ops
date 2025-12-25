@@ -41,6 +41,7 @@ spec:
         kind: Secret
   dependsOn:
     - name: grafana
+      namespace: observability
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
