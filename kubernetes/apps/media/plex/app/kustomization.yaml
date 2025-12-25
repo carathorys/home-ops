@@ -6,3 +6,14 @@ resources:
   - pvc.yaml
   - ocirepository.yaml
   - helmrelease.yaml
+configMapGenerator:
+  - name: plex-loki-rules
+    files:
+      - plex.yaml=./lokirule.yaml
+    options:
+      labels:
+        loki_rule: "true"
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
