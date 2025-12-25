@@ -16,15 +16,15 @@ spec:
     auth:
       disable_login_form: "false"
     auth.anonymous:
-      enabled: "true"
+      enabled: "false"
     log:
       mode: console
     metrics:
       enabled: "true"
     news:
-      news_feed_enabled: "false"
+      news_feed_enabled: "true"
     plugins:
-      plugin_admin_enabled: "false"
+      plugin_admin_enabled: "true"
     security:
       angular_support_enabled: "true"
     server:
