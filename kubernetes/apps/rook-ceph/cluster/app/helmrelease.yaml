@@ -88,13 +88,13 @@ spec:
               - name: "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S6Z1NJ0W726333N"
                 config:
                   deviceClass: nvme
-                  # walSizeMB: "512"  # Optional: specify WAL partition size (default is 576MB)
+                  walSizeMB: "10240"  # Optional: specify WAL partition size (default is 576MB)
           - name: "avarath"
             devices:
               - name: "/dev/disk/by-id/nvme-KINGSTON_OM8PGP41024Q-A0_50026B73825EEFAF"
                 config:
                   deviceClass: nvme
-                  # walSizeMB: "512"  # Optional: specify WAL partition size
+                  walSizeMB: "10240"  # Optional: specify WAL partition size (default is 576MB)
               - name: "/dev/disk/by-id/ata-WDC_WD141KFGX-68FH9N0_Y6GJZZDD"
                 config:
                   osdsPerDevice: "1"
@@ -106,7 +106,7 @@ spec:
               - name: "/dev/disk/by-id/usb-ROG_ESD-S1C_LBD0AP002573-0:0"
                 config:
                   deviceClass: nvme
-                  # walSizeMB: "512"  # Optional: specify WAL partition size
+                  walSizeMB: "10240"  # Optional: specify WAL partition size (default is 576MB)
 
     cephBlockPools:
       - name: ceph-blockpool
