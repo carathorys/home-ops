@@ -40,8 +40,7 @@ spec:
         urlPrefix: /
         ssl: false
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
-      mon:
-        count: 4
+
       mgr:
         modules:
           - name: diskprediction_local
@@ -59,7 +58,6 @@ spec:
       resources:
         mgr:
           requests:
-            cpu: 2
             memory: 2Gi
           limits:
             memory: 4Gi
@@ -70,7 +68,6 @@ spec:
             memory: 4Gi
         osd:
           requests:
-            cpu: 2
             memory: 2Gi
           limits:
             memory: 8Gi
