@@ -40,6 +40,8 @@ spec:
         urlPrefix: /
         ssl: false
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
+      mon:
+        count: 3
       mgr:
         modules:
           - name: diskprediction_local
