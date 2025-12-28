@@ -95,12 +95,12 @@ spec:
                 config:
                   deviceClass: nvme
                   walSizeMB: "10240"  # Optional: specify WAL partition size (default is 576MB)
-              - name: "/dev/disk/by-id/ata-WDC_WD141KFGX-68FH9N0_Y6GJZZDD"
-                config:
-                  osdsPerDevice: "1"
-                  deviceClass: hdd
-                  # Example: Use the NVMe device for WAL to speed up the HDD OSD
-                  metadataDevice: "/dev/disk/by-id/nvme-KINGSTON_OM8PGP41024Q-A0_50026B73825EEFAF"
+              # - name: "/dev/disk/by-id/ata-WDC_WD141KFGX-68FH9N0_Y6GJZZDD"
+              #   config:
+              #     osdsPerDevice: "1"
+              #     deviceClass: hdd
+              #     # Example: Use the NVMe device for WAL to speed up the HDD OSD
+              #     metadataDevice: "/dev/disk/by-id/nvme-KINGSTON_OM8PGP41024Q-A0_50026B73825EEFAF"
           - name: "widagoth"
             devices:
               - name: "/dev/disk/by-id/usb-ROG_ESD-S1C_LBD0AP002573-0:0"
@@ -141,47 +141,47 @@ spec:
       isDefault: false
       deletionPolicy: Delete
 
-    cephFileSystems:
-      - name: &cephFileSystemName ceph-filesystem
-        spec:
-          metadataPool:
-            deviceClass: nvme
-            replicated:
-              size: 3
-          dataPools:
-            - failureDomain: host
-              deviceClass: hdd
-              replicated:
-                size: 1
-              name: &cephDataPoolName data0
-          metadataServer:
-            activeCount: 1
-            activeStandby: true
-            priorityClassName: system-cluster-critical
-            placement:
-              topologySpreadConstraints:
-                - maxSkew: 1
-                  topologyKey: kubernetes.io/hostname
-                  whenUnsatisfiable: DoNotSchedule
-                  labelSelector:
-                    matchLabels:
-                      app.kubernetes.io/name: ceph-mds
-                      app.kubernetes.io/part-of: *cephFileSystemName
-        storageClass:
-          enabled: true
-          isDefault: false
-          name: ceph-filesystem
-          pool: *cephDataPoolName
-          reclaimPolicy: Delete
-          allowVolumeExpansion: true
-          parameters:
-            csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
-            csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
-            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
-            csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
-            csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
-            csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
-            csi.storage.k8s.io/fstype: ext4
+    cephFileSystems: []
+      # - name: &cephFileSystemName ceph-filesystem
+      #   spec:
+      #     metadataPool:
+      #       deviceClass: nvme
+      #       replicated:
+      #         size: 3
+      #     dataPools:
+      #       - failureDomain: host
+      #         deviceClass: hdd
+      #         replicated:
+      #           size: 1
+      #         name: &cephDataPoolName data0
+      #     metadataServer:
+      #       activeCount: 1
+      #       activeStandby: true
+      #       priorityClassName: system-cluster-critical
+      #       placement:
+      #         topologySpreadConstraints:
+      #           - maxSkew: 1
+      #             topologyKey: kubernetes.io/hostname
+      #             whenUnsatisfiable: DoNotSchedule
+      #             labelSelector:
+      #               matchLabels:
+      #                 app.kubernetes.io/name: ceph-mds
+      #                 app.kubernetes.io/part-of: *cephFileSystemName
+      #   storageClass:
+      #     enabled: true
+      #     isDefault: false
+      #     name: ceph-filesystem
+      #     pool: *cephDataPoolName
+      #     reclaimPolicy: Delete
+      #     allowVolumeExpansion: true
+      #     parameters:
+      #       csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
+      #       csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
+      #       csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
+      #       csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
+      #       csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
+      #       csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
+      #       csi.storage.k8s.io/fstype: ext4
 
     cephFileSystemVolumeSnapshotClass:
       enabled: true
