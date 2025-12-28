@@ -51,7 +51,7 @@ nodes:
       - deviceSelector:
           hardwareAddr: "2c:cf:67:da:3a:ee"
         dhcp: false
-        mtu: 9000
+        # mtu: 9000
         vip:
           ip: "192.168.1.1"
         addresses:
