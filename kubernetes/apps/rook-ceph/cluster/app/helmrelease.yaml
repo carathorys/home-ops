@@ -58,11 +58,13 @@ spec:
       resources:
         mgr:
           requests:
+            cpu: 2
             memory: 2Gi
           limits:
             memory: 4Gi
         mon:
           requests:
+            cpu: 4
             memory: 2Gi
           limits:
             memory: 4Gi

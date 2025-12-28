@@ -31,7 +31,7 @@ nodes:
       - deviceSelector:
           hardwareAddr: "2c:cf:67:da:3b:96"
         dhcp: false
-        mtu: 9000
+        mtu: 1500
         vip:
           ip: "192.168.1.1"
         addresses:
@@ -51,7 +51,7 @@ nodes:
       - deviceSelector:
           hardwareAddr: "2c:cf:67:da:3a:ee"
         dhcp: false
-        mtu: 9000
+        mtu: 1500
         vip:
           ip: "192.168.1.1"
         addresses:
@@ -71,7 +71,7 @@ nodes:
       - deviceSelector:
           hardwareAddr: "58:47:ca:72:00:f3"
         dhcp: false
-        mtu: 9000
+        mtu: 1500
         addresses:
           - "192.168.20.1/16"
         routes:
@@ -92,7 +92,7 @@ nodes:
       - deviceSelector:
           hardwareAddr: "00:e0:4c:68:02:a0"
         dhcp: false
-        mtu: 9000
+        mtu: 1500
         addresses:
           - "192.168.20.2/16"
         routes:
