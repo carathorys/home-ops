@@ -70,7 +70,7 @@ spec:
               sgdisk --zap-all $DISK
 
               # Optional: zero first/last MB for good measure
-              dd if=/dev/zero of=$DISK bs=1M count=100
+              dd if=/dev/zero of=$DISK bs=15M count=100
               dd if=/dev/zero of=$DISK bs=1M seek=$(( $(blockdev --getsz $DISK) / 2048 - 100 )) count=100
 
               echo "Disk $DISK wiped successfully"
