@@ -19,6 +19,11 @@ spec:
         kind: Secret
   prune: true
   retryInterval: 2m
+  dependsOn:
+    - name: secrets
+      namespace: media
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -19,6 +19,9 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   prune: true
   wait: false
   interval: 30m

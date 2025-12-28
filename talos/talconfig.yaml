@@ -20,25 +20,25 @@ cniConfig:
   name: none
 
 nodes:
-  - hostname: "arriron"
-    controlPlane: true
-    ipAddress: "192.168.10.1"
-    installDisk: "/dev/nvme0n1"
-    # machineSpec:
-    #   secureboot: false
-    talosImageURL: factory.talos.dev/installer/9c1d1b442d73f96dcd04e81463eb20000ab014062d22e1b083e1773336bc1dd5
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "2c:cf:67:da:3b:96"
-        dhcp: false
-        mtu: 9000
-        vip:
-          ip: "192.168.1.1"
-        addresses:
-          - "192.168.10.1/16"
-        routes:
-          - network: "0.0.0.0/0"
-            gateway: "192.168.0.1"
+  # - hostname: "arriron"
+  #   controlPlane: true
+  #   ipAddress: "192.168.10.1"
+  #   installDisk: "/dev/nvme0n1"
+  #   # machineSpec:
+  #   #   secureboot: false
+  #   talosImageURL: factory.talos.dev/installer/9c1d1b442d73f96dcd04e81463eb20000ab014062d22e1b083e1773336bc1dd5
+  #   networkInterfaces:
+  #     - deviceSelector:
+  #         hardwareAddr: "2c:cf:67:da:3b:96"
+  #       dhcp: false
+  #       mtu: 9000
+  #       vip:
+  #         ip: "192.168.1.1"
+  #       addresses:
+  #         - "192.168.10.1/16"
+  #       routes:
+  #         - network: "0.0.0.0/0"
+  #           gateway: "192.168.0.1"
 
   - hostname: "widagoth"
     controlPlane: true
@@ -51,7 +51,7 @@ nodes:
       - deviceSelector:
           hardwareAddr: "2c:cf:67:da:3a:ee"
         dhcp: false
-        mtu: 1500
+        mtu: 9000
         vip:
           ip: "192.168.1.1"
         addresses:
@@ -71,7 +71,7 @@ nodes:
       - deviceSelector:
           hardwareAddr: "58:47:ca:72:00:f3"
         dhcp: false
-        mtu: 1500
+        mtu: 9000
         addresses:
           - "192.168.20.1/16"
         routes:
@@ -92,7 +92,7 @@ nodes:
       - deviceSelector:
           hardwareAddr: "00:e0:4c:68:02:a0"
         dhcp: false
-        mtu: 1500
+        mtu: 9000
         addresses:
           - "192.168.20.2/16"
         routes:
