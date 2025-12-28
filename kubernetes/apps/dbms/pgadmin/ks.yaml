@@ -20,6 +20,9 @@ spec:
       namespace: secrets
     - name: cloudnative-pg-operator
       namespace: dbms
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+
   components: []
     # - ../../../../components/volsync
   postBuild:

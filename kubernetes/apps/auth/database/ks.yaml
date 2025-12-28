@@ -11,6 +11,9 @@ spec:
       app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/apps/auth/database/sql
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   postBuild:
     substituteFrom:
       - name: cluster-secrets
@@ -40,6 +43,9 @@ spec:
 #       app.kubernetes.io/name: *app
 #   interval: 1h
 #   path: ./kubernetes/apps/auth/database/dragonfly-cluster
+#   dependsOn:
+#     - name: rook-ceph-cluster
+#       namespace: rook-ceph
 #   postBuild:
 #     substituteFrom:
 #       - name: cluster-secrets
