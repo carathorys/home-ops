@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-helper
+  namespace: media  # adjust as needed
+spec:
+  containers:
+  - name: helper
+    image: debian:bookworm-slim
+    command:
+    - /bin/bash
+    - -c
+    - |
+      apt-get update && apt-get upgrade -y && apt-get install -y mc tmux && \
+      echo "Tools installed, pod ready" && \
+      sleep infinity
+    volumeMounts:
+    - name: source
+      mountPath: /mnt/source
+    - name: dest
+      mountPath: /mnt/dest
+  volumes:
+  - name: source
+    persistentVolumeClaim:
+      claimName: data-nfs    # replace with actual PVC name
+  - name: dest
+    persistentVolumeClaim:
+      claimName: data  # replace with actual PVC name
+  restartPolicy: Never
