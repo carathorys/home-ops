@@ -58,16 +58,19 @@ spec:
       resources:
         mgr:
           requests:
-            memory: 2Gi
+            cpu: 100m
+            memory: 512Mi
           limits:
-            memory: 4Gi
+            memory: 2Gi
         mon:
           requests:
-            memory: 2Gi
+            cpu: 50m
+            memory: 512Mi
           limits:
-            memory: 4Gi
+            memory: 2Gi
         osd:
           requests:
+            cpu: 500m
             memory: 2Gi
           limits:
             memory: 8Gi
