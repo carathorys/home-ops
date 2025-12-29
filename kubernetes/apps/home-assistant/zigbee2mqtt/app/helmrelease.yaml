@@ -89,7 +89,7 @@ spec:
                 readOnly: false
       zigbee2mqtt:
         type: persistentVolumeClaim
-        existingClaim: zigbee2mqtt-data
+        existingClaim: zigbee2mqtt
         advancedMounts:
           main:
             main:
