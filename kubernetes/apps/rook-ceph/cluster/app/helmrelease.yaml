@@ -151,12 +151,12 @@ spec:
           metadataPool:
             deviceClass: nvme
             replicated:
-              size: 2
+              size: 3
           dataPools:
             - failureDomain: host
               deviceClass: hdd
               replicated:
-                size: 2
+                size: 1
               name: &cephDataPoolName data0
           metadataServer:
             activeCount: 1
