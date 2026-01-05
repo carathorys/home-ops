@@ -78,7 +78,7 @@ spec:
           - path: /dev/dri
       config:
         type: persistentVolumeClaim
-        existingClaim: jellyfin-data
+        existingClaim: jellyfin
         advancedMounts:
         globalMounts:
           - path: /config
