@@ -160,7 +160,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: nfs-dymaic
+              storageClassName: nfs-dynamic
               resources:
                 requests:
                   storage: 50Gi
