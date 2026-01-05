@@ -31,4 +31,4 @@ spec:
       defaultClass: true
     nfs:
       server: nfs.${SECRET_DOMAIN}
-      path: /k8s
+      path: /media/k8s
