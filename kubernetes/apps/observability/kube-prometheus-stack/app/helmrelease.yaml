@@ -160,7 +160,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: ceph-block
+              storageClassName: nfs-dymaic
               resources:
                 requests:
                   storage: 50Gi
