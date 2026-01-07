@@ -12,7 +12,7 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: 192.168.0.84
+    server: 192.168.0.81
     path: "/media"
   mountOptions:
     - nfsvers=4.2
