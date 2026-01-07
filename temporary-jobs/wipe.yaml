@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: disk-wipe-nvme
+  name: disk-wipe-nvme-avarath
   namespace: rook-ceph  # or any namespace
 spec:
   template:
@@ -9,8 +9,10 @@ spec:
       restartPolicy: Never
       nodeName: avarath # Target specific node
       containers:
-        - name: disk-wipe-nvme
+        - name: disk-wipe-nvme-avarath
           image: alpine:latest
+          securityContext:
+            privileged: true
           command:
             - /bin/sh
             - -c
@@ -31,8 +33,6 @@ spec:
               dd if=/dev/zero of=$DISK bs=1M seek=$(( $(blockdev --getsz $DISK) / 2048 - 100 )) count=100
 
               echo "Disk $DISK wiped successfully"
-          securityContext:
-            privileged: true
           volumeMounts:
             - name: dev
               mountPath: /dev
@@ -44,7 +44,7 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: disk-wipe-ata
+  name: disk-wipe-ata-avarath
   namespace: rook-ceph  # or any namespace
 spec:
   template:
@@ -52,8 +52,10 @@ spec:
       restartPolicy: Never
       nodeName: avarath # Target specific node
       containers:
-        - name: disk-wipe-ata
+        - name: disk-wipe-ata-avarath
           image: alpine:latest
+          securityContext:
+            privileged: true
           command:
             - /bin/sh
             - -c
@@ -74,8 +76,139 @@ spec:
               dd if=/dev/zero of=$DISK bs=1M seek=$(( $(blockdev --getsz $DISK) / 2048 - 100 )) count=100
 
               echo "Disk $DISK wiped successfully"
+          volumeMounts:
+            - name: dev
+              mountPath: /dev
+      volumes:
+        - name: dev
+          hostPath:
+            path: /dev
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: disk-wipe-nvme-hummianet
+  namespace: rook-ceph  # or any namespace
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      nodeName: hummianet # Target specific node
+      containers:
+        - name: disk-wipe-nvme-hummianet
+          image: alpine:latest
           securityContext:
             privileged: true
+            runAsNonRoot: false
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -ex
+              DISK="/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S6Z1NJ0W726333N"  # Change to your disk
+              apk add wipefs sgdisk coreutils
+              echo "Wiping disk: $DISK"
+
+              # Remove filesystem signatures
+              wipefs -af $DISK
+
+              # Zap GPT and MBR
+              sgdisk --zap-all $DISK
+
+              # Optional: zero first/last MB for good measure
+              dd if=/dev/zero of=$DISK bs=1M count=100
+              dd if=/dev/zero of=$DISK bs=1M seek=$(( $(blockdev --getsz $DISK) / 2048 - 100 )) count=100
+
+              echo "Disk $DISK wiped successfully"
+
+          volumeMounts:
+            - name: dev
+              mountPath: /dev
+      volumes:
+        - name: dev
+          hostPath:
+            path: /dev
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: disk-wipe-nvme-esutha
+  namespace: rook-ceph  # or any namespace
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      nodeName: esutha # Target specific node
+      containers:
+        - name: disk-wipe-nvme-esutha
+          image: alpine:latest
+          securityContext:
+            privileged: true
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -ex
+              DISK="/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S7HDNF1Y508347B"  # Change to your disk
+              apk add wipefs sgdisk coreutils
+              echo "Wiping disk: $DISK"
+
+              # Remove filesystem signatures
+              wipefs -af $DISK
+
+              # Zap GPT and MBR
+              sgdisk --zap-all $DISK
+
+              # Optional: zero first/last MB for good measure
+              dd if=/dev/zero of=$DISK bs=1M count=100
+              dd if=/dev/zero of=$DISK bs=1M seek=$(( $(blockdev --getsz $DISK) / 2048 - 100 )) count=100
+
+              echo "Disk $DISK wiped successfully"
+
+          volumeMounts:
+            - name: dev
+              mountPath: /dev
+      volumes:
+        - name: dev
+          hostPath:
+            path: /dev
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: disk-wipe-ata-esutha
+  namespace: rook-ceph  # or any namespace
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      nodeName: esutha # Target specific node
+      containers:
+        - name: disk-wipe-ata-esutha
+          image: alpine:latest
+          securityContext:
+            privileged: true
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -ex
+              DISK="/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi2"  # Change to your disk
+              apk add wipefs sgdisk coreutils
+              echo "Wiping disk: $DISK"
+
+              # Remove filesystem signatures
+              wipefs -af $DISK
+
+              # Zap GPT and MBR
+              sgdisk --zap-all $DISK
+
+              # Optional: zero first/last MB for good measure
+              dd if=/dev/zero of=$DISK bs=15M count=100
+              dd if=/dev/zero of=$DISK bs=1M seek=$(( $(blockdev --getsz $DISK) / 2048 - 100 )) count=100
+
+              echo "Disk $DISK wiped successfully"
           volumeMounts:
             - name: dev
               mountPath: /dev
