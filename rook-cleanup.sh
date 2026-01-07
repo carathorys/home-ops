@@ -31,6 +31,7 @@ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Pod
 metadata:
+  namespace: rook-ceph
   name: disk-clean-${NODES[$i]}
 spec:
   restartPolicy: Never
@@ -54,8 +55,8 @@ done
 
 for i in "${NODES[@]}"
 do
-kubectl wait --timeout=900s --for=jsonpath='{.status.phase}=Succeeded' pod disk-clean-$i
+kubectl wait -n rook-ceph --timeout=900s --for=jsonpath='{.status.phase}=Succeeded' pod disk-clean-$i
 
-kubectl delete pod disk-clean-$i
+kubectl -n rook-ceph delete pod disk-clean-$i
 
 done
