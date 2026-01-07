@@ -27,7 +27,7 @@ nodes:
     installDisk: "/dev/nvme1n1"
     # machineSpec:
     #   secureboot: false
-    talosImageURL: factory.talos.dev/installer/e0b22154f4081cfac269b2a99c5dfe8f813408ab45b3394f5a7f7f944488f59f
+    talosImageURL: factory.talos.dev/installer/7a5c68a0799534cd1918fce3ae44046fcb74601c3e528df3e5d039e7a9654693
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "58:47:ca:72:00:f3"
@@ -47,7 +47,7 @@ nodes:
     installDisk: "/dev/nvme0n1"
     machineSpec:
       secureboot: true
-    talosImageURL: factory.talos.dev/installer/e0b22154f4081cfac269b2a99c5dfe8f813408ab45b3394f5a7f7f944488f59f
+    talosImageURL: factory.talos.dev/installer/7a5c68a0799534cd1918fce3ae44046fcb74601c3e528df3e5d039e7a9654693
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "00:e0:4c:68:02:a0"
@@ -67,7 +67,7 @@ nodes:
     installDisk: "/dev/sda"
     # machineSpec:
     #   secureboot: false
-    talosImageURL: factory.talos.dev/installer/e12a0c3836e6b87585bb152e4dffc856a640868f297fc72bab227a513e8ecbc2
+    talosImageURL: factory.talos.dev/installer/29d123fd0e746fccd5ff52d37c0cdbd2d653e10ae29c39276b6edb9ffbd56cf4
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "38:05:25:35:60:ee"
