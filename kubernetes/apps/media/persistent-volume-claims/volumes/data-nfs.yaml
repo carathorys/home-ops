@@ -18,6 +18,7 @@ spec:
     - vers=4.2
     - rsize=1048576
     - wsize=1048576
+    - readahead=16384
     - async
     - noatime
     - nodiratime
