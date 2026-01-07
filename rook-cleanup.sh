@@ -20,27 +20,21 @@ kubectl delete crds cephblockpools.ceph.rook.io cephbucketnotifications.ceph.roo
                       cephblockpoolradosnamespaces.ceph.rook.io cephcosidrivers.ceph.rook.io
 
 
-declare -a NODES=(
-  [0,0]="avarath" [0,1]="/dev/disk/by-id/nvme-KINGSTON_OM8PGP41024Q-A0_50026B73825EEFAF"
-  [1,0]="avarath" [1,1]="/dev/ata-WDC_WD141KFGX-68FH9N0_Y6GJZZDD"
-  [2,0]="hummianet" [2,1]="/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S6Z1NJ0W726333N"
-  # [2,0]="arriron"
-  # [3,0]="widagoth" # [3,1]="/dev/disk/by-id/usb-ROG_ESD-S1C_LBD0AP002573-0:0"
-)
+declare -a NODES=(  "avarath" "hummianet" "esutha")
 
 for i in "${!NODES[@]}"
 do
 
-echo "Cleanup rook on ${NODES[$i]}"
+echo "Cleanup rook on ${NODES[$i]} ${i}"
 
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Pod
 metadata:
-  name: disk-clean-$i
+  name: disk-clean-${NODES[$i]}
 spec:
   restartPolicy: Never
-  nodeName: $i
+  nodeName: ${NODES[$i]}
   volumes:
   - name: rook-data-dir
     hostPath:
