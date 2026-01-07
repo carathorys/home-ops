@@ -4,9 +4,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: data
 spec:
-  storageClassName: ceph-filesystem
+  storageClassName: ceph-block
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 8000Gi
