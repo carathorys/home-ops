@@ -4,9 +4,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: data
 spec:
-  storageClassName: nfs-dynamic
+  storageClassName: ceph-filesystem
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 8000Gi
