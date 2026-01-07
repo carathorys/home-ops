@@ -89,14 +89,16 @@ spec:
                 config:
                   deviceClass: hdd
                   metadataDevice: "/dev/disk/by-id/nvme-KINGSTON_OM8PGP41024Q-A0_50026B73825EEFAF"
-                  databaseSizeMB: "950000"
+                  databaseSizeMB: "600000"
+                  walSizeMB: "350000"
           - name: "esutha"
             devices:
               - name: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi2"
                 config:
                   deviceClass: hdd
                   metadataDevice: "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S7HDNF1Y508347B"
-                  databaseSizeMB: "950000"
+                  databaseSizeMB: "600000"
+                  walSizeMB: "350000"
     cephBlockPools:
       - name: ceph-blockpool
         spec:
