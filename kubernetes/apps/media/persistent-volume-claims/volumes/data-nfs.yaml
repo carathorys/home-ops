@@ -16,11 +16,13 @@ spec:
     path: "/media"
   mountOptions:
     - nfsvers=4.2
-    # - nconnect=16
-    # - hard
-    # - noatime
-    # - nodiratime
-    # - nolock
+    - nconnect=16
+    - rsize=131072
+    - wsize=131072
+    - hard
+    - noatime
+    - nodiratime
+    - nolock
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
