@@ -20,45 +20,6 @@ cniConfig:
   name: none
 
 nodes:
-  # - hostname: "arriron"
-  #   controlPlane: true
-  #   ipAddress: "192.168.10.1"
-  #   installDisk: "/dev/nvme0n1"
-  #   # machineSpec:
-  #   #   secureboot: false
-  #   talosImageURL: factory.talos.dev/installer/9c1d1b442d73f96dcd04e81463eb20000ab014062d22e1b083e1773336bc1dd5
-  #   networkInterfaces:
-  #     - deviceSelector:
-  #         hardwareAddr: "2c:cf:67:da:3b:96"
-  #       dhcp: false
-  #       mtu: 9000
-  #       vip:
-  #         ip: "192.168.1.1"
-  #       addresses:
-  #         - "192.168.10.1/16"
-  #       routes:
-  #         - network: "0.0.0.0/0"
-  #           gateway: "192.168.0.1"
-
-  - hostname: "widagoth"
-    controlPlane: true
-    ipAddress: "192.168.10.2"
-    installDisk: "/dev/nvme0n1"
-    # machineSpec:
-    #   secureboot: false
-    talosImageURL: ghcr.io/talos-rpi5/installer
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "2c:cf:67:da:3a:ee"
-        dhcp: false
-        # mtu: 9000
-        vip:
-          ip: "192.168.1.1"
-        addresses:
-          - "192.168.10.2/16"
-        routes:
-          - network: "0.0.0.0/0"
-            gateway: "192.168.0.1"
 
   - hostname: "avarath"
     controlPlane: true
@@ -84,7 +45,6 @@ nodes:
     controlPlane: true
     ipAddress: "192.168.20.2"
     installDisk: "/dev/nvme0n1"
-
     machineSpec:
       secureboot: true
     talosImageURL: factory.talos.dev/installer/9c1d1b442d73f96dcd04e81463eb20000ab014062d22e1b083e1773336bc1dd5
@@ -100,6 +60,26 @@ nodes:
             gateway: "192.168.0.1"
         vip:
           ip: "192.168.1.1"
+
+  - hostname: "esutha"
+    controlPlane: true
+    ipAddress: "192.168.20.3"
+    installDisk: "/dev/sda"
+    # machineSpec:
+    #   secureboot: false
+    talosImageURL: factory.talos.dev/installer/aeec243e3a4c2a14f9ba74b1a8c7662f03eea658a7ea5f1c26fdd491280c88f8
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "38:05:25:35:60:ee"
+        dhcp: false
+        mtu: 9000
+        vip:
+          ip: "192.168.1.1"
+        addresses:
+          - "192.168.20.3/16"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "192.168.0.1"
 
 # Global patches
 patches:
