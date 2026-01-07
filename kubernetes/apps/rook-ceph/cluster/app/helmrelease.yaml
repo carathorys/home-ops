@@ -83,8 +83,9 @@ spec:
         useAllNodes: false
         useAllDevices: false
         nodes:
-          # - name: "avarath"
-          #   devices:
+          - name: "avarath"
+            devices:
+              - name: "/dev/disk/by-id/nvme-KINGSTON_OM8PGP41024Q-A0_50026B73825EEFAF"
           #     - name: "/dev/disk/by-id/ata-WDC_WD141KFGX-68FH9N0_Y6GJZZDD"
           #       config:
           #         deviceClass: hdd
@@ -100,6 +101,9 @@ spec:
               #     metadataDevice: "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S7HDNF1Y508347B"
               #     databaseSizeMB: "600000"
               #     walSizeMB: "350000"
+          - name: "hummianet"
+            devices:
+              - name: "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S6Z1NJ0W726333N"
     cephBlockPools:
       - name: ceph-blockpool
         spec:
