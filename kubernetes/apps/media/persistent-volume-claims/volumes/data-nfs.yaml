@@ -15,9 +15,9 @@ spec:
     server: 192.168.0.81
     path: "/media"
   mountOptions:
-    - vers=4.2
-    - rsize=1048576
-    - wsize=1048576
+    - nfsvers=4
+    # - rsize=1048576
+    # - wsize=1048576
     - async
     - noatime
     - nodiratime
