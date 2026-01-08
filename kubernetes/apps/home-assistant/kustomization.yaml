@@ -6,6 +6,7 @@ namespace: home-assistant
 components:
   - ../../components/common
 resources:
+  - ./namespace.yaml
   - ./home-assistant/ks.yaml
   - ./mosquitto/ks.yaml
   - ./persistent-volume-claims/ks.yaml
