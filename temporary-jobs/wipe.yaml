@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: disk-wipe-nvme-avarath
-  namespace: rook-ceph  # or any namespace
+
 spec:
   template:
     spec:
@@ -45,7 +45,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: disk-wipe-ata-avarath
-  namespace: rook-ceph  # or any namespace
+
 spec:
   template:
     spec:
@@ -89,7 +89,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: disk-wipe-nvme-hummianet
-  namespace: rook-ceph  # or any namespace
+
 spec:
   template:
     spec:
@@ -134,7 +134,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: disk-wipe-nvme-esutha
-  namespace: rook-ceph  # or any namespace
+
 spec:
   template:
     spec:
@@ -178,7 +178,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: disk-wipe-ata-esutha
-  namespace: rook-ceph  # or any namespace
+
 spec:
   template:
     spec:
