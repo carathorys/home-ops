@@ -5,6 +5,17 @@ kind: Kustomization
 namespace: media
 components:
   - ../../components/common
+patches:
+  - target:
+      kind: Namespace
+      name: media
+    patch: |
+      - op: add
+        path: /metadata/labels/pod-security.kubernetes.io~1enforce
+        value: privileged
+      - op: add
+        path: /metadata/labels/pod-security.kubernetes.io~1warn
+        value: privileged
 resources:
   - ./secrets/ks.yaml
   - ./database-cluster/ks.yaml
