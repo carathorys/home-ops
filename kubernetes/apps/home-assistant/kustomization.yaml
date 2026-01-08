@@ -5,7 +5,6 @@ kind: Kustomization
 namespace: home-assistant
 components:
   - ../../components/common
-  - ../../components/privileged
 resources:
   - ./home-assistant/ks.yaml
   - ./mosquitto/ks.yaml
