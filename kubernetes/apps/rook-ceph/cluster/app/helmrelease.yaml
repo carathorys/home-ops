@@ -97,7 +97,7 @@ spec:
         spec:
           failureDomain: host
           replicated:
-            size: 2
+            size: 3
         storageClass:
           enabled: true
           name: ceph-block
@@ -130,12 +130,12 @@ spec:
           metadataPool:
             deviceClass: nvme
             replicated:
-              size: 2
+              size: 3
           dataPools:
             - failureDomain: host
               deviceClass: hdd
               replicated:
-                size: 2
+                size: 3
               name: &cephDataPoolName data0
           metadataServer:
             activeCount: 1
