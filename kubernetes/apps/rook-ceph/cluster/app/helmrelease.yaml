@@ -105,9 +105,9 @@ spec:
                   metadataDevice: "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S7HDNF1Y508347B_1-part1"
                   databaseSizeMB: "575000"
                   walSizeMB: "25000"
-          # - name: "hummianet"
-          #   devices:
-          #     - name: "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S6Z1NJ0W726333N"
+          - name: "hummianet"
+            devices:
+              - name: "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S6Z1NJ0W726333N-part2"
     cephBlockPools:
       - name: ceph-blockpool
         spec:
