@@ -6,18 +6,6 @@ namespace: system
 components:
   - ../../components/common
 resources:
-  - ./namespace.yaml
   - ./nfs-subdir-external-provisioner/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./snapshot-controller/ks.yaml
-patches:
-  - target:
-      kind: Namespace
-      name: system
-    patch: |
-      - op: "add"
-        path: "/metadata/labels/pod-security.kubernetes.io~1enforce"
-        value: "privileged"
-      - op: "add"
-        path: "/metadata/labels/pod-security.kubernetes.io~1warn"
-        value: "privileged"

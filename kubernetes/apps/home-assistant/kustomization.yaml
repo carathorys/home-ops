@@ -5,17 +5,6 @@ kind: Kustomization
 namespace: home-assistant
 components:
   - ../../components/common
-patches:
-  - target:
-      kind: Namespace
-      name: home-assistant
-    patch: |
-      - op: add
-        path: /metadata/labels/pod-security.kubernetes.io~1enforce
-        value: privileged
-      - op: add
-        path: /metadata/labels/pod-security.kubernetes.io~1warn
-        value: privileged
 resources:
   - ./home-assistant/ks.yaml
   - ./mosquitto/ks.yaml
