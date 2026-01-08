@@ -64,7 +64,7 @@ nodes:
     talosImageURL: factory.talos.dev/installer/29d123fd0e746fccd5ff52d37c0cdbd2d653e10ae29c39276b6edb9ffbd56cf4
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "38:05:25:35:60:ee"
+          hardwareAddr: "bc:24:11:1f:75:67"
         dhcp: false
         mtu: 9000
         vip:
