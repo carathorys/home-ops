@@ -160,7 +160,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: nfs-dynamic
+              storageClassName: ceph-block
               resources:
                 requests:
                   storage: 50Gi
