@@ -15,15 +15,12 @@ spec:
     server: nfs.${SECRET_DOMAIN}
     path: "/media/services/flood"
   mountOptions:
-    - nfsvers=4.2
-    - nconnect=8
+    - vers=4.2
     - rsize=1048576
     - wsize=1048576
     - async
-    - hard
     - noatime
     - nodiratime
-    - nolock
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
