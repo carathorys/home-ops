@@ -14,7 +14,7 @@ resources:
   - ./sonarr/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./qbittorrent/ks.yaml
-  - ./qui/ks.yaml
+  # - ./qui/ks.yaml
   - ./flood/ks.yaml
   - ./emby/ks.yaml
   - ./plex/ks.yaml
