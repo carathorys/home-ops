@@ -10,7 +10,7 @@ resources:
   - movies.yaml
   - music-sound.yaml
   - music-video.yaml
-  - tv.yaml
+  # - tv.yaml
 
   - emby.yaml
   - flood.yaml
