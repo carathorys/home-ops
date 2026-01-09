@@ -12,7 +12,7 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: 192.168.10.2
+    server: nas.${SECRET_DOMAIN}
     path: "/mnt/data/media/tv"
   mountOptions:
     - vers=4.2
