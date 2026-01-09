@@ -5,15 +5,15 @@ kind: Kustomization
 resources:
   - downloads.yaml
   # - family-pomaz.yaml
-  # - kids-movies.yaml
-  # - kids-tv.yaml
-  # - movies.yaml
-  # - music-sound.yaml
-  # - music-video.yaml
+  - kids-movies.yaml
+  - kids-tv.yaml
+  - movies.yaml
+  - music-sound.yaml
+  - music-video.yaml
   - tv.yaml
 
-  # - emby.yaml
-  # - flood.yaml
+  - emby.yaml
+  - flood.yaml
   - qui.yaml
   - jackett.yaml
   - jellyfin.yaml
