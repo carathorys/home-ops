@@ -21,7 +21,7 @@ spec:
   values:
     controllers:
       main:
-        replicas: 0
+        replicas: 1
         pod:
           securityContext:
             runAsUser: ${APP_UID}
@@ -57,7 +57,7 @@ spec:
     persistence:
       config:
         type: persistentVolumeClaim
-        existingClaim: qui
+        existingClaim: qui-config
         advancedMounts:
           main:
             main:
