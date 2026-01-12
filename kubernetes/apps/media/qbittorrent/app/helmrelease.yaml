@@ -84,22 +84,6 @@ spec:
             main:
               - path: /config
                 readOnly: false
-      movies:
-        type: persistentVolumeClaim
-        existingClaim: movies
-        advancedMounts:
-          main:
-            main:
-              - path: /movies
-                readOnly: false
-      kids-movies:
-        type: persistentVolumeClaim
-        existingClaim: kids-movies
-        advancedMounts:
-          main:
-            main:
-              - path: /mnt/Gyerek/Filmek
-                readOnly: false
       downloads:
         type: persistentVolumeClaim
         existingClaim: downloads
