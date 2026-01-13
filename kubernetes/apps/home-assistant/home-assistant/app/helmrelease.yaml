@@ -81,7 +81,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: home-assistant
+        existingClaim: home-assistant-data
         advancedMounts:
           main:
             main:

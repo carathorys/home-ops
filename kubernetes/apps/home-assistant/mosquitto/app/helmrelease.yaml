@@ -41,7 +41,7 @@ spec:
     persistence:
       mosquitto:
         type: persistentVolumeClaim
-        existingClaim: mosquitto
+        existingClaim: mosquitto-data
         advancedMounts:
           main:
             main:
