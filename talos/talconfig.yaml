@@ -25,7 +25,7 @@ nodes:
     controlPlane: true
     ipAddress: "192.168.20.1"
     installDisk: "/dev/nvme1n1"
-    talosImageURL: factory.talos.dev/installer/7a5c68a0799534cd1918fce3ae44046fcb74601c3e528df3e5d039e7a9654693
+    talosImageURL: factory.talos.dev/installer/684f0096988e93938d47d3a13a22795c87258cdfdfd7b4cfb8ccba69ed905894
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "58:47:ca:72:00:f3"
@@ -43,7 +43,7 @@ nodes:
     controlPlane: true
     ipAddress: "192.168.20.2"
     installDisk: "/dev/nvme0n1"
-    talosImageURL: factory.talos.dev/installer/7a5c68a0799534cd1918fce3ae44046fcb74601c3e528df3e5d039e7a9654693
+    talosImageURL: factory.talos.dev/installer/684f0096988e93938d47d3a13a22795c87258cdfdfd7b4cfb8ccba69ed905894
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "00:e0:4c:68:02:a0"
@@ -61,7 +61,7 @@ nodes:
     controlPlane: true
     ipAddress: "192.168.20.3"
     installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/29d123fd0e746fccd5ff52d37c0cdbd2d653e10ae29c39276b6edb9ffbd56cf4
+    talosImageURL: factory.talos.dev/installer/52f3c41149f133d6ce1f1bf8c6d7d508a50523733b8bfb2272d89da766998826
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "bc:24:11:1f:75:67"
