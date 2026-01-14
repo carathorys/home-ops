@@ -6,5 +6,6 @@ namespace: system
 components:
   - ../../components/common
 resources:
+  - ./democratic-csi/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./snapshot-controller/ks.yaml
