@@ -12,8 +12,8 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: nfs.${SECRET_DOMAIN}
-    path: "/media/services/qbittorrent"
+    server: nas.${SECRET_DOMAIN}
+    path: "/mnt/data/services/media/qbittorrent"
   mountOptions:
     - vers=4.2
     - rsize=1048576

@@ -12,8 +12,8 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: nfs.${SECRET_DOMAIN}
-    path: "/media/services/qui"
+    server: nas.${SECRET_DOMAIN}
+    path: "/mnt/data/services/media/qui"
   mountOptions:
     - vers=4.2
     - rsize=1048576
