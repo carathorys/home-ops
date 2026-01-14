@@ -61,10 +61,18 @@ spec:
     persistence:
       config:
         type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
+        existingClaim: pgadmin-nfs
         advancedMounts:
           main:
             main:
               - path: /var/lib/pgadmin
+                readOnly: false
+      # config:
+      #   type: persistentVolumeClaim
+      #   accessMode: ReadWriteOnce
+      #   size: 1Gi
+      #   storageClass: ceph-block
+      #   advancedMounts:
+      #     main:
+      #       main:
+      #         - path: /var/lib/pgadmin
