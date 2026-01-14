@@ -20,6 +20,7 @@ spec:
     - async
     - noatime
     - nodiratime
+    - nohide
 
 ---
 apiVersion: v1
