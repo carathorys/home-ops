@@ -18,4 +18,4 @@ resources:
   - ./flood/ks.yaml
   - ./emby/ks.yaml
   - ./plex/ks.yaml
-  - ./jellyfin/ks.yaml
+  # - ./jellyfin/ks.yaml
