@@ -1,6 +1,7 @@
 ---
 apiVersion: v1
 kind: Secret
+
 metadata:
   name: iscsi-driver-config
   namespace: storage
