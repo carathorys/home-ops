@@ -32,8 +32,8 @@ stringData:
       extentBlocksize: 512
       extentAvailThreshold: 0
     zfs:
-      datasetParentName: prod/iscsi/kubernetes/volumes
-      detachedSnapshotsDatasetParentName: prod/iscsi/kubernetes/snapshots
+      datasetParentName: ${DATA_SET_PATH}
+      detachedSnapshotsDatasetParentName: ${SNAPSHOTS_PATH}
       zvolCompression:
       zvolDedup:
       zvolEnableReservation: false
