@@ -9,7 +9,7 @@ spec:
     spec:
       chart: ${APP}
       reconcileStrategy: ChartVersion
-      version: "2025.10"
+      version: 0.15.1
       sourceRef:
         kind: HelmRepository
         name: ${APP}
