@@ -9,7 +9,7 @@ stringData:
     driver: freenas-api-iscsi
     httpConnection:
       allowInsecure: true
-      apiKey: $TRUENAS_API_KEY
+      apiKey: ${ADMIN_API_KEY}
       host: nas.${SECRET_DOMAIN}
       port: 80
       protocol: http
