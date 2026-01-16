@@ -19,11 +19,38 @@ spec:
   uninstall:
     keepHistory: false
   values:
+
     controllers:
       main:
         replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: feature.node.kubernetes.io/amd-gpu
+                        operator: In
+                        values:
+                          - "true"
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - emby
+                  topologyKey: kubernetes.io/hostname
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - podAffinityTerm:
+                    topologyKey: kubernetes.io/hostname
+                    labelSelector:
+                      matchLabels:
+                        app.kubernetes.io/name: plex
+                  weight: 100
         containers:
           main:
             securityContext:
@@ -31,6 +58,7 @@ spec:
             image:
               repository: ghcr.io/linuxserver/plex
               tag: 1.42.2
+              pullPolicy: Always
             env:
               TZ: "Europe/Budapest"
               ADVERTISE_IP: "https://${APP}:443,https://${APP}.${SECRET_DOMAIN}:443"
