@@ -7,7 +7,7 @@ spec:
   interval: 1h
   chart:
     spec:
-      chart: authentik
+      chart: ${APP}
       reconcileStrategy: ChartVersion
       version: "2025.10"
       sourceRef:
@@ -24,3 +24,36 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    controller:
+      driver:
+        image:
+          tag: next
+    csiDriver:
+      name: iscsi
+    driver:
+      config:
+        driver: freenas-api-iscsi
+      existingConfigSecret: truenas-iscsi-driver-config
+    node:
+      driver:
+        extraEnv:
+          - name: ISCSIADM_HOST_STRATEGY
+            value: nsenter
+          - name: ISCSIADM_HOST_PATH
+            value: /usr/local/sbin/iscsiadm
+        iscsiDirHostPath: /var/iscsi
+        iscsiDirHostPathType: ''
+      hostPID: true
+    storageClasses:
+      - allowVolumeExpansion: true
+        defaultClass: false
+        name: iscsi
+        parameters:
+          detachedVolumesFromSnapshots: 'false'
+          fsType: ext4
+        reclaimPolicy: Delete
+        volumeBindingMode: Immediate
+    volumeSnapshotClasses:
+      - name: iscsi
+        parameters:
+          detachedSnapshots: 'true'
