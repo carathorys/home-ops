@@ -33,7 +33,7 @@ spec:
     driver:
       config:
         driver: freenas-api-iscsi
-      existingConfigSecret: truenas-iscsi-driver-config
+      existingConfigSecret: iscsi-driver-config
     node:
       driver:
         extraEnv:
