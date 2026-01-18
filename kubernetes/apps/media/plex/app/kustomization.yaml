@@ -5,8 +5,8 @@ kind: Kustomization
 resources:
   - pvc.yaml
   - volume.yaml
-  - ocirepository.yaml
-  - helmrelease.yaml
+  # - ocirepository.yaml
+  # - helmrelease.yaml
 configMapGenerator:
   - name: plex-loki-rules
     files:
