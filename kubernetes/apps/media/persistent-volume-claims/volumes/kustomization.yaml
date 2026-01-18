@@ -18,7 +18,6 @@ resources:
   - jackett.yaml
   - jellyfin.yaml
   - jellyseerr.yaml
-  - plex.yaml
   - qbittorrent.yaml
   - radarr.yaml
   - sonarr.yaml
