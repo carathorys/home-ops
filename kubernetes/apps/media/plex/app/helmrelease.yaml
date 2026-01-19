@@ -22,7 +22,7 @@ spec:
 
     controllers:
       main:
-        replicas: 1
+        replicas: 0
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -101,7 +101,7 @@ spec:
           - path: /dev/dri
       config:
         type: persistentVolumeClaim
-        existingClaim: plex-data
+        existingClaim: plex
         globalMounts:
           - path: /config
       movies:
