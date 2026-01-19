@@ -12,5 +12,4 @@ resources:
   - music-video.yaml
   - tv.yaml
 
-  - emby.yaml
   - jellyfin.yaml
