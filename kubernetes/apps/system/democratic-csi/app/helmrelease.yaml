@@ -51,7 +51,7 @@ spec:
         parameters:
           detachedVolumesFromSnapshots: 'false'
           fsType: ext4
-        reclaimPolicy: Delete
+        reclaimPolicy: Retain
         volumeBindingMode: Immediate
     volumeSnapshotClasses:
       - name: iscsi
