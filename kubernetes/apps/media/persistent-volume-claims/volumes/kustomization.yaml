@@ -14,10 +14,4 @@ resources:
 
   - emby.yaml
   - flood.yaml
-  - qui.yaml
-  - jackett.yaml
   - jellyfin.yaml
-  - jellyseerr.yaml
-  - qbittorrent.yaml
-  - radarr.yaml
-  - sonarr.yaml

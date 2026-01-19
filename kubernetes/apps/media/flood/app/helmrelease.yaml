@@ -57,7 +57,7 @@ spec:
     persistence:
       config:
         type: persistentVolumeClaim
-        existingClaim: flood-data
+        existingClaim: flood
         advancedMounts:
           main:
             main:

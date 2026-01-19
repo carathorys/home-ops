@@ -57,7 +57,7 @@ spec:
     persistence:
       config:
         type: persistentVolumeClaim
-        existingClaim: qui-config
+        existingClaim: qui
         advancedMounts:
           main:
             main:
