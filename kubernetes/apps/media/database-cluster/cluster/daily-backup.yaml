@@ -13,6 +13,5 @@ spec:
   onlineConfiguration:
     waitForArchive: true
   method: volumeSnapshot
-  backupOwnerReference: cluster
   suspend: false
   immediate: true
