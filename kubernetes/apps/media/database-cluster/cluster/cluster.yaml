@@ -16,6 +16,16 @@ spec:
   enableSuperuserAccess: true
   superuserSecret:
     name: postgres-superuser
+  backup:
+    retentionPolicy: 7d
+    volumeSnapshot:
+      labels:
+        app.kubernetes.io/name: media-cluster-db-backup
+      online: true
+      onlineConfiguration:
+        waitForArchive: true
+      className: iscsi
+      walClassName: iscsi
   managed:
     roles:
       - connectionLimit: -1
