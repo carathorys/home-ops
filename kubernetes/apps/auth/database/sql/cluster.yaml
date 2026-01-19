@@ -18,3 +18,11 @@ spec:
     name: postgres-superuser
   monitoring:
     enablePodMonitor: true
+  backup:
+    target: primary
+    volumeSnapshot:
+      online: true
+      snapshotOwnerReference: none
+      className: iscsi
+      walClassName: iscsi
+    retentionPolicy: 7d
