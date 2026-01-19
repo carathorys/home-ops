@@ -14,5 +14,4 @@ spec:
     waitForArchive: true
   method: volumeSnapshot
   backupOwnerReference: cluster
-  suspend: false
   immediate: false
