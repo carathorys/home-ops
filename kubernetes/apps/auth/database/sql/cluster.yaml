@@ -19,12 +19,12 @@ spec:
   monitoring:
     enablePodMonitor: true
   backup:
-    target: primary
+    retentionPolicy: 7d
     volumeSnapshot:
+      labels:
+        app.kubernetes.io/name: postgres-db-auth-cluster
       online: true
       onlineConfiguration:
         waitForArchive: true
-      snapshotOwnerReference: backup
       className: iscsi
       walClassName: iscsi
-    retentionPolicy: 7d
