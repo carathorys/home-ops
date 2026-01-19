@@ -1,9 +1,9 @@
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/postgresql.cnpg.io/scheduledbackup_v1.json
 apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
+kind: ScheduledBackup
 metadata:
-  name: postgres-db-backup
+  name: auth-cluster-db-backup
 spec:
   cluster:
     name: postgres
@@ -14,4 +14,5 @@ spec:
     waitForArchive: true
   method: volumeSnapshot
   backupOwnerReference: cluster
+  suspend: false
   immediate: false

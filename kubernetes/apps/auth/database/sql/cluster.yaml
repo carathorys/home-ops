@@ -21,6 +21,8 @@ spec:
   backup:
     retentionPolicy: 7d
     volumeSnapshot:
+      labels:
+        app.kubernetes.io/name: auth-cluster-db-backup
       online: true
       onlineConfiguration:
         waitForArchive: true
