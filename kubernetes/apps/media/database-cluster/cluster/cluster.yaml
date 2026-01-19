@@ -12,7 +12,7 @@ spec:
   primaryUpdateStrategy: supervised
   storage:
     size: 30Gi
-    storageClass: ceph-block
+    storageClass: iscsi
   enableSuperuserAccess: true
   superuserSecret:
     name: postgres-superuser
