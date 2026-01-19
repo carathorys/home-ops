@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/postgresql.cnpg.io/scheduledbackup_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres
+  namespace: media
+  labels:
+    app.kubernetes.io/name: postgres-db
+spec:
+  cluster:
+    name: postgres
+  schedule: "30 0 * * *"
+  online: true
+  target: primary
+  onlineConfiguration:
+    waitForArchive: true
+  method: volumeSnapshot
+  backupOwnerReference: cluster
+  suspend: false
+  immediate: false

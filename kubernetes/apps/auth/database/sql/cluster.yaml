@@ -11,8 +11,8 @@ spec:
   instances: 2
   primaryUpdateStrategy: supervised
   storage:
-    size: 30Gi
-    storageClass: ceph-block
+    size: 10Gi
+    storageClass: iscsi
   enableSuperuserAccess: true
   superuserSecret:
     name: postgres-superuser
@@ -22,7 +22,9 @@ spec:
     target: primary
     volumeSnapshot:
       online: true
-      snapshotOwnerReference: none
+      onlineConfiguration:
+        waitForArchive: true
+      snapshotOwnerReference: backup
       className: iscsi
       walClassName: iscsi
     retentionPolicy: 7d
