@@ -12,8 +12,8 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/auth/database/sql
   dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+    - name: democratic-csi
+      namespace: system
   postBuild:
     substituteFrom:
       - name: cluster-secrets
