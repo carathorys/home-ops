@@ -44,7 +44,6 @@ spec:
         iscsiDirHostPath: /var/iscsi
         iscsiDirHostPathType: ''
       hostPID: true
-
     storageClasses:
       - allowVolumeExpansion: true
         defaultClass: false
@@ -55,6 +54,9 @@ spec:
         reclaimPolicy: Delete
         volumeBindingMode: Immediate
     volumeSnapshotClasses:
+      - name: iscsi
+        parameters:
+          detachedSnapshots: 'true'
       - name: iscsi
         parameters:
           detachedSnapshots: 'true'
