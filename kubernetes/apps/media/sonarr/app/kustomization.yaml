@@ -6,7 +6,7 @@ resources:
   - pvc.yaml
   - volume.yaml
   - ocirepository.yaml
-  # - helmrelease.yaml
+  - helmrelease.yaml
 
 configMapGenerator:
   - name: sonarr-loki-rules
