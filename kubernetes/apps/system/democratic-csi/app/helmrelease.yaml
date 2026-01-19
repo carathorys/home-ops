@@ -44,6 +44,7 @@ spec:
         iscsiDirHostPath: /var/iscsi
         iscsiDirHostPathType: ''
       hostPID: true
+
     storageClasses:
       - allowVolumeExpansion: true
         defaultClass: false
