@@ -7,4 +7,4 @@ resources:
   - ./cluster.yaml
   - ./prometheus-rule.yaml
   - ./service.yaml
-  # - ./daily-backup.yaml
+  - ./daily-backup.yaml
