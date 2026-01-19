@@ -13,5 +13,4 @@ resources:
   - tv.yaml
 
   - emby.yaml
-  - flood.yaml
   - jellyfin.yaml
