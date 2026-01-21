@@ -10,7 +10,7 @@ resources:
   - ./secrets/ks.yaml
   - ./database-cluster/ks.yaml
   - ./persistent-volume-claims/ks.yaml
-  # - ./emby/ks.yaml
+  - ./emby/ks.yaml
   # - ./flood/ks.yaml
   # - ./jackett/ks.yaml
   # - ./jellyseerr/ks.yaml
