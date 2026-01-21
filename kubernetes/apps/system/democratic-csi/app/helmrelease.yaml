@@ -57,3 +57,6 @@ spec:
       - name: iscsi
         parameters:
           detachedSnapshots: 'false'
+      - name: iscsi-detached
+        parameters:
+          detachedSnapshots: 'true'
