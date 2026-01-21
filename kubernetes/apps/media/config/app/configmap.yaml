@@ -1,0 +1,6 @@
+---
+kind: ConfigMap
+metadata:
+  name: media-config
+data:
+  REPLICAS: "0"
