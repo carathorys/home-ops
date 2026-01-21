@@ -9,13 +9,13 @@ resources:
   - ./secrets/ks.yaml
   # - ./database-cluster/ks.yaml
   - ./persistent-volume-claims/ks.yaml
-  - ./jackett/ks.yaml
-  - ./radarr/ks.yaml
-  - ./sonarr/ks.yaml
-  - ./jellyseerr/ks.yaml
-  - ./qbittorrent/ks.yaml
-  - ./qui/ks.yaml
-  - ./flood/ks.yaml
-  - ./emby/ks.yaml
+  # - ./emby/ks.yaml
+  # - ./flood/ks.yaml
+  # - ./jackett/ks.yaml
+  # - ./jellyseerr/ks.yaml
   - ./plex/ks.yaml
+  # - ./qbittorrent/ks.yaml
+  # - ./qui/ks.yaml
+  # - ./radarr/ks.yaml
+  # - ./sonarr/ks.yaml
   # - ./jellyfin/ks.yaml
