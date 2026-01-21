@@ -28,13 +28,7 @@ spec:
       enabled: true
       rbac:
         enabled: true
-
       replicaCount: 3
-      image:
-        repository: registry.k8s.io/sig-storage/snapshot-controller
-        pullPolicy: IfNotPresent
-        # Overrides the image tag whose default is the chart appVersion.
-        tag: ""
 
       args:
         - "--v={{ .Values.controller.verbosityLevel }}"
@@ -44,12 +38,7 @@ spec:
       verbosityLevel: 5
 
     validatingWebhook:
-      enabled: false
+      enabled: true
       rbac:
         enabled: true
       replicaCount: 3
-      image:
-        repository: registry.k8s.io/sig-storage/snapshot-validation-webhook
-        pullPolicy: IfNotPresent
-        # Overrides the image tag whose default is the chart appVersion.
-        tag: ""
