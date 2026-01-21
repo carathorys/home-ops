@@ -33,6 +33,7 @@ spec:
     driver:
       config:
         driver: freenas-api-iscsi
+
       existingConfigSecret: iscsi-driver-config
     node:
       driver:
@@ -56,4 +57,4 @@ spec:
     volumeSnapshotClasses:
       - name: iscsi
         parameters:
-          detachedSnapshots: 'true'
+          detachedSnapshots: 'false'

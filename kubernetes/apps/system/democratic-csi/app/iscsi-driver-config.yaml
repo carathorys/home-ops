@@ -41,5 +41,3 @@ stringData:
       zvolBlocksize:
       datasetProperties:
         "org.freenas:description": "{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}/{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
-      cli:
-        sendFlags: "-w"
