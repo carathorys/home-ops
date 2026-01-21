@@ -9,7 +9,6 @@ spec:
     name: postgres
   schedule: "0 30 0 * *"
   online: true
-  target: primary
   onlineConfiguration:
     waitForArchive: true
     immediateCheckpoint: true
