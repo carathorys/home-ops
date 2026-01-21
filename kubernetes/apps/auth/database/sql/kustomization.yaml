@@ -4,7 +4,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./secrets.yaml
-  - ./cluster.yaml
-  - ./prometheus-rule.yaml
-  - ./service.yaml
-  - ./daily-backup.yaml
+  # - ./cluster.yaml
+  # - ./prometheus-rule.yaml
+  # - ./service.yaml
+  # - ./daily-backup.yaml
