@@ -16,4 +16,3 @@ spec:
   method: volumeSnapshot
   suspend: false
   immediate: true
-  backupOwnerReference: self

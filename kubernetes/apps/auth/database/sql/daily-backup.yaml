@@ -15,4 +15,4 @@ spec:
     immediateCheckpoint: true
   method: volumeSnapshot
   suspend: false
-  immediate: false
+  immediate: true
