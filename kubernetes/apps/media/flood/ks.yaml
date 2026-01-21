@@ -18,6 +18,8 @@ spec:
   dependsOn:
     - name: external-secrets
       namespace: secrets
+    - name: config
+      namespace: media
     - name: persistent-volume-claims
       namespace: media
     - name: qbittorrent
@@ -26,6 +28,8 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
+      - name: media-config
+        kind: ConfigMap
     substitute:
       APP: *app
       APP_UID: "1000"

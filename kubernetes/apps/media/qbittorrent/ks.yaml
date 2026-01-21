@@ -20,10 +20,14 @@ spec:
       namespace: secrets
     - name: persistent-volume-claims
       namespace: media
+    - name: config
+      namespace: media
   postBuild:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
+      - name: media-config
+        kind: ConfigMap
     substitute:
       APP: *app
       APP_UID: "1000"

@@ -21,7 +21,7 @@ spec:
   values:
     controllers:
       main:
-        replicas: 1
+        replicas: ${REPLICAS}
         pod:
           securityContext:
             runAsUser: ${APP_UID}
