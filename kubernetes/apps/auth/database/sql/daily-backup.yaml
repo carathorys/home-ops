@@ -15,5 +15,5 @@ spec:
     immediateCheckpoint: true
   method: volumeSnapshot
   suspend: false
-  immediate: true
+  immediate: false
   backupOwnerReference: cluster
