@@ -14,5 +14,10 @@ spec:
     waitForArchive: true
     immediateCheckpoint: true
   method: volumeSnapshot
+  backupOwnerReference: cluster
+  pluginConfiguration:
+    name: iscsi
+    parameters:
+      detachedSnapshots: 'true'
   suspend: false
   immediate: true
