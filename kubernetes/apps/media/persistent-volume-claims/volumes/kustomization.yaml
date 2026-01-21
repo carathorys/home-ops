@@ -12,4 +12,13 @@ resources:
   - music-video.yaml
   - tv.yaml
 
-  - jellyfin.yaml
+
+  - archive/emby.yaml
+  - archive/flood.yaml
+  - archive/jackett.yaml
+  - archive/jellyseerr.yaml
+  - archive/plex.yaml
+  - archive/qbittorrent.yaml
+  - archive/qui.yaml
+  - archive/radarr.yaml
+  - archive/sonarr.yaml
