@@ -14,4 +14,4 @@ spec:
     waitForArchive: true
   method: volumeSnapshot
   suspend: false
-  immediate: false
+  immediate: true
