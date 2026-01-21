@@ -16,4 +16,4 @@ spec:
   method: volumeSnapshot
   suspend: false
   immediate: true
-  backupOwnerReference: cluster
+  backupOwnerReference: none
