@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: jackett
+  name: jackett-archive
 spec:
-  storageClassName: jackett
+  storageClassName: jackett-archive
   capacity:
     storage: 1Mi
   accessModes:
@@ -25,9 +25,9 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: jackett
+  name: jackett-archive
 spec:
-  storageClassName: jackett
+  storageClassName: jackett-archive
   accessModes:
     - ReadWriteMany
   resources:

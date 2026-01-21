@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: plex
+  name: plex-archive
 spec:
-  storageClassName: plex
+  storageClassName: plex-archive
   capacity:
     storage: 1Mi
   accessModes:
@@ -25,9 +25,9 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: plex
+  name: plex-archive
 spec:
-  storageClassName: plex
+  storageClassName: plex-archive
   accessModes:
     - ReadWriteMany
   resources:

@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: qui
+  name: qui-archive
 spec:
-  storageClassName: qui
+  storageClassName: qui-archive
   capacity:
     storage: 1Mi
   accessModes:
@@ -25,9 +25,9 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: qui
+  name: qui-archive
 spec:
-  storageClassName: qui
+  storageClassName: qui-archive
   accessModes:
     - ReadWriteMany
   resources:
