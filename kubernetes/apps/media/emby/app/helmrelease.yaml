@@ -49,7 +49,7 @@ spec:
               privileged: true
             image:
               repository: ghcr.io/linuxserver/emby
-              tag: 4.9.1.90-ls260
+              tag: 4.9.3.0-ls268
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
