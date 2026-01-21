@@ -36,9 +36,3 @@ spec:
         - "--enable-distributed-snapshotting"
       extraArgs: []
       verbosityLevel: 5
-
-    validatingWebhook:
-      enabled: true
-      rbac:
-        enabled: true
-      replicaCount: 3
