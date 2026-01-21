@@ -24,6 +24,8 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
+      - name: media-config
+        kind: ConfigMap
     substitute:
       APP: *app
       APP_UID: "1000"
