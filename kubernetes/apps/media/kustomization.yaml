@@ -7,7 +7,7 @@ components:
   - ../../components/common
 resources:
   - ./secrets/ks.yaml
-  # - ./database-cluster/ks.yaml
+  - ./database-cluster/ks.yaml
   - ./persistent-volume-claims/ks.yaml
   # - ./emby/ks.yaml
   # - ./flood/ks.yaml
