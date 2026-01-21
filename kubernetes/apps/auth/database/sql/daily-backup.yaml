@@ -12,6 +12,8 @@ spec:
   target: primary
   onlineConfiguration:
     waitForArchive: true
+    immediateCheckpoint: true
   method: volumeSnapshot
   suspend: false
-  immediate: true
+  immediate: false
+  backupOwnerReference: cluster
