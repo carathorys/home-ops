@@ -56,6 +56,7 @@ endpoints:
       - "len([BODY]) > 0"
   - name: qui
     group: external
+    url: 1.1.1.1
     interval: 1m
     dns:
       query-name: "qui.${SECRET_DOMAIN}"
@@ -101,6 +102,7 @@ endpoints:
 
   - name: sonarr
     group: external
+    url: 1.1.1.1
     interval: 1m
     dns:
       query-name: "sonarr.${SECRET_DOMAIN}"
