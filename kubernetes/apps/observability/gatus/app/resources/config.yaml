@@ -54,14 +54,16 @@ endpoints:
       query-type: A
     conditions:
       - "len([BODY]) > 0"
+
   - name: qui
     group: external
-    url: 1.1.1.1
+    url: 192.168.0.99
     interval: 1m
     dns:
       query-name: "qui.${SECRET_DOMAIN}"
       query-type: A
     conditions:
+
       - "len([BODY]) > 0"
   - name: jackett
     group: external
@@ -72,6 +74,7 @@ endpoints:
       query-type: A
     conditions:
       - "len([BODY]) > 0"
+
   - name: jellyseerr
     group: external
     url: 1.1.1.1
@@ -81,15 +84,8 @@ endpoints:
       query-type: A
     conditions:
       - "len([BODY]) > 0"
-  - name: qbittorrent
-    group: external
-    url: 1.1.1.1
-    interval: 1m
-    dns:
-      query-name: "qbittorrent.${SECRET_DOMAIN}"
-      query-type: A
-    conditions:
-      - "len([BODY]) > 0"
+
+
   - name: radarr
     group: external
     url: 1.1.1.1
