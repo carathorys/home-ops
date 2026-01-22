@@ -12,6 +12,8 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/observability/gatus/app
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
