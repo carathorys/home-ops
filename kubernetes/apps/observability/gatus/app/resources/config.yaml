@@ -36,6 +36,24 @@ endpoints:
       query-type: A
     conditions:
       - "len([BODY]) > 0"
+  - name: emby
+    group: external
+    url: 1.1.1.1
+    interval: 1m
+    dns:
+      query-name: "emby.${SECRET_DOMAIN}"
+      query-type: A
+    conditions:
+      - "len([BODY]) > 0"
+  - name: plex
+    group: external
+    url: 1.1.1.1
+    interval: 1m
+    dns:
+      query-name: "plex.${SECRET_DOMAIN}"
+      query-type: A
+    conditions:
+      - "len([BODY]) > 0"
   - name: flux-webhook
     group: external
     url: https://flux-receiver.${SECRET_DOMAIN}
