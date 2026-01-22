@@ -94,7 +94,7 @@ spec:
             scrapeTimeout: 10s
     route:
       internal:
-        hostnames: ["status.zinn.ca"]
+        hostnames: ["status.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal
             namespace: kube-system
