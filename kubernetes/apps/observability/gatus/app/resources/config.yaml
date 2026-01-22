@@ -40,6 +40,9 @@ endpoints:
     group: external
     url: https://flux-webhook.${SECRET_DOMAIN}
     interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
     client:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
