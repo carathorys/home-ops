@@ -27,12 +27,12 @@ endpoints:
       query-type: A
     conditions:
       - "len([BODY]) == 0"
-  - name: external
+  - name: plex
     group: external
     url: 1.1.1.1
     interval: 1m
     dns:
-      query-name: "external.${SECRET_DOMAIN}"
+      query-name: "plex.${SECRET_DOMAIN}"
       query-type: A
     conditions:
       - "len([BODY]) > 0"
