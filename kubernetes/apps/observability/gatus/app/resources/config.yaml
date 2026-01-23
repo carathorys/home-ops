@@ -65,6 +65,31 @@ endpoints:
     conditions:
       - "len([BODY]) > 0"
 
+  - name: emby
+    group: internal
+    url: https://emby.${SECRET_DOMAIN}
+    interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    client:
+      dns-resolver: tcp://192.168.0.99:53
+    conditions:
+      - "len([BODY]) > 0"
+
+
+  - name: plex
+    group: internal
+    url: https://plex.${SECRET_DOMAIN}
+    interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    client:
+      dns-resolver: tcp://192.168.0.99:53
+    conditions:
+      - "len([BODY]) > 0"
+
   - name: qui
     group: internal
     url: https://qui.${SECRET_DOMAIN}
