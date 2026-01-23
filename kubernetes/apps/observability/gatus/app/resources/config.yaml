@@ -69,9 +69,9 @@ endpoints:
     <<: *default-internal-web
     url: http://home-assistant.home-assistant.svc.cluster.local:8123
 
-  - name: zigbee2mqtt
-    <<: *default-internal-web
-    url: http://zigbee2mqtt.home-assistant.svc.cluster.local:8080
+  # - name: zigbee2mqtt
+  #   <<: *default-internal-web
+  #   url: http://zigbee2mqtt.home-assistant.svc.cluster.local:8080
 
 
 
