@@ -14,7 +14,7 @@ ui:
   default-sort-by: group
 
 default-external-web: &default-external-web
-  group: external
+  group: internet
   interval: 1m
   client:
     dns-resolver: tcp://1.1.1.1:53
@@ -69,6 +69,6 @@ endpoints:
     <<: *default-internal-web
     url: http://zigbee2mqtt.home-assistant.svc.cluster.local:8080
 
-  - name: status
+  - name: Connectivity status
     <<: *default-external-web
     url: http://status.${SECRET_DOMAIN}
