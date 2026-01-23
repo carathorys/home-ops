@@ -27,79 +27,83 @@ endpoints:
       query-type: A
     conditions:
       - "len([BODY]) == 0"
+
   - name: auth
     group: external
-    url: 1.1.1.1
+    url: https://auth.${SECRET_DOMAIN}
+    interval: 1m
     ui:
       hide-hostname: true
       hide-url: true
-    interval: 1m
-    dns:
-      query-name: "auth.${SECRET_DOMAIN}"
-      query-type: A
+    client:
+      dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "len([BODY]) > 0"
+
+
   - name: emby
     group: external
-    url: 1.1.1.1
+    url: https://emby.${SECRET_DOMAIN}
+    interval: 1m
     ui:
       hide-hostname: true
       hide-url: true
-    interval: 1m
-    dns:
-      query-name: "emby.${SECRET_DOMAIN}"
-      query-type: A
+    client:
+      dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "len([BODY]) > 0"
+
+
   - name: plex
     group: external
-    url: 1.1.1.1
+    url: https://plex.${SECRET_DOMAIN}
+    interval: 1m
     ui:
       hide-hostname: true
       hide-url: true
-    interval: 1m
-    dns:
-      query-name: "plex.${SECRET_DOMAIN}"
-      query-type: A
+    client:
+      dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "len([BODY]) > 0"
+
+
 
   - name: qui
     group: internal
-    url: 192.168.0.99
+    url: https://qui.${SECRET_DOMAIN}
     interval: 1m
     ui:
       hide-hostname: true
       hide-url: true
-    dns:
-      query-name: "qui.${SECRET_DOMAIN}"
-      query-type: A
+    client:
+      dns-resolver: tcp://192.168.0.99:53
     conditions:
-
       - "len([BODY]) > 0"
+
+
+
   - name: jackett
     group: internal
-    url: 192.168.0.99
+    url: https://jackett.${SECRET_DOMAIN}
     interval: 1m
     ui:
       hide-hostname: true
       hide-url: true
-    dns:
-      query-name: "jackett.${SECRET_DOMAIN}"
-      query-type: A
+    client:
+      dns-resolver: tcp://192.168.0.99:53
     conditions:
       - "len([BODY]) > 0"
+
 
   - name: jellyseerr
     group: internal
-    url: 192.168.0.99
+    url: https://jellyseerr.${SECRET_DOMAIN}
     interval: 1m
     ui:
       hide-hostname: true
       hide-url: true
-    dns:
-      query-name: "jellyseerr.${SECRET_DOMAIN}"
-      query-type: A
+    client:
+      dns-resolver: tcp://192.168.0.99:53
     conditions:
       - "len([BODY]) > 0"
 
