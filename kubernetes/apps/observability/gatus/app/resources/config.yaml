@@ -105,28 +105,38 @@ endpoints:
 
 
   - name: radarr
-    group: external
-    url: 1.1.1.1
+    group: internal
+    url: https://radarr.${SECRET_DOMAIN}
     interval: 1m
     ui:
       hide-hostname: true
       hide-url: true
-    dns:
-      query-name: "radarr.${SECRET_DOMAIN}"
-      query-type: A
+    client:
+      dns-resolver: tcp://192.168.0.99:53
+    conditions:
+      - "len([BODY]) > 0"
+
+  - name: radarr
+    group: external
+    url: https://radarr.${SECRET_DOMAIN}
+    interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    client:
+      dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "len([BODY]) > 0"
 
   - name: sonarr
     group: internal
-    url: 192.168.0.99
+    url: https://sonarr.${SECRET_DOMAIN}
     interval: 1m
     ui:
       hide-hostname: true
       hide-url: true
-    dns:
-      query-name: "sonarr.${SECRET_DOMAIN}"
-      query-type: A
+    client:
+      dns-resolver: tcp://192.168.0.99:53
     conditions:
       - "len([BODY]) > 0"
 
