@@ -14,9 +14,6 @@ ui:
 default-external-web: &default-external-web
   group: external
   interval: 1m
-  # ui:
-  #   hide-hostname: true
-  #   hide-url: true
   client:
     dns-resolver: tcp://1.1.1.1:53
   conditions:
@@ -24,9 +21,6 @@ default-external-web: &default-external-web
 default-internal-web: &default-internal-web
   group: internal
   interval: 1m
-  # ui:
-  #   hide-hostname: true
-  #   hide-url: true
   client:
     timeout: 30s
     client.ignore-redirect: true
@@ -39,47 +33,35 @@ connectivity:
     target: 1.1.1.1:53
     interval: 1m
 endpoints:
-  # - name: status
-  #   group: guarded
-  #   url: 1.1.1.1
-  #   interval: 1m
-  #   ui:
-  #     hide-hostname: true
-  #     hide-url: true
-  #   dns:
-  #     query-name: "status.${SECRET_DOMAIN}"
-  #     query-type: A
-  #   conditions:
-  #     - "len([BODY]) == 0"
 
 
   - name: emby
     <<: *default-internal-web
-    url: https://emby.${SECRET_DOMAIN}
+    url: https://emby.media.svc.cluster.local:8096
 
   - name: plex
     <<: *default-internal-web
-    url: https://plex.${SECRET_DOMAIN}
+    url: https://plex.media.svc.cluster.local:32400
 
   - name: qui
     <<: *default-internal-web
-    url: https://qui.${SECRET_DOMAIN}
+    url: https://qui.media.svc.cluster.local:7476
 
   - name: jackett
     <<: *default-internal-web
-    url: https://jackett.${SECRET_DOMAIN}
+    url: https://jackett.media.svc.cluster.local:9117
 
   - name: jellyseerr
     <<: *default-internal-web
-    url: https://jellyseerr.${SECRET_DOMAIN}
+    url: https://jellyseerr.media.svc.cluster.local:5055
 
   - name: radarr
     <<: *default-internal-web
-    url: https://radarr.${SECRET_DOMAIN}
+    url: https://radarr.media.svc.cluster.local:7878
 
   - name: sonarr
     <<: *default-internal-web
-    url: https://sonarr.${SECRET_DOMAIN}
+    url: https://sonarr.media.svc.cluster.local:8989
 
 
 
