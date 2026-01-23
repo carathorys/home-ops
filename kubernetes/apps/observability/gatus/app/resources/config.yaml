@@ -29,7 +29,7 @@ endpoints:
       - "len([BODY]) == 0"
   - name: auth
     group: external
-    url: 192.168.0.99
+    url: 1.1.1.1
     ui:
       hide-hostname: true
       hide-url: true
@@ -41,7 +41,7 @@ endpoints:
       - "len([BODY]) > 0"
   - name: emby
     group: external
-    url: 192.168.0.99
+    url: 1.1.1.1
     ui:
       hide-hostname: true
       hide-url: true
@@ -53,7 +53,7 @@ endpoints:
       - "len([BODY]) > 0"
   - name: plex
     group: external
-    url: 192.168.0.99
+    url: 1.1.1.1
     ui:
       hide-hostname: true
       hide-url: true
@@ -65,7 +65,7 @@ endpoints:
       - "len([BODY]) > 0"
 
   - name: qui
-    group: external
+    group: internal
     url: 192.168.0.99
     interval: 1m
     ui:
@@ -78,7 +78,7 @@ endpoints:
 
       - "len([BODY]) > 0"
   - name: jackett
-    group: external
+    group: internal
     url: 192.168.0.99
     interval: 1m
     ui:
@@ -91,7 +91,7 @@ endpoints:
       - "len([BODY]) > 0"
 
   - name: jellyseerr
-    group: external
+    group: internal
     url: 192.168.0.99
     interval: 1m
     ui:
@@ -106,7 +106,7 @@ endpoints:
 
   - name: radarr
     group: external
-    url: 192.168.0.99
+    url: 1.1.1.1
     interval: 1m
     ui:
       hide-hostname: true
@@ -118,7 +118,7 @@ endpoints:
       - "len([BODY]) > 0"
 
   - name: sonarr
-    group: external
+    group: internal
     url: 192.168.0.99
     interval: 1m
     ui:
@@ -127,6 +127,18 @@ endpoints:
     dns:
       query-name: "sonarr.${SECRET_DOMAIN}"
       query-type: A
+    conditions:
+      - "len([BODY]) > 0"
+
+  - name: sonarr
+    group: external
+    url: https://sonarr.${SECRET_DOMAIN}
+    interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    client:
+      dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "len([BODY]) > 0"
 
