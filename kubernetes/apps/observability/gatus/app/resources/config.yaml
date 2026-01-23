@@ -48,17 +48,6 @@ endpoints:
     conditions:
       - "len([BODY]) == 0"
 
-  - name: auth
-    <<: *default-external-web
-    url: https://auth.${SECRET_DOMAIN}
-
-  - name: emby
-    <<: *default-external-web
-    url: https://emby.${SECRET_DOMAIN}
-
-  - name: plex
-    <<: *default-external-web
-    url: https://plex.${SECRET_DOMAIN}
 
   - name: emby
     <<: *default-internal-web
@@ -83,29 +72,34 @@ endpoints:
   - name: radarr
     <<: *default-internal-web
     url: https://radarr.${SECRET_DOMAIN}
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    client:
-      dns-resolver: tcp://192.168.0.99:53
-    conditions:
-      - "len([BODY]) > 0"
-
-  - name: radarr
-    <<: *default-external-web
-    url: https://radarr.${SECRET_DOMAIN}
 
   - name: sonarr
     <<: *default-internal-web
     url: https://sonarr.${SECRET_DOMAIN}
 
-  - name: sonarr
+
+  - name: auth
     <<: *default-external-web
-    url: https://sonarr.${SECRET_DOMAIN}
+    url: https://auth.${SECRET_DOMAIN}
+
+  - name: emby
+    <<: *default-external-web
+    url: https://emby.${SECRET_DOMAIN}
 
   - name: flux-webhook
     <<: *default-external-web
     url: https://flux-webhook.${SECRET_DOMAIN}
     conditions:
       - "[STATUS] == 404"
+
+  - name: plex
+    <<: *default-external-web
+    url: https://plex.${SECRET_DOMAIN}
+
+  - name: sonarr
+    <<: *default-external-web
+    url: https://sonarr.${SECRET_DOMAIN}
+
+  - name: radarr
+    <<: *default-external-web
+    url: https://radarr.${SECRET_DOMAIN}
