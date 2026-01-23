@@ -40,7 +40,6 @@ endpoints:
     conditions:
       - "len([BODY]) > 0"
 
-
   - name: emby
     group: external
     url: https://emby.${SECRET_DOMAIN}
@@ -66,8 +65,6 @@ endpoints:
     conditions:
       - "len([BODY]) > 0"
 
-
-
   - name: qui
     group: internal
     url: https://qui.${SECRET_DOMAIN}
@@ -79,8 +76,6 @@ endpoints:
       dns-resolver: tcp://192.168.0.99:53
     conditions:
       - "len([BODY]) > 0"
-
-
 
   - name: jackett
     group: internal
