@@ -20,11 +20,15 @@ default-external-web: &default-external-web
   conditions:
     - "len([BODY]) > 0"
 
-
 connectivity:
   checker:
     target: 1.1.1.1:53
     interval: 1m
+remote:
+  instances:
+    - endpoint-refix: "internal-"
+      url: https://status-internal.${SECRET_DOMAIN}/api/v1/endpoints/statuses
+
 endpoints:
   - name: auth
     <<: *default-external-web
