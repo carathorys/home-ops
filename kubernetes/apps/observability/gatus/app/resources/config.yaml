@@ -7,6 +7,26 @@ storage:
   caching: true
 metrics: true
 debug: false
+default-external-web: &default-external-web
+  group: external
+  interval: 1m
+  ui:
+    hide-hostname: true
+    hide-url: true
+  client:
+    dns-resolver: tcp://1.1.1.1:53
+  conditions:
+    - "len([BODY]) > 0"
+default-internal-web: &default-internal-web
+  group: internal
+  interval: 1m
+  ui:
+    hide-hostname: true
+    hide-url: true
+  client:
+    dns-resolver: tcp://192.168.0.99:53
+  conditions:
+    - "len([BODY]) > 0"
 ui:
   title: Status | Gatus
   header: Status
@@ -29,107 +49,39 @@ endpoints:
       - "len([BODY]) == 0"
 
   - name: auth
-    group: external
+    <<: *default-external-web
     url: https://auth.${SECRET_DOMAIN}
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "len([BODY]) > 0"
 
   - name: emby
-    group: external
+    <<: *default-external-web
     url: https://emby.${SECRET_DOMAIN}
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "len([BODY]) > 0"
-
 
   - name: plex
-    group: external
+    <<: *default-external-web
     url: https://plex.${SECRET_DOMAIN}
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "len([BODY]) > 0"
 
   - name: emby
-    group: internal
+    <<: *default-internal-web
     url: https://emby.${SECRET_DOMAIN}
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    client:
-      dns-resolver: tcp://192.168.0.99:53
-    conditions:
-      - "len([BODY]) > 0"
-
 
   - name: plex
-    group: internal
+    <<: *default-internal-web
     url: https://plex.${SECRET_DOMAIN}
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    client:
-      dns-resolver: tcp://192.168.0.99:53
-    conditions:
-      - "len([BODY]) > 0"
 
   - name: qui
-    group: internal
+    <<: *default-internal-web
     url: https://qui.${SECRET_DOMAIN}
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    client:
-      dns-resolver: tcp://192.168.0.99:53
-    conditions:
-      - "len([BODY]) > 0"
 
   - name: jackett
-    group: internal
+    <<: *default-internal-web
     url: https://jackett.${SECRET_DOMAIN}
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    client:
-      dns-resolver: tcp://192.168.0.99:53
-    conditions:
-      - "len([BODY]) > 0"
-
 
   - name: jellyseerr
-    group: internal
+    <<: *default-internal-web
     url: https://jellyseerr.${SECRET_DOMAIN}
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    client:
-      dns-resolver: tcp://192.168.0.99:53
-    conditions:
-      - "len([BODY]) > 0"
-
 
   - name: radarr
-    group: internal
+    <<: *default-internal-web
     url: https://radarr.${SECRET_DOMAIN}
     interval: 1m
     ui:
@@ -141,50 +93,19 @@ endpoints:
       - "len([BODY]) > 0"
 
   - name: radarr
-    group: external
+    <<: *default-external-web
     url: https://radarr.${SECRET_DOMAIN}
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "len([BODY]) > 0"
 
   - name: sonarr
-    group: internal
+    <<: *default-internal-web
     url: https://sonarr.${SECRET_DOMAIN}
-    interval: 1m
-    # ui:
-    #   hide-hostname: true
-    #   hide-url: true
-    client:
-      dns-resolver: tcp://192.168.0.99:53
-    conditions:
-      - "len([BODY]) > 0"
 
   - name: sonarr
-    group: external
+    <<: *default-external-web
     url: https://sonarr.${SECRET_DOMAIN}
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "len([BODY]) > 0"
-
 
   - name: flux-webhook
-    group: external
+    <<: *default-external-web
     url: https://flux-webhook.${SECRET_DOMAIN}
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    client:
-      dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 404"
