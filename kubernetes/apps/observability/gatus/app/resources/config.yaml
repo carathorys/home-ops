@@ -97,7 +97,3 @@ endpoints:
   - name: zigbee2mqtt
     <<: *default-internal-web
     url: http://zigbee2mqtt.home-assistant.svc.cluster.local:8080
-
-  - name: Connectivity status
-    <<: *default-external-web
-    url: http://status.${SECRET_DOMAIN}
