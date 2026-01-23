@@ -65,6 +65,14 @@ endpoints:
     <<: *default-internal-web
     url: http://sonarr.media.svc.cluster.local:8989
 
+  - name: home-assistant
+    <<: *default-internal-web
+    url: http://home-assistant.home-assistant.svc.cluster.local:8123
+
+  - name: zigbee2mqtt
+    <<: *default-internal-web
+    url: http://zigbee2mqtt.home-assistant.svc.cluster.local:8123
+
 
 
   - name: auth
@@ -92,3 +100,7 @@ endpoints:
   - name: radarr
     <<: *default-external-web
     url: https://radarr.${SECRET_DOMAIN}
+
+  - name: zigbee2mqtt
+    <<: *default-external-web
+    url: https://z2m.${SECRET_DOMAIN}
