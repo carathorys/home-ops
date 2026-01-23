@@ -103,21 +103,21 @@ spec:
           - backendRefs: [{}]
     rbac:
       roles:
-        gatus:
+        ${APP}:
           type: ClusterRole
           rules:
             - apiGroups: [""]
               resources: ["configmaps", "secrets"]
               verbs: ["get", "watch", "list"]
       bindings:
-        gatus:
+        ${APP}:
           type: ClusterRoleBinding
           roleRef:
             identifier: ${APP}
           subjects:
             - identifier: ${APP}
     serviceAccount:
-      gatus: {}
+      ${APP}: {}
     persistence:
       config:
         existingClaim: ${APP}-config
