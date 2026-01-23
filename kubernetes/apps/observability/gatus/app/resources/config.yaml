@@ -175,6 +175,8 @@ endpoints:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "len([BODY]) > 0"
+      - "[STATUS] == 401"
+
 
   - name: flux-webhook
     group: external
