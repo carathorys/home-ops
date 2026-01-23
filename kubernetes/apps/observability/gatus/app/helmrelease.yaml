@@ -96,7 +96,7 @@ spec:
       internal:
         hostnames: ["status.${SECRET_DOMAIN}"]
         parentRefs:
-          - name: internal
+          - name: external
             namespace: kube-system
             sectionName: https
         rules:
