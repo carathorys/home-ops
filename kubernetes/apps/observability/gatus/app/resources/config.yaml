@@ -24,9 +24,10 @@ default-internal-web: &default-internal-web
     hide-hostname: true
     hide-url: true
   client:
-    dns-resolver: tcp://192.168.0.99:53
+    dns-resolver: tcp://10.43.0.10:53
   conditions:
     - "len([BODY]) > 0"
+
 ui:
   title: Status | Gatus
   header: Status
@@ -35,18 +36,18 @@ connectivity:
     target: 1.1.1.1:53
     interval: 1m
 endpoints:
-  - name: status
-    group: guarded
-    url: 1.1.1.1
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    dns:
-      query-name: "status.${SECRET_DOMAIN}"
-      query-type: A
-    conditions:
-      - "len([BODY]) == 0"
+  # - name: status
+  #   group: guarded
+  #   url: 1.1.1.1
+  #   interval: 1m
+  #   ui:
+  #     hide-hostname: true
+  #     hide-url: true
+  #   dns:
+  #     query-name: "status.${SECRET_DOMAIN}"
+  #     query-type: A
+  #   conditions:
+  #     - "len([BODY]) == 0"
 
 
   - name: emby
@@ -76,6 +77,7 @@ endpoints:
   - name: sonarr
     <<: *default-internal-web
     url: https://sonarr.${SECRET_DOMAIN}
+
 
 
   - name: auth
