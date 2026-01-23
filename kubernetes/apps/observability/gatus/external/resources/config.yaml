@@ -1,0 +1,57 @@
+---
+web:
+  port: ${CUSTOM_WEB_PORT}
+storage:
+  type: sqlite
+  path: /config/sqlite.db
+  caching: true
+metrics: true
+debug: false
+concurrency: 0
+ui:
+  title: Status | Gatus
+  header: Status
+  default-sort-by: group
+default-external-web: &default-external-web
+  group: external
+  interval: 1m
+  client:
+    dns-resolver: tcp://1.1.1.1:53
+  conditions:
+    - "len([BODY]) > 0"
+
+
+connectivity:
+  checker:
+    target: 1.1.1.1:53
+    interval: 1m
+endpoints:
+  - name: auth
+    <<: *default-external-web
+    url: https://auth.${SECRET_DOMAIN}
+
+  - name: emby
+    <<: *default-external-web
+    url: https://emby.${SECRET_DOMAIN}
+
+  - name: flux-webhook
+    <<: *default-external-web
+    url: https://flux-webhook.${SECRET_DOMAIN}
+    conditions:
+      - "[STATUS] == 404"
+
+  - name: plex
+    <<: *default-external-web
+    url: https://plex.${SECRET_DOMAIN}
+
+  - name: sonarr
+    <<: *default-external-web
+    url: https://sonarr.${SECRET_DOMAIN}
+
+  - name: radarr
+    <<: *default-external-web
+    url: https://radarr.${SECRET_DOMAIN}
+
+  - name: zigbee2mqtt
+    <<: *default-external-web
+    url: https://z2m.${SECRET_DOMAIN}

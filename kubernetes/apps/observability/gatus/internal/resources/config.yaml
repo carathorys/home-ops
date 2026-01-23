@@ -1,0 +1,74 @@
+---
+web:
+  port: ${CUSTOM_WEB_PORT}
+storage:
+  type: sqlite
+  path: /config/sqlite.db
+  caching: true
+metrics: true
+debug: false
+concurrency: 0
+ui:
+  title: Status | Gatus
+  header: Status
+  default-sort-by: group
+
+default-external-web: &default-external-web
+  group: external
+  interval: 1m
+  client:
+    dns-resolver: tcp://1.1.1.1:53
+  conditions:
+    - "len([BODY]) > 0"
+
+default-internal-web: &default-internal-web
+  group: internal
+  interval: 1m
+  ui:
+    hide-hostname: true
+    hide-url: true
+  client:
+    dns-resolver: tcp://10.43.0.10:53
+  conditions:
+    - "len([BODY]) > 0"
+
+endpoints:
+  - name: emby
+    <<: *default-internal-web
+    url: http://emby.media.svc.cluster.local:8096
+
+  - name: plex
+    <<: *default-internal-web
+    url: http://plex.media.svc.cluster.local:32400
+
+  - name: qui
+    <<: *default-internal-web
+    url: http://qui.media.svc.cluster.local:7476
+
+  - name: jackett
+    <<: *default-internal-web
+    url: http://jackett.media.svc.cluster.local:9117
+
+  - name: jellyseerr
+    <<: *default-internal-web
+    url: http://jellyseerr.media.svc.cluster.local:5055
+
+  - name: radarr
+    <<: *default-internal-web
+    url: http://radarr.media.svc.cluster.local:7878
+
+  - name: sonarr
+    <<: *default-internal-web
+    url: http://sonarr.media.svc.cluster.local:8989
+
+  - name: home-assistant
+    <<: *default-internal-web
+    url: http://home-assistant.home-assistant.svc.cluster.local:8123
+
+  - name: zigbee2mqtt
+    <<: *default-internal-web
+    url: http://zigbee2mqtt.home-assistant.svc.cluster.local:8080
+
+  - name: status
+    <<: *default-external-web
+    url: http://status.${SECRET_DOMAIN}
