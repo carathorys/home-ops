@@ -12,9 +12,9 @@ ui:
 default-external-web: &default-external-web
   group: external
   interval: 1m
-  ui:
-    hide-hostname: true
-    hide-url: true
+  # ui:
+  #   hide-hostname: true
+  #   hide-url: true
   client:
     dns-resolver: tcp://1.1.1.1:53
   conditions:
@@ -22,9 +22,9 @@ default-external-web: &default-external-web
 default-internal-web: &default-internal-web
   group: internal
   interval: 1m
-  ui:
-    hide-hostname: true
-    hide-url: true
+  # ui:
+  #   hide-hostname: true
+  #   hide-url: true
   client:
     timeout: 30s
     client.ignore-redirect: true
