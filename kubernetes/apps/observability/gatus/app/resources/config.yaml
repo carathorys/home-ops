@@ -26,7 +26,7 @@ default-internal-web: &default-internal-web
   client:
     timeout: 30s
     client.ignore-redirect: true
-    dns-resolver: tcp://192.168.0.99:53
+    dns-resolver: tcp://10.43.0.10:53
   conditions:
     - "len([BODY]) > 0"
 
