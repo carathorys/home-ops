@@ -7,4 +7,3 @@ resources:
   - helmrelease.yaml
   - podmonitor.yaml
   - prometheus-rules.yaml
-  - ocirepository.yaml
