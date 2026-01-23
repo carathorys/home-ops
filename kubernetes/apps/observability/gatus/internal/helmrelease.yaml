@@ -113,9 +113,9 @@ spec:
         gatus:
           type: ClusterRoleBinding
           roleRef:
-            identifier: gatus
+            identifier: ${APP}
           subjects:
-            - identifier: gatus
+            - identifier: ${APP}
     serviceAccount:
       gatus: {}
     persistence:
