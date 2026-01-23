@@ -37,43 +37,43 @@ connectivity:
 endpoints:
 
 
-  # - name: emby
-  #   <<: *default-internal-web
-  #   url: http://emby.media.svc.cluster.local:8096
+  - name: emby
+    <<: *default-internal-web
+    url: http://emby.media.svc.cluster.local:8096
 
-  # - name: plex
-  #   <<: *default-internal-web
-  #   url: http://plex.media.svc.cluster.local:32400
+  - name: plex
+    <<: *default-internal-web
+    url: http://plex.media.svc.cluster.local:32400
 
-  # - name: qui
-  #   <<: *default-internal-web
-  #   url: http://qui.media.svc.cluster.local:7476
+  - name: qui
+    <<: *default-internal-web
+    url: http://qui.media.svc.cluster.local:7476
 
-  # - name: jackett
-  #   <<: *default-internal-web
-  #   url: http://jackett.media.svc.cluster.local:9117
+  - name: jackett
+    <<: *default-internal-web
+    url: http://jackett.media.svc.cluster.local:9117
 
-  # - name: jellyseerr
-  #   <<: *default-internal-web
-  #   url: http://jellyseerr.media.svc.cluster.local:5055
+  - name: jellyseerr
+    <<: *default-internal-web
+    url: http://jellyseerr.media.svc.cluster.local:5055
 
-  # - name: radarr
-  #   <<: *default-internal-web
-  #   url: http://radarr.media.svc.cluster.local:7878
+  - name: radarr
+    <<: *default-internal-web
+    url: http://radarr.media.svc.cluster.local:7878
 
-  # - name: sonarr
-  #   <<: *default-internal-web
-  #   url: http://sonarr.media.svc.cluster.local:8989
+  - name: sonarr
+    <<: *default-internal-web
+    url: http://sonarr.media.svc.cluster.local:8989
 
 
 
-  # - name: auth
-  #   <<: *default-external-web
-  #   url: https://auth.${SECRET_DOMAIN}
+  - name: auth
+    <<: *default-external-web
+    url: https://auth.${SECRET_DOMAIN}
 
-  # - name: emby
-  #   <<: *default-external-web
-  #   url: https://emby.${SECRET_DOMAIN}
+  - name: emby
+    <<: *default-external-web
+    url: https://emby.${SECRET_DOMAIN}
 
   - name: flux-webhook
     <<: *default-external-web
@@ -81,14 +81,14 @@ endpoints:
     conditions:
       - "[STATUS] == 404"
 
-  # - name: plex
-  #   <<: *default-external-web
-  #   url: https://plex.${SECRET_DOMAIN}
+  - name: plex
+    <<: *default-external-web
+    url: https://plex.${SECRET_DOMAIN}
 
-  # - name: sonarr
-  #   <<: *default-external-web
-  #   url: https://sonarr.${SECRET_DOMAIN}
+  - name: sonarr
+    <<: *default-external-web
+    url: https://sonarr.${SECRET_DOMAIN}
 
-  # - name: radarr
-  #   <<: *default-external-web
-  #   url: https://radarr.${SECRET_DOMAIN}
+  - name: radarr
+    <<: *default-external-web
+    url: https://radarr.${SECRET_DOMAIN}
