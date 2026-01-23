@@ -37,31 +37,31 @@ endpoints:
 
   - name: emby
     <<: *default-internal-web
-    url: https://emby.media.svc.cluster.local:8096
+    url: http://emby.media.svc.cluster.local:8096
 
   - name: plex
     <<: *default-internal-web
-    url: https://plex.media.svc.cluster.local:32400
+    url: http://plex.media.svc.cluster.local:32400
 
   - name: qui
     <<: *default-internal-web
-    url: https://qui.media.svc.cluster.local:7476
+    url: http://qui.media.svc.cluster.local:7476
 
   - name: jackett
     <<: *default-internal-web
-    url: https://jackett.media.svc.cluster.local:9117
+    url: http://jackett.media.svc.cluster.local:9117
 
   - name: jellyseerr
     <<: *default-internal-web
-    url: https://jellyseerr.media.svc.cluster.local:5055
+    url: http://jellyseerr.media.svc.cluster.local:5055
 
   - name: radarr
     <<: *default-internal-web
-    url: https://radarr.media.svc.cluster.local:7878
+    url: http://radarr.media.svc.cluster.local:7878
 
   - name: sonarr
     <<: *default-internal-web
-    url: https://sonarr.media.svc.cluster.local:8989
+    url: http://sonarr.media.svc.cluster.local:8989
 
 
 
