@@ -151,7 +151,6 @@ endpoints:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "len([BODY]) > 0"
-      - "[STATUS] == 302"
 
   - name: sonarr
     group: internal
@@ -176,7 +175,6 @@ endpoints:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "len([BODY]) > 0"
-      - "[STATUS] == 302"
 
 
   - name: flux-webhook
