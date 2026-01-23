@@ -156,9 +156,9 @@ endpoints:
     group: internal
     url: https://sonarr.${SECRET_DOMAIN}
     interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
+    # ui:
+    #   hide-hostname: true
+    #   hide-url: true
     client:
       dns-resolver: tcp://192.168.0.99:53
     conditions:
