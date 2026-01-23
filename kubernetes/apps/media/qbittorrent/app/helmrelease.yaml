@@ -71,10 +71,10 @@ spec:
         parentRefs:
           - name: external
             namespace: kube-system
-            sectionName: trnt-tcp
+            sectionName: torrent-tcp
           - name: external
             namespace: kube-system
-            sectionName: trnt-udp
+            sectionName: torrent-udp
         rules:
           - backendRefs: [{}]
     persistence:
