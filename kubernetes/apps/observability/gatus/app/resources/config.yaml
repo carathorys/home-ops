@@ -32,7 +32,7 @@ default-internal-web: &default-internal-web
 
 connectivity:
   checker:
-    target: 1.1.1.1:53
+    target: 1.1.1.11:53
     interval: 1m
 endpoints:
 
