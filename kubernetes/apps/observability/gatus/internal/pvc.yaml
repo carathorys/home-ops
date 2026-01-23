@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: gatus-config
+  name: ${APP}-config
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
