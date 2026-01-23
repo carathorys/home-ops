@@ -22,6 +22,9 @@ default-external-web: &default-external-web
 default-internal-web: &default-internal-web
   group: internal
   interval: 1m
+  ui:
+    hide-hostname: true
+    hide-url: true
   client:
     dns-resolver: tcp://10.43.0.10:53
   conditions:
