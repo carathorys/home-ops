@@ -18,7 +18,7 @@ spec:
           concurrencyPolicy: "Replace"
           failedJobsHistory: 6
           schedule: "0 */4 * * *"
-          successfulJobsHistory: 0
+          successfulJobsHistory: 6
         pod:
           restartPolicy: OnFailure
           securityContext:
