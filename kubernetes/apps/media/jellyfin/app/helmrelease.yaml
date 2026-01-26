@@ -36,7 +36,7 @@ spec:
               fsGroupChangePolicy: OnRootMismatch
             image:
               repository: ghcr.io/jellyfin/jellyfin
-              tag: 10.11.5
+              tag: 10.11.6
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
