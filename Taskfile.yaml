@@ -26,6 +26,39 @@ tasks:
 
   default: task --list
 
+  encrypt-secrets:
+    internal: true
+    cmds:
+      - for: { var: SECRET_FILES }
+        cmd: |
+          if [ $(sops filestatus "{{.ITEM}}" | jq ".encrypted") == "false" ]; then
+              sops --encrypt --in-place "{{.ITEM}}"
+          fi
+    vars:
+      SECRET_FILES:
+        sh: find "{{.BOOTSTRAP_DIR}}" "{{.KUBERNETES_DIR}}" "{{.TALOS_DIR}}" -type f -name "*.sops.*" -print
+    preconditions:
+      - test -f {{.SOPS_AGE_KEY_FILE}}
+      - test -f {{.ROOT_DIR}}/.sops.yaml
+      - which jq sops
+
+
+  decrypt-secrets:
+    internal: true
+    cmds:
+      - for: { var: SECRET_FILES }
+        cmd: |
+          if [ $(sops filestatus "{{.ITEM}}" | jq ".encrypted") == "true" ]; then
+              sops --decrypt --in-place "{{.ITEM}}"
+          fi
+    vars:
+      SECRET_FILES:
+        sh: find "{{.BOOTSTRAP_DIR}}" "{{.KUBERNETES_DIR}}" "{{.TALOS_DIR}}" -type f -name "*.sops.*" -print
+    preconditions:
+      - test -f {{.SOPS_AGE_KEY_FILE}}
+      - test -f {{.ROOT_DIR}}/.sops.yaml
+      - which jq sops
+
   reconcile:
     desc: Force Flux to pull in changes from your Git repository
     cmd: flux --namespace flux-system reconcile kustomization flux-system --with-source
