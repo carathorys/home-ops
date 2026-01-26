@@ -56,11 +56,6 @@ spec:
               - /data/crdSchemas
               - --project-name
               - homelab-schemas
-              - "&&"
-              - echo "Waiting for schemas to be published..."
-              - sleep 300
-              - echo "Schemas published, exiting..."
-              - exit 0
             resources:
               requests:
                 cpu: 10m
