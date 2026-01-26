@@ -4,6 +4,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: publish-k8s-schemas
+  namespace: jobs
 spec:
   targetNamespace: jobs
   path: ./kubernetes/main/apps/jobs/publish-k8s-schemas/app
