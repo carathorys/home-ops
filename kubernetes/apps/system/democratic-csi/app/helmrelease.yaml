@@ -7,12 +7,12 @@ spec:
   interval: 1h
   chart:
     spec:
-      chart: ${APP}
+      chart: democratic-csi
       reconcileStrategy: ChartVersion
       version: 0.15.1
       sourceRef:
         kind: HelmRepository
-        name: ${APP}
+        name: democratic-csi
   maxHistory: 3
   install:
     remediation:
