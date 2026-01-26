@@ -7,7 +7,7 @@ metadata:
   namespace: jobs
 spec:
   targetNamespace: jobs
-  path: ./kubernetes/main/apps/jobs/publish-k8s-schemas/app
+  path: ./kubernetes/apps/jobs/publish-k8s-schemas/app
   sourceRef:
     kind: GitRepository
     name: flux-system
