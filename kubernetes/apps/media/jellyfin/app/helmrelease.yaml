@@ -130,10 +130,7 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /transcoding
-      jellyfin-cache:
-        existingClaim: jellyfin-cache
-        advancedMounts:
-          main:
-            main:
-              - path: /config/cache
-                readOnly: false
+      emby-cache:
+        type: emptyDir
+        globalMounts:
+          - path: /config/cache
