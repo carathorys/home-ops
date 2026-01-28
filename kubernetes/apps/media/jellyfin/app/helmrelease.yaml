@@ -43,6 +43,26 @@ spec:
                         values:
                           - emby
                   topologyKey: kubernetes.io/hostname
+        initContainers:
+          chown-config:
+            image:
+              repository: alpine:latest
+              tag: 3.21.1@sha256:247c34589c050221d894400039a9b32088891f59394a463f238762a1f22e54c0
+            resources:
+              requests:
+                cpu: 10m
+                memory: 16Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+            command:
+              - /bin/sh
+              - -c
+              - |
+                chown -R ${APP_UID}:${APP_GID} /config
         containers:
           main:
             securityContext:
