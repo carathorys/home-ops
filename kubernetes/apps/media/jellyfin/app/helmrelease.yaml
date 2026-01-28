@@ -75,57 +75,44 @@ spec:
       config:
         type: persistentVolumeClaim
         existingClaim: jellyfin
-        advancedMounts:
         globalMounts:
           - path: /config
       movies:
         type: persistentVolumeClaim
         existingClaim: movies
-        advancedMounts:
-          main:
-            main:
-              - path: /movies
-                readOnly: true
+        globalMounts:
+          - path: /movies
+            readOnly: true
       tv:
         type: persistentVolumeClaim
         existingClaim: tv
-        advancedMounts:
-          main:
-            main:
-              - path: /tv
-                readOnly: true
+        globalMounts:
+          - path: /tv
+            readOnly: true
       kids-movies:
         type: persistentVolumeClaim
         existingClaim: kids-movies
-        advancedMounts:
-          main:
-            main:
-              - path: /mnt/Gyerek/Filmek
-                readOnly: true
+        globalMounts:
+          - path: /mnt/Gyerek/Filmek
+            readOnly: true
       kids-tv:
         type: persistentVolumeClaim
         existingClaim: kids-tv
-        advancedMounts:
-          main:
-            main:
-              - path: /mnt/Gyerek/Sorozatok
-                readOnly: true
+        globalMounts:
+          - path: /mnt/Gyerek/Sorozatok
+            readOnly: true
       music-video:
         type: persistentVolumeClaim
         existingClaim: music-video
-        advancedMounts:
-          main:
-            main:
-              - path: /music/video
-                readOnly: true
+        globalMounts:
+          - path: /music/video
+            readOnly: true
       music-sound:
         type: persistentVolumeClaim
         existingClaim: music-sound
-        advancedMounts:
-          main:
-            main:
-              - path: /music/sound
-                readOnly: true
+        globalMounts:
+          - path: /music/sound
+            readOnly: true
       transcode:
         type: emptyDir
         globalMounts:
