@@ -19,4 +19,4 @@ resources:
   - ./qui/ks.yaml
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
-  # - ./jellyfin/ks.yaml
+  - ./jellyfin/ks.yaml
