@@ -88,26 +88,7 @@ spec:
                 memory: 2Gi
               limits:
                 memory: 10Gi
-          additional-packages:
-            image:
-              repository: debian
-              tag: latest
-            resources:
-              requests:
-                cpu: 10m
-                memory: 16Mi
-            securityContext:
-              runAsUser: 0
-              runAsGroup: 0
-              runAsNonRoot: false
-              capabilities:
-                add:
-                  - SYSADMIN
-            command:
-              - /bin/sh
-              - -c
-              - |
-                apt update && apt install -y glances bashtop
+
     service:
       main:
         type: LoadBalancer
