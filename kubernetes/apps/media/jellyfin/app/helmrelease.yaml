@@ -59,8 +59,8 @@ spec:
               runAsGroup: 0
               runAsNonRoot: false
               capabilities:
-                drop:
-                  - ALL
+                add:
+                  - SYSADMIN
             command:
               - /bin/sh
               - -c
