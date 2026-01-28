@@ -117,7 +117,7 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /transcoding
-      emby-cache:
+      cache:
         type: emptyDir
         globalMounts:
           - path: /config/cache
