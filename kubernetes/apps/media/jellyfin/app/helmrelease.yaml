@@ -66,6 +66,7 @@ spec:
               - -c
               - |
                 chown -R ${APP_UID}:${APP_GID} /config
+
         containers:
           main:
             securityContext:
