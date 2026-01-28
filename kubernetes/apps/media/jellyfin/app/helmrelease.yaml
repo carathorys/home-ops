@@ -46,8 +46,8 @@ spec:
         initContainers:
           chown-config:
             image:
-              repository: alpine:latest
-              tag: 3.21.1@sha256:247c34589c050221d894400039a9b32088891f59394a463f238762a1f22e54c0
+              repository: alpine
+              tag: latest
             resources:
               requests:
                 cpu: 10m
