@@ -53,8 +53,6 @@ spec:
                 cpu: 10m
                 memory: 16Mi
             securityContext:
-              allowPrivilegeEscalation: true
-              readOnlyRootFilesystem: false
               runAsUser: 0
               runAsGroup: 0
               runAsNonRoot: false
@@ -65,8 +63,7 @@ spec:
               - /bin/sh
               - -c
               - |
-                chown -R ${APP_UID}:${APP_GID} /config && apt update && apt install -y glances bashtop
-
+                chown -R ${APP_UID}:${APP_GID} /config
         containers:
           main:
             securityContext:
@@ -91,6 +88,26 @@ spec:
                 memory: 2Gi
               limits:
                 memory: 10Gi
+          chown-config:
+            image:
+              repository: alpine
+              tag: latest
+            resources:
+              requests:
+                cpu: 10m
+                memory: 16Mi
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
+              capabilities:
+                add:
+                  - SYSADMIN
+            command:
+              - /bin/sh
+              - -c
+              - |
+                apt update && apt install -y glances bashtop
     service:
       main:
         type: LoadBalancer
