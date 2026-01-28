@@ -65,16 +65,7 @@ spec:
               - /bin/sh
               - -c
               - |
-                chown -R ${APP_UID}:${APP_GID} /config
-              - &&
-              - apt
-              - update
-              - &&
-              - apt
-              - install
-              - tmux
-              - glances
-              - bashtop
+                chown -R ${APP_UID}:${APP_GID} /config && apt update && apt install -y glances bashtop
 
         containers:
           main:
