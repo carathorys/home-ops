@@ -21,8 +21,7 @@ spec:
   values:
     controllers:
       main:
-        replicas: 0
-
+        replicas: ${REPLICAS}
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
