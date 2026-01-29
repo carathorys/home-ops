@@ -3,7 +3,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: democratic-csi-snapshot-controller
+  name: snapshot-controller
 spec:
   interval: 1h
   url: https://democratic-csi.github.io/charts/
