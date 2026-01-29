@@ -24,8 +24,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    csiDriver:
-      name: iscsi
     controller:
       enabled: true
       rbac:
