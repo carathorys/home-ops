@@ -24,12 +24,13 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    csiDriver:
+      name: iscsi
     controller:
       enabled: true
       rbac:
         enabled: true
       replicaCount: 3
-
       args:
         - "--v={{ .Values.controller.verbosityLevel }}"
         - "--leader-election=true"
