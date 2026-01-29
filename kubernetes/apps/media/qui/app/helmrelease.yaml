@@ -35,7 +35,7 @@ spec:
           main:
             image:
               repository:  ghcr.io/autobrr/qui
-              tag: v1.12.0
+              tag: v1.13.1
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
