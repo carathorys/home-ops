@@ -20,6 +20,7 @@ spec:
     enablePodMonitor: true
   backup:
     retentionPolicy: 7d
+    target: primary
     volumeSnapshot:
       labels:
         app.kubernetes.io/name: auth-cluster-db-backup

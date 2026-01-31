@@ -13,5 +13,6 @@ spec:
     waitForArchive: true
     immediateCheckpoint: true
   method: volumeSnapshot
-  suspend: false
+  target: primary
   immediate: false
+
