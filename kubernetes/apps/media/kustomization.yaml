@@ -20,3 +20,4 @@ resources:
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
   - ./jellyfin/ks.yaml
+  - ./tautulli/ks.yaml
