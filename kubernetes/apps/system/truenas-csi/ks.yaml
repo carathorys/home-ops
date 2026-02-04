@@ -21,6 +21,9 @@ spec:
         kind: Secret
     substitute:
       APP: *app
+  dependsOn:
+    - name: external-secrets
+      namespace: secrets
   prune: true
   wait: true
   interval: 30m
