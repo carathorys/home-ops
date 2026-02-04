@@ -19,6 +19,8 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
+      - name: truenas-secrets
+        kind: Secret
     substitute:
       APP: *app
   dependsOn:
