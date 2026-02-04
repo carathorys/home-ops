@@ -51,10 +51,10 @@ spec:
       replicas: 1
       service:
         type: LoadBalancer
-      # metrics:
-      #   enabled: true
-      #   serviceMonitor:
-      #     enabled: true
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
       route:
         main:
           enabled: true
