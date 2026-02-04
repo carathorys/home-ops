@@ -7,4 +7,4 @@ components:
   - ../../components/common
 resources:
   - ./truenas-secrets/ks.yaml
-  # - ./tns-csi/ks.yaml
+  - ./tns-csi/ks.yaml
