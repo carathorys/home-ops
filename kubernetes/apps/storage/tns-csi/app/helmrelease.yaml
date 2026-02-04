@@ -8,7 +8,7 @@ spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: tns-csi
+    name: tns-csi-driver
   install:
     remediation:
       retries: -1
