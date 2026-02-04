@@ -80,7 +80,7 @@ spec:
     persistence:
       config:
         type: persistentVolumeClaim
-        existingClaim: qbittorrent
+        existingClaim: qbittorrent-data
         advancedMounts:
           main:
             main:
