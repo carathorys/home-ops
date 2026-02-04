@@ -42,6 +42,7 @@ spec:
       iscsi:
         enabled: true
         name: tns-csi-iscsi
-        pool: nas.${SECRET_DOMAIN}
+        server: nas.${SECRET_DOMAIN}
+        pool: data
         parentDataset: "${DATA_SET_PATH}"
         encryption: "true"
