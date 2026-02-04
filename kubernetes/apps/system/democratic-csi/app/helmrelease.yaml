@@ -57,4 +57,5 @@ spec:
     volumeSnapshotClasses:
       - name: iscsi
         parameters:
-          detachedSnapshots: 'true'
+          detachedSnapshots: 'false'
+
