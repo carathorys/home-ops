@@ -45,4 +45,3 @@ spec:
         server: nas.${SECRET_DOMAIN}
         pool: data
         parentDataset: "${DATA_SET_PATH}"
-        encryption: "true"
