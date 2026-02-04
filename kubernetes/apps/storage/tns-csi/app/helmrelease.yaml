@@ -40,7 +40,7 @@ spec:
         server: nas.${SECRET_DOMAIN}
         path: "${DATA_SET_PATH}"
         parameters:
-          nameTemplate: "{{ .PVCNamespace }}-{{ .PVName }}-{{ .PVCName }}"
+          nameTemplate: "{{ .PVCNamespace }}-{{ .PVCName }}"
 
       iscsi:
         enabled: true
@@ -49,4 +49,4 @@ spec:
         pool: data
         parentDataset: "${DATA_SET_PATH}"
         parameters:
-          nameTemplate: "{{ .PVCNamespace }}-{{ .PVName }}-{{ .PVCName }}"
+          nameTemplate: "{{ .PVCNamespace }}-{{ .PVCName }}"
