@@ -34,6 +34,11 @@ spec:
         parentDataset: "${SNAPSHOTS_PATH}"
         deletionPolicy: Delete
     storageClasses:
+      nfs:
+        enabled: true
+        pool: data
+        server: nas.${SECRET_DOMAIN}
+        path: "${DATA_SET_PATH}"
       iscsi:
         enabled: true
         name: tns-csi-iscsi
