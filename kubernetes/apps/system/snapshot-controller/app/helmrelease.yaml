@@ -30,6 +30,7 @@ spec:
       rbac:
         enabled: true
       replicaCount: 3
+
       args:
         - "--v={{ .Values.controller.verbosityLevel }}"
         - "--leader-election=true"

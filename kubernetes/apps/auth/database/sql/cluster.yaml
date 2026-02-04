@@ -28,5 +28,5 @@ spec:
       onlineConfiguration:
         waitForArchive: true
         immediateCheckpoint: true
-      className: iscsi
-      walClassName: iscsi
+      className: org.democratic-csi.freenas-api-iscsi
+      walClassName: org.democratic-csi.freenas-api-iscsi
