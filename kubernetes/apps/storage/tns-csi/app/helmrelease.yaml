@@ -33,6 +33,7 @@ spec:
         enabled: true
         parentDataset: "${SNAPSHOTS_PATH}"
         deletionPolicy: Delete
+    nameTemplate: "{{ .PVCNamespace }}-{{ .PVName }}-{{ .PVCName }}"
     storageClasses:
       nfs:
         enabled: true
@@ -45,4 +46,3 @@ spec:
         server: nas.${SECRET_DOMAIN}
         pool: data
         parentDataset: "${DATA_SET_PATH}"
-        nameTemplate: "{{ .PVCNamespace }}-{{ .PVName }}-{{ .PVCName }}"
