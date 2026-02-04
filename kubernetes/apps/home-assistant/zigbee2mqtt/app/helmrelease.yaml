@@ -35,7 +35,7 @@ spec:
               runAsGroup: ${APP_GID}
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
-              tag: 2.7.2
+              tag: 2.8.0
             env:
               TZ: "Europe/Budapest"
               Z2M_WATCHDOG: 0.5,3,6,15,30,45,60
