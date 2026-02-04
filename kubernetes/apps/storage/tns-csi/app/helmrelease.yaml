@@ -1,0 +1,40 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: tns-csi
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    url: wss://nas.${SECRET_DOMAIN}:443/api/current
+    apiKey: ${ADMIN_API_KEY}
+    namespace: storage
+    snapshots:
+      enabled: true
+      volumeSnapshotClass:
+        create: true
+        deletionPolicy: Delete
+
+      detached:
+        enabled: true
+        parentDataset: "${SNAPSHOTS_PATH}"
+        deletionPolicy: Delete
+    storageClasses:
+      iscsi:
+        enabled: true
+        name: tns-csi-iscsi
+        pool: nas.${SECRET_DOMAIN}
+        parentDataset: "${DATA_SET_PATH}"
+        encryption: "true"
