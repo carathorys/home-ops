@@ -17,6 +17,7 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+
   values:
     url: wss://nas.${SECRET_DOMAIN}:443/api/current
     apiKey: ${ADMIN_API_KEY}
