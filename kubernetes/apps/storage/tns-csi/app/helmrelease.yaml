@@ -11,7 +11,7 @@ spec:
     name: tns-csi-driver
   install:
     remediation:
-      retries: -1
+      retries: 0
   upgrade:
     cleanupOnFail: true
     remediation:
