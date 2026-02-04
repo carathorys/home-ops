@@ -18,8 +18,9 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    url: wss://nas.${SECRET_DOMAIN}:443/api/current
-    apiKey: ${ADMIN_API_KEY}
+    truenas:
+      url: wss://nas.${SECRET_DOMAIN}:443/api/current
+      apiKey: ${ADMIN_API_KEY}
     namespace: storage
     snapshots:
       enabled: true
