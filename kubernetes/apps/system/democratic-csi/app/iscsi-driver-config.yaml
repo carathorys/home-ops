@@ -37,7 +37,9 @@ stringData:
       detachedSnapshotsDatasetParentName: ${SNAPSHOTS_PATH}
       zvolCompression:
       zvolDedup:
-      zvolEnableReservation: false
+      zvolEnableReservation: true
       zvolBlocksize:
       datasetProperties:
         "org.freenas:description": "{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}/{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
+      snapshotProperties:
+        "org.freenas:key": "SOME_KEY_VALUE"
