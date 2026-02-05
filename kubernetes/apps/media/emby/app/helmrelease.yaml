@@ -90,7 +90,7 @@ spec:
           - path: /dev/dri
       config:
         type: persistentVolumeClaim
-        existingClaim: emby
+        existingClaim: emby-data
         globalMounts:
           - path: /config
       movies:
