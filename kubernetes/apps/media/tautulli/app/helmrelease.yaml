@@ -66,6 +66,6 @@ spec:
     persistence:
       config:
         type: persistentVolumeClaim
-        existingClaim: tautulli
+        existingClaim: tautulli-data
         globalMounts:
           - path: /config
