@@ -65,7 +65,7 @@ spec:
     persistence:
       config:
         type: persistentVolumeClaim
-        existingClaim: jellyseerr-data
+        existingClaim: jellyseerr
         advancedMounts:
           main:
             main:

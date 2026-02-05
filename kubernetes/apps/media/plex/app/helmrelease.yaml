@@ -101,7 +101,7 @@ spec:
           - path: /dev/dri
       config:
         type: persistentVolumeClaim
-        existingClaim: plex-data
+        existingClaim: plex
         globalMounts:
           - path: /config
       movies:
