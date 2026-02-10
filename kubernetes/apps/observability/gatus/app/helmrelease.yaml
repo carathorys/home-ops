@@ -48,7 +48,7 @@ spec:
               TZ: Europe/Budapest
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
-              CUSTOM_WEB_PORT: &port 8080
+              CUSTOM_WEB_PORT: &port 8081
             probes:
               liveness: &probes
                 enabled: true
