@@ -71,7 +71,7 @@ spec:
       #   type: persistentVolumeClaim
       #   accessMode: ReadWriteOnce
       #   size: 1Gi
-      #   storageClass: ceph-block
+      #   storageClass: iscsi
       #   advancedMounts:
       #     main:
       #       main:
