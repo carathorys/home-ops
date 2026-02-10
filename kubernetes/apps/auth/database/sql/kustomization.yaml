@@ -5,6 +5,6 @@ kind: Kustomization
 resources:
   - ./secrets.yaml
   - ./cluster.yaml
-  # - ./prometheus-rule.yaml
+  - ./prometheus-rule.yaml
   - ./service.yaml
   - ./daily-backup.yaml
