@@ -1,6 +1,6 @@
 ---
 web:
-  port: $(CUSTOM_WEB_PORT)
+  port: 8081
 storage:
   type: sqlite
   path: /config/sqlite.db
