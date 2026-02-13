@@ -21,7 +21,7 @@ spec:
     bpf:
       masquerade: true
       # Ref: https://github.com/siderolabs/talos/issues/10002
-      # hostLegacyRouting: true
+      hostLegacyRouting: false
       hostRouting: true      # or hostLegacyRouting: false on older versions
     cni:
       # Required for pairing with Multus CNI
