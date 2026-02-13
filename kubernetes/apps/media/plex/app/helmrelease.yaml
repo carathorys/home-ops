@@ -53,7 +53,7 @@ spec:
                         app.kubernetes.io/name: plex
                   weight: 100
           annotations:
-            kubernetes.io/egress-bandwidth: "1M"
+            kubernetes.io/egress-bandwidth: "768K"
             # kubernetes.io/ingress-bandwidth: "20M"
         containers:
           main:
