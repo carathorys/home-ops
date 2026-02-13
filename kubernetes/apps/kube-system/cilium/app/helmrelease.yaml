@@ -55,7 +55,7 @@ spec:
       enabled: true
     bandwidthManager:
       enabled: true
-      bbr: true  # optional: enables BBR congestion control for better performance
+      bbr: false  # optional: enables BBR congestion control for better performance
     loadBalancer:
       algorithm: maglev
       mode: "dsr"
