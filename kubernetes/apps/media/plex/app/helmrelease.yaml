@@ -25,6 +25,7 @@ spec:
         replicas: ${REPLICAS}
         annotations:
           reloader.stakater.com/auto: "true"
+
         pod:
           affinity:
             nodeAffinity:
@@ -51,6 +52,9 @@ spec:
                       matchLabels:
                         app.kubernetes.io/name: plex
                   weight: 100
+          annotations:
+            kubernetes.io/egress-bandwidth: "1M"
+            # kubernetes.io/ingress-bandwidth: "20M"
         containers:
           main:
             securityContext:
