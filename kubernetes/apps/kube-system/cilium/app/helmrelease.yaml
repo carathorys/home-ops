@@ -53,9 +53,9 @@ spec:
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
     l2announcements:
       enabled: true
-    # bandwidthManager:
-    #   enabled: true
-    #   bbr: false  # optional: enables BBR congestion control for better performance
+    bandwidthManager:
+      enabled: true
+      bbr: true  # optional: enables BBR congestion control for better performance
     loadBalancer:
       algorithm: maglev
       mode: "dsr"
