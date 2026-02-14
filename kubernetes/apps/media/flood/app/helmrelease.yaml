@@ -35,7 +35,7 @@ spec:
           main:
             image:
               repository: docker.io/jesec/flood
-              tag: 4.12.5 # {"$imagepolicy": "flux-system:flood:tag"}
+              tag: 4.12.6 # {"$imagepolicy": "flux-system:flood:tag"}
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
