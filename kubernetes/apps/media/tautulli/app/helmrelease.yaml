@@ -31,7 +31,7 @@ spec:
               privileged: true
             image:
               repository: ghcr.io/linuxserver/tautulli
-              tag: 2.16.0
+              tag: v2.16.0-ls216
               pullPolicy: Always
             env:
               TZ: "Europe/Budapest"
