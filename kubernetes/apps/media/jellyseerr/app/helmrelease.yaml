@@ -34,8 +34,8 @@ spec:
         containers:
           main:
             image:
-              repository: docker.io/fallenbagel/jellyseerr
-              tag: 2.7.3
+              repository: ghcr.io/seerr-team/seerr
+              tag: 3.0.1
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
