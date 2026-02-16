@@ -22,8 +22,8 @@ spec:
   dependsOn:
     - name: secrets
       namespace: media
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+    - name: democratic-csi
+      namespace: system
   sourceRef:
     kind: GitRepository
     name: flux-system
