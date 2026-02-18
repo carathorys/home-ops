@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: immich-database
+  labels:
+    app.kubernetes.io/name: immich-database
+spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:18-standard-trixie
+  instances: 3
+  primaryUpdateStrategy: supervised
+  storage:
+    size: 50Gi
+    storageClass: iscsi
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: postgres-superuser
+  backup:
+    retentionPolicy: 7d
+    volumeSnapshot:
+      labels:
+        app.kubernetes.io/name: immich-database-backup
+      online: true
+      onlineConfiguration:
+        waitForArchive: true
+      className: iscsi
+      walClassName: iscsi
+  managed:
+    roles:
+      - connectionLimit: -1
+        ensure: present
+        name: "${IMMICH_USERNAME}"
+        comment: Immich app user
+        inherit: false
+        login: true
+        superuser: false
+        createdb: false
+        passwordSecret:
+          name: immich-user
+  monitoring:
+    enablePodMonitor: true

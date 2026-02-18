@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/postgresql.cnpg.io/scheduledbackup_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: immich-database-backup
+spec:
+  cluster:
+    name: immich-database
+  schedule: "0 30 0 * *"
+  online: true
+  target: primary
+  onlineConfiguration:
+    waitForArchive: true
+    immediateCheckpoint: true
+  method: volumeSnapshot
+  suspend: false
+  immediate: false
