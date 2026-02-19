@@ -86,6 +86,7 @@ spec:
     service:
       k8s-schemas-server:
         controller: k8s-schemas-server
+        type: LoadBalancer
         ports:
           http:
             port: 80
