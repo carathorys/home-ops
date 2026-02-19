@@ -3,15 +3,23 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: publish-k8s-schemas
-  namespace: jobs
+  name: &app publish-k8s-schemas
+  namespace: &ns jobs
 spec:
-  targetNamespace: jobs
+  targetNamespace: *ns
   path: ./kubernetes/apps/jobs/publish-k8s-schemas/app
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+    substitute:
+      APP: *app
+      APP_UID: "1000"
+      APP_GID: "1000"
   interval: 1h
   prune: true
   wait: false
