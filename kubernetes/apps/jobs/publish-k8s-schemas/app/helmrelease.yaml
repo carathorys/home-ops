@@ -65,11 +65,6 @@ spec:
                   - ALL
       k8s-schemas-server:
         strategy: RollingUpdate
-        pod:
-          securityContext:
-            runAsGroup: ${APP_GID}
-            runAsNonRoot: true
-            runAsUser: ${APP_UID}
         containers:
           k8s-schemas-server:
             image:

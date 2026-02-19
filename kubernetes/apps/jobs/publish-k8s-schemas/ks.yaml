@@ -18,8 +18,8 @@ spec:
         kind: Secret
     substitute:
       APP: *app
-      APP_UID: "1000"
-      APP_GID: "1000"
+      APP_UID: "65534"
+      APP_GID: "65533"
   interval: 1h
   prune: true
   wait: false
