@@ -15,4 +15,4 @@ spec:
       - observability
   selector:
     matchLabels:
-      grafana.internal/instance: grafana
+      grafana.internal/instance: grafana-deployment
