@@ -65,7 +65,8 @@ spec:
                 drop:
                   - ALL
       k8s-schemas-server:
-
+        type: deployment
+        replicas: 3
         containers:
           app:
             image:
