@@ -128,7 +128,7 @@ spec:
             app:
               - path: /schemas-out
           k8s-schemas-server:
-            app:
+            k8s-schemas-server:
               - path: /usr/share/nginx/html
                 readOnly: true
     serviceAccount:
