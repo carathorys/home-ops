@@ -9,3 +9,4 @@ resources:
   - ./secrets/ks.yaml
   - ./database/ks.yaml
   - ./persistent-volume-claims/ks.yaml
+  - ./immich/ks.yaml
