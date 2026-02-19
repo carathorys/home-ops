@@ -13,7 +13,7 @@ spec:
   dnsNames: ["${SECRET_DOMAIN}", "*.${SECRET_DOMAIN}"]
 
 ---
-# yaml-language-server: $schema=http://schemas.home.local/cert-manager.io/certificate_v1.json
+# yaml-language-server: $schema=http://schemas.gallay.io/cert-manager.io/certificate_v1.json
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
