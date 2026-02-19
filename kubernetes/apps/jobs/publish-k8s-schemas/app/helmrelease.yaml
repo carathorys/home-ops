@@ -73,7 +73,7 @@ spec:
             runAsNonRoot: true
             runAsUser: ${APP_UID}
         containers:
-          app:
+          k8s-schemas-server:
             image:
               repository: nginx
               tag: alpine
