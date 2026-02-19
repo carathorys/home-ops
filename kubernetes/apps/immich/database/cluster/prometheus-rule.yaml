@@ -1,12 +1,8 @@
 ---
-# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: cloudnative-pg-rules
-  labels:
-    prometheus: k8s
-    role: alert-rules
+  name: cloudnative-pg
 spec:
   groups:
     - name: cloudnative-pg.rules
@@ -20,6 +16,7 @@ spec:
           for: 1m
           labels:
             severity: warning
+
         - alert: BackendsWaiting
           annotations:
             description: Pod {{ $labels.pod  }} has been waiting for longer than 5 minutes
@@ -29,6 +26,7 @@ spec:
           for: 1m
           labels:
             severity: warning
+
         - alert: PGDatabase
           annotations:
             description: Over 150,000,000 transactions from frozen xid on pod {{ $labels.pod  }}
@@ -38,6 +36,7 @@ spec:
           for: 1m
           labels:
             severity: warning
+
         - alert: PGReplication
           annotations:
             description: Standby is lagging behind by over 300 seconds (5 minutes)
@@ -47,15 +46,17 @@ spec:
           for: 1m
           labels:
             severity: warning
+
         - alert: LastFailedArchiveTime
           annotations:
             description: Archiving failed for {{ $labels.pod }}
-            summary: Checks the last time archiving failed. Will be -1 when it has not failed.
+            summary: Checks the last time archiving failed. Will be < 0 when it has not failed.
           expr: |-
-            delta(cnpg_pg_stat_archiver_last_failed_time[5m]) > 0
+            (cnpg_pg_stat_archiver_last_failed_time - cnpg_pg_stat_archiver_last_archived_time) > 1
           for: 1m
           labels:
             severity: warning
+
         - alert: DatabaseDeadlockConflicts
           annotations:
             description: There are over 10 deadlock conflicts in {{ $labels.pod }}
@@ -65,3 +66,14 @@ spec:
           for: 1m
           labels:
             severity: warning
+
+        - alert: ReplicaFailingReplication
+          annotations:
+            description: Replica {{ $labels.pod }} is failing to replicate
+            summary: Checks if the replica is failing to replicate
+          expr: |-
+            cnpg_pg_replication_in_recovery > cnpg_pg_replication_is_wal_receiver_up
+          for: 1m
+          labels:
+            severity: warning
+
