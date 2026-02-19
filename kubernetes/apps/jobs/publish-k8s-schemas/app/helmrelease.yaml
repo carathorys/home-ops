@@ -131,6 +131,15 @@ spec:
             k8s-schemas-server:
               - path: /usr/share/nginx/html
                 readOnly: true
+      nginx-config:
+        type: configMap
+        name: k8s-schemas-nginx-config
+        advancedMounts:
+          k8s-schemas-server:
+            k8s-schemas-server:
+              - path: /etc/nginx/nginx.conf
+                subPath: nginx.conf
+                readOnly: true
     serviceAccount:
       publish-k8s-schemas: {}
     rbac:
