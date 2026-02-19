@@ -65,8 +65,7 @@ spec:
                 drop:
                   - ALL
       k8s-schemas-server:
-        strategy: Recreate
-        type: deployment
+        type: statefulset
         containers:
           app:
             image:
