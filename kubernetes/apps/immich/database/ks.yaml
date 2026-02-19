@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/immich/database/cluster
+  path: ./kubernetes/apps/immich/database/postgres-cluster
   postBuild:
     substituteFrom:
       - name: cluster-secrets
