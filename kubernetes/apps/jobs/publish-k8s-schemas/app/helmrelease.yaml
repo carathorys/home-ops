@@ -20,7 +20,6 @@ spec:
           schedule: "0 */4 * * *"
           successfulJobsHistory: 6
         pod:
-          restartPolicy: Always
           securityContext:
             runAsGroup: ${APP_GID}
             runAsNonRoot: true
