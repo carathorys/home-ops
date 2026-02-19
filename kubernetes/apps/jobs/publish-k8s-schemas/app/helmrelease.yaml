@@ -92,6 +92,7 @@ spec:
                   - ALL
     service:
       k8s-schemas-server:
+        enabled: true
         controller: app
         type: LoadBalancer
         ports:
