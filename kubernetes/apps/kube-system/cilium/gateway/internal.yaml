@@ -28,7 +28,14 @@ spec:
       hostname: "*.home.local"
       allowedRoutes:
         namespaces:
-          from: Same
+          from: All
+    - name: http
+      protocol: HTTPS
+      port: 443
+      hostname: "*.home.local"
+      allowedRoutes:
+        namespaces:
+          from: All
     - name: https
       protocol: HTTPS
       port: 443
