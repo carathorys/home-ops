@@ -3,6 +3,45 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &app immich-secrets
+  namespace: &namespace immich
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/immich/immich/secrets
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: external-secrets
+      namespace: secrets
+    - name: external-secrets
+      namespace: immich
+    - name: dragonfly-cluster
+      namespace: immich
+    - name: postgres-cluster
+      namespace: immich
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+    substitute:
+      APP: *app
+      APP_UID: "1000"
+      APP_GID: "1000"
+  prune: true
+  wait: false
+  interval: 30m
+  timeout: 5m
+
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: &app immich
   namespace: &namespace immich
 spec:
@@ -20,14 +59,10 @@ spec:
       namespace: secrets
     - name: persistent-volume-claims
       namespace: immich
-    - name: qbittorrent
-      namespace: media
   postBuild:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
-      - name: media-config
-        kind: ConfigMap
     substitute:
       APP: *app
       APP_UID: "1000"
