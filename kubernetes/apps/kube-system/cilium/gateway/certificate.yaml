@@ -11,3 +11,17 @@ spec:
     kind: ClusterIssuer
   commonName: "${SECRET_DOMAIN}"
   dnsNames: ["${SECRET_DOMAIN}", "*.${SECRET_DOMAIN}"]
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "home-local-tls"
+spec:
+  secretName: "home-local-tls"
+  issuerRef:
+    name: selfsigned-home-local
+    kind: ClusterIssuer
+  commonName: "home.local"
+  dnsNames: ["home.local", "*.home.local"]
