@@ -32,4 +32,4 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: home-local-tls
+            name: gallay-io-production-tls
