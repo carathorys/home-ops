@@ -45,29 +45,64 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/bjw-s-labs/wrangler
-              tag: 4.66.0@sha256:296f31dc410dfe44a8d5d8713d6d98b034e4c8a074cd53fcb9f19f8fbf7bf354
-            envFrom:
-              - secretRef:
-                  name: publish-k8s-schemas-secret
+              repository: alpine
+              tag: "3.19"
+            command:
+              - /bin/sh
             args:
-              - pages
-              - deploy
-              - /data/crdSchemas
-              - --project-name
-              - homelab-schemas
+              - -c
+              - "rm -rf /schemas-out/* 2>/dev/null; cp -a /data/crdSchemas/. /schemas-out/"
             resources:
               requests:
                 cpu: 10m
-                memory: 128Mi
+                memory: 64Mi
               limits:
-                memory: 1Gi
+                memory: 256Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop:
+                  - ALL
+      k8s-schemas-server:
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: nginx
+              tag: alpine
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - ALL
+    service:
+      k8s-schemas-server:
+        ports:
+          http:
+            port: 80
+            protocol: TCP
+    route:
+      k8s-schemas-server:
+        hostnames: ["schemas.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 80
     persistence:
       tmpfs:
         type: emptyDir
@@ -83,6 +118,17 @@ spec:
                 subPath: config
               - path: /data
                 subPath: data
+      schemas:
+        type: persistentVolumeClaim
+        existingClaim: k8s-schemas
+        advancedMounts:
+          publish-k8s-schemas:
+            app:
+              - path: /schemas-out
+          k8s-schemas-server:
+            app:
+              - path: /usr/share/nginx/html
+                readOnly: true
     serviceAccount:
       publish-k8s-schemas: {}
     rbac:
