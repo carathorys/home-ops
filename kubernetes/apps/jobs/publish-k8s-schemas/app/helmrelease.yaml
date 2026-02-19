@@ -86,7 +86,7 @@ spec:
       k8s-schemas-server:
         hostnames: ["schemas.home.local"]
         parentRefs:
-          - name: internal
+          - name: internal-dns
             namespace: kube-system
             sectionName: https
         rules:
