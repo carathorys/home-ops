@@ -65,8 +65,7 @@ spec:
                 drop:
                   - ALL
       k8s-schemas-server:
-        type: deployment
-        replicas: 1
+        strategy: RollingUpdate
         pod:
           restartPolicy: OnFailure
           securityContext:
@@ -93,7 +92,7 @@ spec:
     service:
       k8s-schemas-server:
         enabled: true
-        controller: app
+        controller: k8s-schemas-server
         type: LoadBalancer
         ports:
           http:
