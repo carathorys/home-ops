@@ -24,8 +24,8 @@ spec:
   dependsOn:
     - name: sql-cluster
       namespace: *namespace
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+    - name: democratic-csi
+      namespace: system
   prune: true
   retryInterval: 2m
   sourceRef:

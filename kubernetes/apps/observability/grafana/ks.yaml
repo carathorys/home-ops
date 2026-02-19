@@ -43,8 +43,8 @@ spec:
   dependsOn:
     - name: grafana
       namespace: observability
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+    - name: democratic-csi
+      namespace: system
   interval: 1h
   prune: true
   wait: false

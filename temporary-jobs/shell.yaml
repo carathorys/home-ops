@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: disk-util-avarath
-  namespace: rook-ceph
+  namespace: default
 spec:
   nodeName: avarath  # Change this per node
   hostPID: true

@@ -22,8 +22,8 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+    - name: democratic-csi
+      namespace: system
   targetNamespace: *namespace
   timeout: 5m
   wait: false

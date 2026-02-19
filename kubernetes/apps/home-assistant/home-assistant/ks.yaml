@@ -18,8 +18,8 @@ spec:
   dependsOn:
     - name: external-secrets
       namespace: secrets
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+    - name: democratic-csi
+      namespace: system
     - name: mosquitto
       namespace: home-assistant
   components: []
