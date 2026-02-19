@@ -105,12 +105,12 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-          - name: external
-            namespace: kube-system
-            sectionName: https
+          # - name: external
+          #   namespace: kube-system
+          #   sectionName: https
         rules:
           - backendRefs:
-              - identifier: app
+              - identifier: k8s-schemas-server
                 port: 80
     persistence:
       tmpfs:
