@@ -21,7 +21,7 @@ metadata:
 spec:
   secretName: "gallay-io-production-tls"
   issuerRef:
-    name: letsencrypt-production
+    name: gallay-io-production
     kind: ClusterIssuer
   commonName: "gallay.io"
   dnsNames: ["gallay.io", "*.gallay.io"]
