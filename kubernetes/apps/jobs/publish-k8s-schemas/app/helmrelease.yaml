@@ -88,7 +88,7 @@ spec:
         parentRefs:
           - name: internal-dns
             namespace: kube-system
-            sectionName: https
+            sectionName: http
         rules:
           - backendRefs:
               - identifier: k8s-schemas-server
