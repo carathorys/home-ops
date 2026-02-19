@@ -22,14 +22,14 @@ spec:
       allowedRoutes:
         namespaces:
           from: Same
-    - name: http
+    - name: local-http
       protocol: HTTP
       port: 80
       hostname: "*.home.local"
       allowedRoutes:
         namespaces:
           from: All
-    - name: http
+    - name: local-https
       protocol: HTTPS
       port: 443
       hostname: "*.home.local"
