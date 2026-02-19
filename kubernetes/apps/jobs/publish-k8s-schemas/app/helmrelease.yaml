@@ -20,6 +20,7 @@ spec:
           schedule: "0 */4 * * *"
           successfulJobsHistory: 6
         pod:
+          restartPolicy: Always
           securityContext:
             runAsGroup: ${APP_GID}
             runAsNonRoot: true
@@ -66,7 +67,6 @@ spec:
       k8s-schemas-server:
         strategy: RollingUpdate
         pod:
-          restartPolicy: OnFailure
           securityContext:
             runAsGroup: ${APP_GID}
             runAsNonRoot: true
