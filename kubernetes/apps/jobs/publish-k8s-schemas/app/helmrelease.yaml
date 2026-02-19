@@ -65,7 +65,7 @@ spec:
                 drop:
                   - ALL
       k8s-schemas-server:
-        type: statefulset
+
         containers:
           app:
             image:
@@ -85,6 +85,7 @@ spec:
                   - ALL
     service:
       k8s-schemas-server:
+        controller: k8s-schemas-server
         ports:
           http:
             port: 80
