@@ -19,11 +19,6 @@ spec:
           failedJobsHistory: 6
           schedule: "0 */4 * * *"
           successfulJobsHistory: 6
-        # pod:
-        #   securityContext:
-        #     runAsGroup: ${APP_GID}
-        #     runAsNonRoot: true
-        #     runAsUser: ${APP_UID}
         initContainers:
           generate-schemas:
             image:
@@ -77,11 +72,7 @@ spec:
               limits:
                 memory: 128Mi
             securityContext:
-              # allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
-              # capabilities:
-              #   drop:
-              #     - ALL
     service:
       k8s-schemas-server:
         enabled: true
@@ -93,14 +84,11 @@ spec:
             protocol: TCP
     route:
       k8s-schemas-server:
-        hostnames: ["schemas.${SECRET_DOMAIN}"]
+        hostnames: ["schemas.home.local"]
         parentRefs:
           - name: internal
             namespace: kube-system
             sectionName: https
-          # - name: external
-          #   namespace: kube-system
-          #   sectionName: https
         rules:
           - backendRefs:
               - identifier: k8s-schemas-server
