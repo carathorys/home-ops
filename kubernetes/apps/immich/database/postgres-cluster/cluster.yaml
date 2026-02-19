@@ -46,17 +46,6 @@ spec:
                   interval: 15s
                   conditions:
                     - "[CONNECTED] == true"
-    roles:
-      - connectionLimit: -1
-        ensure: present
-        name: "${IMMICH_USERNAME}"
-        comment: Immich app user
-        inherit: false
-        login: true
-        superuser: false
-        createdb: false
-        passwordSecret:
-          name: immich-user
   bootstrap:
     initdb:
       postInitSQL:
