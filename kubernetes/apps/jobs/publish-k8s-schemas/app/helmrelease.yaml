@@ -92,7 +92,7 @@ spec:
                   - ALL
     service:
       k8s-schemas-server:
-        controller: k8s-schemas-server
+        controller: app
         type: LoadBalancer
         ports:
           http:
