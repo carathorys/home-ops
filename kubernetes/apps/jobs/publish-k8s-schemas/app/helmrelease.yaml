@@ -66,6 +66,7 @@ spec:
                   - ALL
       k8s-schemas-server:
         strategy: Recreate
+        type: deployment
         containers:
           app:
             image:
