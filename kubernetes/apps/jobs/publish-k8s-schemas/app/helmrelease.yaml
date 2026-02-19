@@ -19,11 +19,11 @@ spec:
           failedJobsHistory: 6
           schedule: "0 */4 * * *"
           successfulJobsHistory: 6
-        pod:
-          securityContext:
-            runAsGroup: ${APP_GID}
-            runAsNonRoot: true
-            runAsUser: ${APP_UID}
+        # pod:
+        #   securityContext:
+        #     runAsGroup: ${APP_GID}
+        #     runAsNonRoot: true
+        #     runAsUser: ${APP_UID}
         initContainers:
           generate-schemas:
             image:
