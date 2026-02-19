@@ -17,11 +17,11 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "home-local-tls"
+  name: "gallay-io-production"
 spec:
-  secretName: "home-local-tls"
+  secretName: "gallay-io-production-tls"
   issuerRef:
-    name: selfsigned-home-local
+    name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "home.local"
-  dnsNames: ["home.local", "*.home.local"]
+  commonName: "gallay.io"
+  dnsNames: ["gallay.io", "*.gallay.io"]

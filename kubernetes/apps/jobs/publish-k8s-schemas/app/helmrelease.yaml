@@ -84,7 +84,7 @@ spec:
             protocol: TCP
     route:
       k8s-schemas-server:
-        hostnames: ["schemas.home.local"]
+        hostnames: ["schemas.gallay.io"]
         parentRefs:
           - name: internal-dns
             namespace: kube-system

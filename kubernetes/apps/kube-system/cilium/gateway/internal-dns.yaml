@@ -5,7 +5,7 @@ kind: Gateway
 metadata:
   name: internal-dns
   annotations:
-    external-dns.alpha.kubernetes.io/target: "internal-dns.home.local"
+    external-dns.alpha.kubernetes.io/target: "internal-dns.gallay.io"
 spec:
   gatewayClassName: cilium
   addresses:
@@ -13,19 +13,19 @@ spec:
       value: "192.168.1.101"
   infrastructure:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: "internal-dns.home.local"
+      external-dns.alpha.kubernetes.io/hostname: "internal-dns.gallay.io"
   listeners:
     - name: http
       protocol: HTTP
       port: 80
-      hostname: "*.home.local"
+      hostname: "*.gallay.io"
       allowedRoutes:
         namespaces:
           from: All
     - name: https
       protocol: HTTPS
       port: 443
-      hostname: "*.home.local"
+      hostname: "*.gallay.io"
       allowedRoutes:
         namespaces:
           from: All
