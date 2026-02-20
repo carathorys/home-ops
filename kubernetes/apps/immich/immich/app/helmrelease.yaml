@@ -205,9 +205,8 @@ spec:
               - path: /config/immich-config.yaml
                 subPath: immich-config.yaml
       library:
-        type: nfs
-        server: boa.mapanare.net
-        path: /mnt/mag/k8s/immich
+        type: persistentVolumeClaim
+        existingClaim: family-photos
         advancedMounts:
           server:
             server:
@@ -236,11 +235,8 @@ spec:
             machine-learning:
               - path: /config/matplotlib
       model-cache:
-        suffix: mlcache
-        size: 10Gi
-        accessMode: ReadWriteMany
-        storageClass: nfs
         type: persistentVolumeClaim
+        existingClaim: mlcache
         advancedMounts:
           machine-learning:
             machine-learning:
