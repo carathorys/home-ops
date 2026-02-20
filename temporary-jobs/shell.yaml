@@ -9,7 +9,7 @@ spec:
   hostNetwork: true
   containers:
   - name: disk-util-avarath
-    image: alpine:latest
+    image: archlinux:latest
     command: ["sleep", "infinity"]
     securityContext:
       privileged: true
@@ -32,7 +32,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: disk-util-hummianet
-  namespace: rook-ceph
+  namespace: default
 spec:
   nodeName: hummianet  # Change this per node
   hostPID: true
@@ -62,7 +62,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: disk-util-esutha
-  namespace: rook-ceph
+  namespace: default
 spec:
   nodeName: esutha  # Change this per node
   hostPID: true
