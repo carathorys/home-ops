@@ -23,6 +23,9 @@ spec:
             envFrom:
               - secretRef:
                   name: *secret
+            env:
+              IMMICH_CONFIG_FILE: /config/immich-config.yaml
+              IMMICH_WORKERS_EXCLUDE: api
         pod:
           securityContext:
             runAsUser: ${APP_UID}
