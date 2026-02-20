@@ -13,7 +13,7 @@ spec:
       server:
         strategy: RollingUpdate
         annotations:
-          secret.reloader.stakater.com/reload: &secret composed-secrets
+          secret.reloader.stakater.com/reload: &secret composed-secret
         initContainers:
           01-init-db:
             image:
