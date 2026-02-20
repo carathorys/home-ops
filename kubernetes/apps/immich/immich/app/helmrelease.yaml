@@ -6,7 +6,7 @@ metadata:
 spec:
   chartRef:
     kind: OCIRepository
-    name: immich
+    name: app-template
   interval: 30m
   values:
     controllers:
