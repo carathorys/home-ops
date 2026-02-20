@@ -30,8 +30,8 @@ spec:
         kind: Secret
     substitute:
       APP: *app
-      APP_UID: "1000"
-      APP_GID: "1000"
+      APP_UID: "3001"
+      APP_GID: "3001"
   prune: true
   wait: false
   interval: 30m
@@ -67,8 +67,8 @@ spec:
         kind: Secret
     substitute:
       APP: *app
-      APP_UID: "1000"
-      APP_GID: "1000"
+      APP_UID: "3001"
+      APP_GID: "3001"
   prune: true
   wait: false
   interval: 30m
