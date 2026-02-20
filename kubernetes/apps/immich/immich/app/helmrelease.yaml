@@ -184,7 +184,7 @@ spec:
 
     route:
       app:
-        hostnames: ["${APP}", "${APP}.${SECRET_DOMAIN}"]
+        hostnames: ["${APP}", "${APP}.${SECRET_DOMAIN}", "photos.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal
             namespace: kube-system
