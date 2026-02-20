@@ -199,11 +199,11 @@ spec:
           server:
             server:
               - path: /config/immich-config.yaml
-                subPath: immich-config.yaml
+                subPath: IMMICH_CONFIG
           microservices:
             microservices:
               - path: /config/immich-config.yaml
-                subPath: immich-config.yaml
+                subPath: IMMICH_CONFIG
       library:
         type: persistentVolumeClaim
         existingClaim: family-photos
