@@ -28,6 +28,8 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
+      - name: immich-secrets
+        kind: Secret
     substitute:
       APP: *app
       APP_UID: "3001"
