@@ -13,7 +13,7 @@ spec:
       server:
         strategy: RollingUpdate
         annotations:
-          secret.reloader.stakater.com/reload: &secret immich-secrets
+          secret.reloader.stakater.com/reload: &secret composed-secrets
         initContainers:
           01-init-db:
             image:
@@ -77,9 +77,9 @@ spec:
           nodeSelector:
             nvidia.feature.node.kubernetes.io/gpu: "true"
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            fsGroup: ${APP_GID}
             fsGroupChangePolicy: "OnRootMismatch"
             supplementalGroups:
               - 44
@@ -118,9 +118,9 @@ spec:
         pod:
           enableServiceLinks: false
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            fsGroup: ${APP_GID}
             fsGroupChangePolicy: "OnRootMismatch"
           topologySpreadConstraints:
             - maxSkew: 1
@@ -180,26 +180,10 @@ spec:
         ports:
           http:
             port: *mlPort
-    # serviceMonitor:
-    #   immich:
-    #     serviceName: immich-server
-    #     endpoints:
-    #       - port: metrics
-    #         scheme: http
-    #         path: /metrics
-    #         interval: 1m
-    #         scrapeTimeout: 30s
-    #   microservices:
-    #     serviceName: immich-microservices
-    #     endpoints:
-    #       - port: metrics
-    #         scheme: http
-    #         path: /metrics
-    #         interval: 1m
-    #         scrapeTimeout: 30s
+
     route:
       app:
-        hostnames: ["photos.mapanare.net"]
+        hostnames: ["photos.${SECRET_DOMAIN}"]
         parentRefs:
           - name: envoy-internal
             namespace: networking
@@ -210,7 +194,7 @@ spec:
     persistence:
       config:
         type: secret
-        name: immich-secret
+        name: *secret
         advancedMounts:
           server:
             server:
