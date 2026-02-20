@@ -5,8 +5,8 @@ kind: Kustomization
 namespace: immich
 components:
   - ../../components/common
-resources:
-  - ./secrets/ks.yaml
-  - ./database/ks.yaml
-  - ./persistent-volume-claims/ks.yaml
-  - ./immich/ks.yaml
+resources: []
+  # - ./secrets/ks.yaml
+  # - ./database/ks.yaml
+  # - ./persistent-volume-claims/ks.yaml
+  # - ./immich/ks.yaml
