@@ -29,7 +29,6 @@ spec:
               IMMICH_WORKERS_EXCLUDE: api
         pod:
           affinity:
-
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
@@ -38,7 +37,6 @@ spec:
                         operator: NotIn
                         values:
                           - "true"
-
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
