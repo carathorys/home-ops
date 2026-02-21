@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -27,6 +28,25 @@ spec:
               IMMICH_CONFIG_FILE: /config/immich-config.yaml
               IMMICH_WORKERS_EXCLUDE: api
         pod:
+          affinity:
+
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: feature.node.kubernetes.io/amd-gpu
+                        operator: NotIn
+                        values:
+                          - "true"
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - immich
+                  topologyKey: kubernetes.io/hostname
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
