@@ -115,7 +115,7 @@ spec:
                   app.kubernetes.io/controller: microservices
         containers:
           microservices:
-            annotations:
+            labels:
               app.kubernetes.io/name: immich-microservices
             image:
               repository: ghcr.io/immich-app/immich-server
@@ -171,7 +171,7 @@ spec:
                   app.kubernetes.io/controller: machine-learning
         containers:
           machine-learning:
-            annotations:
+            labels:
               app.kubernetes.io/name: immich-machine-learning
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
