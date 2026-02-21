@@ -39,7 +39,7 @@ spec:
   hostNetwork: true
   containers:
   - name: disk-util-hummianet
-    image: alpine:latest
+    image: archlinux:latest
     command: ["sleep", "infinity"]
     securityContext:
       privileged: true
@@ -69,7 +69,7 @@ spec:
   hostNetwork: true
   containers:
   - name: disk-util-esutha
-    image: alpine:latest
+    image: archlinux:latest
     command: ["sleep", "infinity"]
     securityContext:
       privileged: true

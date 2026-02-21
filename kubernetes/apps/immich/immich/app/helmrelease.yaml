@@ -87,24 +87,6 @@ spec:
         annotations:
           secret.reloader.stakater.com/reload: *secret
         pod:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: feature.node.kubernetes.io/amd-gpu
-                        operator: In
-                        values:
-                          - "true"
-            podAntiAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: app.kubernetes.io/name
-                        operator: In
-                        values:
-                          - immich
-                  topologyKey: kubernetes.io/hostname
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
@@ -144,25 +126,8 @@ spec:
                 memory: 5000Mi
       machine-learning:
         strategy: RollingUpdate
+        replicas: 2
         pod:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: feature.node.kubernetes.io/amd-gpu
-                        operator: In
-                        values:
-                          - "true"
-            podAntiAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: app.kubernetes.io/name
-                        operator: In
-                        values:
-                          - immich
-                  topologyKey: kubernetes.io/hostname
           enableServiceLinks: false
           securityContext:
             runAsUser: ${APP_UID}
@@ -181,7 +146,7 @@ spec:
           machine-learning:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v2.5.6-rocm
+              tag: v2.5.6
             env:
               MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL: ViT-B-16-SigLIP__webli
               MACHINE_LEARNING_PRELOAD__CLIP__VISUAL: ViT-B-16-SigLIP__webli
