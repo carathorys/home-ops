@@ -38,15 +38,7 @@ spec:
                         operator: NotIn
                         values:
                           - "true"
-            podAntiAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: app.kubernetes.io/name
-                        operator: In
-                        values:
-                          - immich
-                  topologyKey: kubernetes.io/hostname
+
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
