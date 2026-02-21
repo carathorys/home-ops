@@ -93,7 +93,7 @@ spec:
                       - key: app.kubernetes.io/name
                         operator: In
                         values:
-                          - immich-machine-learning
+                          - immich
                   topologyKey: kubernetes.io/hostname
           securityContext:
             runAsUser: ${APP_UID}
@@ -115,8 +115,6 @@ spec:
                   app.kubernetes.io/controller: microservices
         containers:
           microservices:
-            labels:
-              app.kubernetes.io/name: immich-microservices
             image:
               repository: ghcr.io/immich-app/immich-server
               tag: v2.5.6@sha256:aa163d2e1cc2b16a9515dd1fef901e6f5231befad7024f093d7be1f2da14341a
@@ -153,7 +151,7 @@ spec:
                       - key: app.kubernetes.io/name
                         operator: In
                         values:
-                          - immich-microservices
+                          - immich
                   topologyKey: kubernetes.io/hostname
           enableServiceLinks: false
           securityContext:
@@ -171,8 +169,6 @@ spec:
                   app.kubernetes.io/controller: machine-learning
         containers:
           machine-learning:
-            labels:
-              app.kubernetes.io/name: immich-machine-learning
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v2.5.6@sha256:b213fa3c82d27a21a299c46ffbb38a091f18384db1ad67d409a3b34fe0fce556
