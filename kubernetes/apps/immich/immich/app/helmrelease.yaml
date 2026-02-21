@@ -86,7 +86,17 @@ spec:
         strategy: RollingUpdate
         annotations:
           secret.reloader.stakater.com/reload: *secret
+        replicas: 2
         pod:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: feature.node.kubernetes.io/amd-gpu
+                        operator: In
+                        values:
+                          - "true"
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
