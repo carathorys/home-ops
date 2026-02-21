@@ -77,6 +77,25 @@ spec:
         annotations:
           secret.reloader.stakater.com/reload: *secret
         pod:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: feature.node.kubernetes.io/amd-gpu
+                        operator: In
+                        values:
+                          - "true"
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - plex
+                          - jellyfin
+                  topologyKey: kubernetes.io/hostname
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
@@ -197,6 +216,11 @@ spec:
               - identifier: server
                 port: *serverPort
     persistence:
+      dri:
+        type: hostPath
+        hostPath: /dev/dri
+        globalMounts:
+          - path: /dev/dri
       config:
         type: secret
         name: *secret
