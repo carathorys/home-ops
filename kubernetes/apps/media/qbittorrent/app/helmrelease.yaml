@@ -28,7 +28,7 @@ spec:
           main:
             image:
               repository: ghcr.io/linuxserver/qbittorrent
-              tag: 5.1.4
+              tag: 5.1.4-r2-ls445
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
