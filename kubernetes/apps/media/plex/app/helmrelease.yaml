@@ -61,12 +61,12 @@ spec:
               privileged: true
             image:
               repository: ghcr.io/linuxserver/plex
-              tag: 1.43.0.10492-121068a07-ls296
+              tag: 1.43.0.10492-121068a07-ls297
               pullPolicy: Always
             env:
               TZ: "Europe/Budapest"
               ADVERTISE_IP: "https://${APP}:443,https://${APP}.${SECRET_DOMAIN}:443"
-              ALLOWED_NETWORKS: "192.168.0.0/24"
+              ALLOWED_NETWORKS: "192.168.0.0/24,10.0.0.0/8"
               PUID: ${APP_UID}
               PGID: ${APP_GID}
             resources:
