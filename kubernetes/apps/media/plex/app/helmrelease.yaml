@@ -52,6 +52,7 @@ spec:
                         app.kubernetes.io/name: plex
                   weight: 100
           annotations:
+            reloader.stakater.com/auto: "true"
             kubernetes.io/egress-bandwidth: "250000k"
             kubernetes.io/ingress-bandwidth: "250000k"
         containers:
