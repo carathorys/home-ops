@@ -25,6 +25,8 @@ spec:
         replicas: ${REPLICAS}
         annotations:
           reloader.stakater.com/auto: "true"
+          kubernetes.io/egress-bandwidth: "250000k"
+          kubernetes.io/ingress-bandwidth: "250000k"
         pod:
           affinity:
             nodeAffinity:
@@ -51,10 +53,8 @@ spec:
                       matchLabels:
                         app.kubernetes.io/name: plex
                   weight: 100
-          annotations:
-            reloader.stakater.com/auto: "true"
-            kubernetes.io/egress-bandwidth: "250000k"
-            kubernetes.io/ingress-bandwidth: "250000k"
+          annotations: {}
+
         containers:
           main:
             securityContext:
@@ -74,7 +74,7 @@ spec:
                 cpu: 1m
                 memory: 2Gi
               limits:
-                cpu: 10m
+                # cpu: 10m
                 memory: 10Gi
     service:
       main:
