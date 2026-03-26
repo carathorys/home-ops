@@ -13,6 +13,7 @@ spec:
     controllers:
       server:
         strategy: RollingUpdate
+        replicas: 2
         annotations:
           secret.reloader.stakater.com/reload: &secret composed-secret
         initContainers:
@@ -133,7 +134,7 @@ spec:
                 cpu: 100m
                 memory: 250Mi
       machine-learning:
-        # strategy:
+        strategy: Recreate
         pod:
           enableServiceLinks: false
           securityContext:
