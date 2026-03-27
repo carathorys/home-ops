@@ -37,7 +37,7 @@ spec:
               - /bin/sh
               - -c
               - |
-                rm -rf /tools && \
+                rm -rf /tools/* && \
                 mkdir -p /tools/{bin,lib} && \
                 apk add --no-cache mosquitto-clients && \
                 cp /usr/bin/mosquitto_pub /tools/bin/ && \
