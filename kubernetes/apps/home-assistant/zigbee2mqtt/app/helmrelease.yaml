@@ -57,7 +57,7 @@ spec:
                       - -c
                       - |
                         LD_LIBRARY_PATH=/tools/lib /tools/bin/mosquitto_pub \
-                          -h localhost \
+                          -h mosquitto \
                           -t "zigbee2mqtt/bridge/request/health_check" \
                           -m '{"transaction":"healthcheck"}' \
                           -q 1
