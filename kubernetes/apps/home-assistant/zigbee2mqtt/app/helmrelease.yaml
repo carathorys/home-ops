@@ -46,25 +46,27 @@ spec:
                   | xargs -I{} cp -L {} /tools/lib/
         containers:
           main:
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  exec:
-                    command:
-                      - /bin/sh
-                      - -c
-                      - |
-                        LD_LIBRARY_PATH=/tools/lib /tools/bin/mosquitto_pub \
-                          -h mosquitto \
-                          -t "zigbee2mqtt/bridge/request/health_check" \
-                          -m '{"transaction":"healthcheck"}' \
-                          -q 1
-                  initialDelaySeconds: 30
-                  periodSeconds: 30
-                  timeoutSeconds: 5
-                  failureThreshold: 3
+            # probes:
+            #   liveness:
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       exec:
+            #         command:
+            #           - /bin/sh
+            #           - -c
+            #           - |
+            #             LD_LIBRARY_PATH=/tools/lib /tools/bin/mosquitto_pub \
+            #               -h mosquitto \
+            #               -t "zigbee2mqtt/bridge/request/health_check" \
+            #               -m '{"transaction":"healthcheck"}' \
+            #               -q 1 \
+            #               -u "${Z2M_HEALTH_CHECK_USER}" \
+            #               -P "${Z2M_HEALTH_CHECK_PASS}"
+            #       initialDelaySeconds: 30
+            #       periodSeconds: 30
+            #       timeoutSeconds: 5
+            #       failureThreshold: 3
             securityContext:
               privileged: true
               runAsUser: ${APP_UID}
