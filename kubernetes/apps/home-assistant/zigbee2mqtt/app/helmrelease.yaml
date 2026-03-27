@@ -41,7 +41,10 @@ spec:
                 apk add --no-cache mosquitto-clients && \
                 mkdir -p /tools/bin /tools/lib && \
                 cp /usr/bin/mosquitto_pub /tools/bin/ && \
-                cp /usr/lib/libmosquitto.so.1 /tools/lib/
+                cp /usr/lib/libmosquitto.so.1 /tools/lib/ \
+                ldd /usr/bin/mosquitto_pub \
+                  | grep -o '/usr/lib/[^ ]*' \
+                  | xargs -I{} cp {} /tools/lib/
         containers:
           main:
             probes:
@@ -54,7 +57,7 @@ spec:
                       - /bin/sh
                       - -c
                       - |
-                        /tools/bin/mosquitto_pub \
+                        LD_LIBRARY_PATH=/tools/lib /tools/bin/mosquitto_pub \
                           -h localhost \
                           -t "zigbee2mqtt/bridge/request/health_check" \
                           -m '{"transaction":"healthcheck"}' \
