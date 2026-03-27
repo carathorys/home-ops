@@ -1,0 +1,115 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/library/common/values.schema.json
+controllers:
+  main:
+    type: deployment
+    replicas: 1
+    annotations:
+      reloader.stakater.com/auto: "true"
+    pod:
+
+      nodeSelector:
+        feature.node.kubernetes.io/zigbee: "true"
+    initContainers:
+      install-mosquitto:
+        image:
+          repository: alpine
+          tag: "3.21"
+        command:
+          - /bin/sh
+          - -c
+          - |
+            apk add --no-cache mosquitto-clients && \
+            cp /usr/bin/mosquitto_pub /tools/bin/ && \
+            cp /usr/lib/libmosquitto.so.1 /tools/lib/
+    containers:
+      main:
+        probes:
+          liveness:
+            enabled: true
+            custom: true
+            spec:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - |
+                    /tools/bin/mosquitto_pub \
+                      -h localhost \
+                      -t "zigbee2mqtt/bridge/request/health_check" \
+                      -m '{"transaction":"healthcheck"}' \
+                      -q 1
+              initialDelaySeconds: 30
+              periodSeconds: 30
+              timeoutSeconds: 5
+              failureThreshold: 3
+        securityContext:
+          privileged: true
+          runAsUser: ${APP_UID}
+          runAsGroup: ${APP_GID}
+        image:
+          repository: ghcr.io/koenkk/zigbee2mqtt
+          tag: 2.9.1
+        env:
+          TZ: "Europe/Budapest"
+          Z2M_WATCHDOG: 0.5,3,6,15,30,45,60
+          ZIGBEE2MQTT_DATA: /zigbee2mqtt
+          ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info
+          ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: >-
+            ["console"]
+          ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: 60
+          ZIGBEE2MQTT_CONFIG_AVAILABILITY_PASSIVE_TIMEOUT: 2000
+          ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_LEGACY: false
+          ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: true
+          ZIGBEE2MQTT_CONFIG_EXPERIMENTAL_NEW_API: true
+          ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: &httpPort 8080
+          ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://z2m.${SECRET_DOMAIN}
+          ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_DISCOVERY_TOPIC: homeassistant
+          ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_EXPERIMENTAL_EVENT_ENTITIES: true
+          ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_LEGACY_ENTITY_ATTRIBUTES: false
+          ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_LEGACY_TRIGGERS: false
+          ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_STATUS_TOPIC: homeassistant/status
+          ZIGBEE2MQTT_CONFIG_MQTT_BASE_TOPIC: zigbee2mqtt
+          ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: true
+          ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: 60
+          ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: true
+          ZIGBEE2MQTT_CONFIG_MQTT_SERVER: "mqtt://mosquitto:1883"
+          ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
+          ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: false
+service:
+  main:
+    type: LoadBalancer
+    ports:
+      http:
+        port: *httpPort
+        protocol: TCP
+route:
+  internal:
+    hostnames: ["z2m.${SECRET_DOMAIN}"]
+    parentRefs:
+      - name: internal
+        namespace: kube-system
+        sectionName: https
+    rules:
+      - backendRefs: [{}]
+persistence:
+  zigbee-device:
+    type: hostPath
+    hostPath: /dev/ttyACM0
+    advancedMounts:
+      main:
+        main:
+          - path: /dev/ttyACM0
+            readOnly: false
+  mosquitto-tools:
+    type: emptyDir
+    globalMounts:
+      - path: /tools
+        readOnly: false
+  zigbee2mqtt:
+    type: persistentVolumeClaim
+    existingClaim: zigbee2mqtt
+    advancedMounts:
+      main:
+        main:
+          - path: /zigbee2mqtt
+            readOnly: false
