@@ -3,6 +3,32 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &app zigbee2mqtt-secrets
+  namespace: &namespace home-assistant
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/home-assistant/zigbee2mqtt/secrets
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: external-secrets
+      namespace: secrets
+  components: []
+  prune: true
+  wait: false
+  interval: 30m
+  timeout: 5m
+
+---
+# yaml-language-server: $schema=https://schemas.gallay.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: &app zigbee2mqtt
   namespace: &namespace home-assistant
 spec:
@@ -18,6 +44,8 @@ spec:
   dependsOn:
     - name: external-secrets
       namespace: secrets
+    - name: zigbee2mqtt-secrets
+      namespace: home-assistant
     - name: democratic-csi
       namespace: system
     - name: mosquitto
@@ -30,6 +58,8 @@ spec:
       APP_GID: "1000"
     substituteFrom:
       - name: cluster-secrets
+        kind: Secret
+      - name: zigbee2mqtt-secrets
         kind: Secret
   prune: true
   wait: false
