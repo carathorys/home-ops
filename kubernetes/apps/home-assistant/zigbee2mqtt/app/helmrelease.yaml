@@ -38,8 +38,8 @@ spec:
               - -c
               - |
                 rm -rf /tools/* && \
-                mkdir -p /tools/bin /tools/lib && \
                 apk add --no-cache mosquitto-clients && \
+                mkdir -p /tools/bin /tools/lib && \
                 cp /usr/bin/mosquitto_pub /tools/bin/ && \
                 cp /usr/lib/libmosquitto.so.1 /tools/lib/
         containers:
