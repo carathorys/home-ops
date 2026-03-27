@@ -19,6 +19,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/library/common/values.schema.json
     controllers:
       main:
         replicas: 1
@@ -27,8 +28,39 @@ spec:
         pod:
           nodeSelector:
             feature.node.kubernetes.io/zigbee: "true"
+        initContainers:
+          install-mosquitto:
+            image:
+              repository: alpine
+              tag: "3.21"
+            command:
+              - /bin/sh
+              - -c
+              - |
+                apk add --no-cache mosquitto-clients && \
+                cp /usr/bin/mosquitto_pub /tools/bin/ && \
+                cp /usr/lib/libmosquitto.so.1 /tools/lib/
         containers:
           main:
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /bin/sh
+                      - -c
+                      - |
+                        /tools/bin/mosquitto_pub \
+                          -h localhost \
+                          -t "zigbee2mqtt/bridge/request/health_check" \
+                          -m '{"transaction":"healthcheck"}' \
+                          -q 1
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
             securityContext:
               privileged: true
               runAsUser: ${APP_UID}
@@ -87,6 +119,11 @@ spec:
             main:
               - path: /dev/ttyACM0
                 readOnly: false
+      mosquitto-tools:
+        type: emptyDir
+        globalMounts:
+          - path: /tools
+            readOnly: false
       zigbee2mqtt:
         type: persistentVolumeClaim
         existingClaim: zigbee2mqtt
