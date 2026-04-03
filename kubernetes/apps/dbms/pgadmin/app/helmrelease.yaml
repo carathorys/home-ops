@@ -37,7 +37,7 @@ spec:
           main:
             image:
               repository: docker.io/dpage/pgadmin4
-              tag: 9.13.0
+              tag: 9.14.0
             env:
               TZ: Europe/Budapest
             envFrom:
