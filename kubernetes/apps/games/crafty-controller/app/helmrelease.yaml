@@ -52,7 +52,6 @@ spec:
       main:
         ports:
           https:
-
             port: *webPort
             protocol: TCP
             appProtocol: https
