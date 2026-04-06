@@ -54,6 +54,7 @@ spec:
           https:
             port: *webPort
             protocol: TCP
+            appProtocol: https
       game:
         type: LoadBalancer
         ports:
