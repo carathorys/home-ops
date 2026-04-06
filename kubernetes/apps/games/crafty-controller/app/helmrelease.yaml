@@ -25,6 +25,9 @@ spec:
         replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            fsGroup: 0
         containers:
           main:
             image:
