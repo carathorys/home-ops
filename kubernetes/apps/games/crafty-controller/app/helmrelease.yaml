@@ -148,7 +148,7 @@ spec:
               - path: /crafty/import
       proxy-config:
         type: configMap
-        name: crafty-controller-proxy-config
+        identifier: proxy-config
         advancedMounts:
           main:
             proxy:
