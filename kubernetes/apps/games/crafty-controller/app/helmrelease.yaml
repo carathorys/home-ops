@@ -1,0 +1,108 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: registry.gitlab.com/crafty-controller/crafty-4
+              tag: 4.10.2
+            env:
+              TZ: "Europe/Budapest"
+            ports:
+              - containerPort: &webPort 8443
+                protocol: TCP
+              - containerPort: &javaPort 25565
+                protocol: TCP
+              - containerPort: &bedrockPort 19132
+                protocol: UDP
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 4Gi
+    service:
+      main:
+        ports:
+          https:
+            port: *webPort
+            protocol: TCP
+      game:
+        type: LoadBalancer
+        ports:
+          java:
+            port: *javaPort
+            protocol: TCP
+          bedrock:
+            port: *bedrockPort
+            protocol: UDP
+    route:
+      internal:
+        hostnames: ["crafty.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: *webPort
+    persistence:
+      servers:
+        type: persistentVolumeClaim
+        existingClaim: crafty-servers
+        advancedMounts:
+          main:
+            main:
+              - path: /crafty/servers
+      backups:
+        type: persistentVolumeClaim
+        existingClaim: crafty-backups
+        advancedMounts:
+          main:
+            main:
+              - path: /crafty/backups
+      config:
+        type: persistentVolumeClaim
+        existingClaim: crafty-config
+        advancedMounts:
+          main:
+            main:
+              - path: /crafty/app/config
+      logs:
+        type: persistentVolumeClaim
+        existingClaim: crafty-logs
+        advancedMounts:
+          main:
+            main:
+              - path: /crafty/logs
+      import:
+        type: emptyDir
+        advancedMounts:
+          main:
+            main:
+              - path: /crafty/import
