@@ -64,6 +64,7 @@ spec:
           default.conf: |
             server {
                 listen 8080;
+                client_max_body_size 0;
                 location / {
                     proxy_pass https://localhost:8443;
                     proxy_ssl_verify off;
