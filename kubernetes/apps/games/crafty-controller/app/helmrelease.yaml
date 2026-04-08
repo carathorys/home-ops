@@ -40,18 +40,6 @@ spec:
                 protocol: TCP
               - containerPort: &javaPort 25565
                 protocol: TCP
-              - containerPort: 25600
-                protocol: TCP
-              - containerPort: 25601
-                protocol: TCP
-              - containerPort: 25602
-                protocol: TCP
-              - containerPort: 25603
-                protocol: TCP
-              - containerPort: 25604
-                protocol: TCP
-              - containerPort: 25605
-                protocol: TCP
               - containerPort: &bedrockPort 19132
                 protocol: UDP
 
@@ -111,11 +99,6 @@ spec:
           java:
             port: *javaPort
             protocol: TCP
-          javaServerRange:
-            protocol: TCP
-            portRange:
-              start: 25600
-              end: 25699
           bedrock:
             port: *bedrockPort
             protocol: UDP
