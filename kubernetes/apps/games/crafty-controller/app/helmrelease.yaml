@@ -101,7 +101,7 @@ spec:
           java:
             port: *javaPort
             protocol: TCP
-          javaPaper:
+          java-paper:
             port: *javaPaperPort
             protocol: TCP
           bedrock:
