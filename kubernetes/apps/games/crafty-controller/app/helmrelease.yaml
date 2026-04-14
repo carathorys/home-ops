@@ -51,7 +51,7 @@ spec:
           proxy:
             image:
               repository: nginx
-              tag: 1.27-alpine
+              tag: 1.29-alpine
             resources:
               requests:
                 cpu: 10m
