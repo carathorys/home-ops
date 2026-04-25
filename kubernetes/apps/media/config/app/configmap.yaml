@@ -4,4 +4,4 @@ kind: ConfigMap
 metadata:
   name: media-config
 data:
-  REPLICAS: "1"
+  REPLICAS: "0"
