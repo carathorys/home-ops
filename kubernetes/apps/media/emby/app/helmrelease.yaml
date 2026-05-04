@@ -51,7 +51,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/linuxserver/emby
               repository: ghcr.io/linuxserver/emby
-              tag: 4.9.3.0-ls268
+              tag: 4.9.3@sha256:32c7fe5ebf7106f69bb3b86b749a6bb6bc01ffd8d5f9ca3fdf7ec2f6385de021
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
