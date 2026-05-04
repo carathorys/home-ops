@@ -75,8 +75,8 @@ spec:
               fsGroup: ${APP_GID}
               fsGroupChangePolicy: OnRootMismatch
             image:
-              # renovate: datasource=docker depName=ghcr.io/jellyfin/jellyfin
-              repository: ghcr.io/jellyfin/jellyfin
+              # renovate: datasource=docker depName=ghcr.io/linuxserver/jellyfin
+              repository: ghcr.io/linuxserver/jellyfin
               tag: 10.11.8
             env:
               TZ: "Europe/Budapest"
