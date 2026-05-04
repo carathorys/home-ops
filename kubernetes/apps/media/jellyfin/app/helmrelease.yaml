@@ -46,6 +46,7 @@ spec:
         initContainers:
           chown-config:
             image:
+              # renovate: datasource=docker depName=alpine
               repository: alpine
               tag: latest
             resources:
@@ -74,6 +75,7 @@ spec:
               fsGroup: ${APP_GID}
               fsGroupChangePolicy: OnRootMismatch
             image:
+              # renovate: datasource=docker depName=ghcr.io/jellyfin/jellyfin
               repository: ghcr.io/jellyfin/jellyfin
               tag: 10.11.8
             env:

@@ -30,6 +30,7 @@ spec:
             securityContext:
               privileged: true
             image:
+              # renovate: datasource=docker depName=ghcr.io/linuxserver/tautulli
               repository: ghcr.io/linuxserver/tautulli
               tag: v2.16.0-ls216
               pullPolicy: Always

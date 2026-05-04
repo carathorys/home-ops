@@ -19,6 +19,7 @@ spec:
         initContainers:
           01-init-db:
             image:
+              # renovate: datasource=docker depName=ghcr.io/home-operations/postgres-init
               repository: ghcr.io/home-operations/postgres-init
               tag: 18.3@sha256:6fa1f331cddd2eb0b6afa7b8d3685c864127a81ab01c3d9400bc3ff5263a51cf
               pullPolicy: IfNotPresent
@@ -54,6 +55,7 @@ spec:
         containers:
           server:
             image:
+              # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
               repository: ghcr.io/immich-app/immich-server
               tag: v2.7.5@sha256:c15bff75068effb03f4355997d03dc7e0fc58720c2b54ad6f7f10d1bc57efaa5
             envFrom:
@@ -119,6 +121,7 @@ spec:
         containers:
           microservices:
             image:
+              # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
               repository: ghcr.io/immich-app/immich-server
               tag: v2.7.5@sha256:c15bff75068effb03f4355997d03dc7e0fc58720c2b54ad6f7f10d1bc57efaa5
             envFrom:
@@ -153,6 +156,7 @@ spec:
         containers:
           machine-learning:
             image:
+              # renovate: datasource=docker depName=ghcr.io/immich-app/immich-machine-learning
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v2.7.5
             env:

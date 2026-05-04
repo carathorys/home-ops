@@ -27,6 +27,7 @@ spec:
         containers:
           main:
             image:
+              # renovate: datasource=docker depName=ghcr.io/linuxserver/qbittorrent
               repository: ghcr.io/linuxserver/qbittorrent
               tag: 5.1.4-r2-ls445
             env:

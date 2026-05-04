@@ -24,6 +24,7 @@ spec:
         initContainers:
           init-config:
             image:
+              # renovate: datasource=docker depName=ghcr.io/home-operations/k8s-sidecar
               repository: ghcr.io/home-operations/k8s-sidecar
               tag: 2.7.1@sha256:11b5f116b05ccc27870df8f9ca61c114a6fd0d3d6672427d67b10b400fe5c931
             env:
@@ -42,6 +43,7 @@ spec:
         containers:
           app:
             image:
+              # renovate: datasource=docker depName=ghcr.io/twin/gatus
               repository: ghcr.io/twin/gatus
               tag: v5.35.0
             env:

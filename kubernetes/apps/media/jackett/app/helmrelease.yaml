@@ -34,6 +34,7 @@ spec:
         containers:
           main:
             image:
+              # renovate: datasource=docker depName=ghcr.io/linuxserver/jackett
               repository: ghcr.io/linuxserver/jackett
               tag: v0.24.1427-ls349
             env:

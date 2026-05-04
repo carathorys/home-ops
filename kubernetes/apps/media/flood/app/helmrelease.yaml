@@ -34,6 +34,7 @@ spec:
         containers:
           main:
             image:
+              # renovate: datasource=docker depName=docker.io/jesec/flood
               repository: docker.io/jesec/flood
               tag: 4.13.10 # {"$imagepolicy": "flux-system:flood:tag"}
             env:

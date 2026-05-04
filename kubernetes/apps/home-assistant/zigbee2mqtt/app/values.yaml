@@ -12,6 +12,7 @@ controllers:
     initContainers:
       install-mosquitto:
         image:
+          # renovate: datasource=docker depName=alpine
           repository: alpine
           tag: "3.23"
         command:
@@ -47,6 +48,7 @@ controllers:
           runAsUser: ${APP_UID}
           runAsGroup: ${APP_GID}
         image:
+          # renovate: datasource=docker depName=ghcr.io/koenkk/zigbee2mqtt
           repository: ghcr.io/koenkk/zigbee2mqtt
           tag: 2.10.0
         env:

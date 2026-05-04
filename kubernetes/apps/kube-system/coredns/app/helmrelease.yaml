@@ -20,6 +20,7 @@ spec:
   values:
     fullnameOverride: coredns
     image:
+      # renovate: datasource=docker depName=mirror.gcr.io/coredns/coredns
       repository: mirror.gcr.io/coredns/coredns
     k8sAppLabelOverride: kube-dns
     serviceAccount:

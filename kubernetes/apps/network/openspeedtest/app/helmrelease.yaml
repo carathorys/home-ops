@@ -26,6 +26,7 @@ spec:
         containers:
           app:
             image:
+              # renovate: datasource=docker depName=docker.io/openspeedtest/latest
               repository: docker.io/openspeedtest/latest
               tag: v2.0.6
             env:

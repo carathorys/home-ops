@@ -23,6 +23,7 @@ spec:
         initContainers:
           generate-schemas:
             image:
+              # renovate: datasource=docker depName=ghcr.io/bjw-s-labs/k8s-crd-extractor
               repository: ghcr.io/bjw-s-labs/k8s-crd-extractor
               tag: 2026.3.11@sha256:a26844ff81905a8fac4dba61b416bed087a1944e20e38634acba5a7f65eeac93
             resources:
@@ -40,6 +41,7 @@ spec:
         containers:
           app:
             image:
+              # renovate: datasource=docker depName=alpine
               repository: alpine
               tag: "3.23"
             command:
@@ -64,6 +66,7 @@ spec:
         containers:
           k8s-schemas-server:
             image:
+              # renovate: datasource=docker depName=nginx
               repository: nginx
               tag: alpine
             resources:
