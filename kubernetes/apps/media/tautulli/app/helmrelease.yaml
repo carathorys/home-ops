@@ -32,7 +32,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/linuxserver/tautulli
               repository: ghcr.io/linuxserver/tautulli
-              tag: v2.16.0-ls216
+              tag: v2.17.0-ls228
               pullPolicy: Always
             env:
               TZ: "Europe/Budapest"
