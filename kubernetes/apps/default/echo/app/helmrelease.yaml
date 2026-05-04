@@ -26,6 +26,7 @@ spec:
         containers:
           app:
             image:
+              # renovate: datasource=docker depName=ghcr.io/mendhak/http-https-echo
               repository: ghcr.io/mendhak/http-https-echo
               tag: 40
             env:

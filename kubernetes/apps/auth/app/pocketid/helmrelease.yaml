@@ -36,6 +36,7 @@ spec:
         containers:
           app:
             image:
+              # renovate: datasource=docker depName=ghcr.io/pocket-id/pocket-id
               repository: ghcr.io/pocket-id/pocket-id
               tag: v2.6.2
             env:

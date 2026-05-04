@@ -60,8 +60,9 @@ spec:
             securityContext:
               privileged: true
             image:
+              # renovate: datasource=docker depName=ghcr.io/linuxserver/plex
               repository: ghcr.io/linuxserver/plex
-              tag: 1.43.0.10492-121068a07-ls297
+              tag: 1.43.1
               pullPolicy: Always
             env:
               TZ: "Europe/Budapest"
