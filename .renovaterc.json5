@@ -36,6 +36,10 @@
       overrideDepName: "{{packageName}}",
     },
     {
+      "packagePatterns": ["^ghcr.io\\/linuxserver\\/"],
+      "versionScheme": "regex:^(?<compatibility>.*?)-(?<major>v?\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)[\\.-]*r?(?<build>\\d+)*-*r?(?<release>\\w+)*"
+    },
+    {
       description: "Flux Operator Group",
       groupName: "flux-operator",
       matchDatasources: ["docker"],
