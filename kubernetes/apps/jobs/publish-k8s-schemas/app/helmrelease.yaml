@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://schemas.gallay.io/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -11,6 +11,8 @@ spec:
   interval: 30m
 
   values:
+    defaultPodOptions:
+      automountServiceAccountToken: true
     controllers:
       publish-k8s-schemas:
         type: cronjob
