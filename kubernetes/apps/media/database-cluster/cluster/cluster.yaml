@@ -11,7 +11,7 @@ spec:
   instances: 3
   primaryUpdateStrategy: supervised
   storage:
-    size: 50Gi
+    size: 64Gi
     storageClass: iscsi
   enableSuperuserAccess: true
   superuserSecret:
@@ -26,6 +26,14 @@ spec:
         waitForArchive: true
       className: iscsi
       walClassName: iscsi
+  postgresql:
+    parameters:
+      wal_receiver_timeout: 60s
+      wal_keep_size: "32GB"
+      max_slot_wal_keep_size: "32GB"
+  replicationSlots:
+    highAvailability:
+      enabled: true
   managed:
     roles:
       - connectionLimit: -1
