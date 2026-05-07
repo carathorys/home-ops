@@ -11,7 +11,7 @@ spec:
   instances: 3
   primaryUpdateStrategy: supervised
   storage:
-    size: 25Gi
+    size: 64Gi
     storageClass: iscsi
   affinity:
     enablePodAntiAffinity: true
@@ -75,11 +75,14 @@ spec:
       max_parallel_maintenance_workers: "4"
       hot_standby_feedback: "on"
       huge_pages: "off"
-      # Aumentar timeouts para evitar reinicios por problemas de red temporales
       wal_sender_timeout: 60s
       wal_receiver_timeout: 60s
+      wal_keep_size: "32GB"
+      max_slot_wal_keep_size: "32GB"
     shared_preload_libraries:
       - vchord.so
-
+  replicationSlots:
+    highAvailability:
+      enabled: true
   monitoring:
     enablePodMonitor: true

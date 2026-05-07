@@ -11,13 +11,21 @@ spec:
   instances: 3
   primaryUpdateStrategy: supervised
   storage:
-    size: 50Gi
+    size: 64Gi
     storageClass: iscsi
   enableSuperuserAccess: true
   superuserSecret:
     name: postgres-superuser
   monitoring:
     enablePodMonitor: true
+  postgresql:
+    parameters:
+      wal_receiver_timeout: 60s
+      wal_keep_size: "32GB"
+      max_slot_wal_keep_size: "32GB"
+  replicationSlots:
+    highAvailability:
+      enabled: true
   backup:
     retentionPolicy: 7d
     target: primary
