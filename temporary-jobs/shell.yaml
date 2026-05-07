@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: disk-util-avarath
-  namespace: default
+  name: util-avarath
+  namespace: media
 spec:
   nodeName: avarath  # Change this per node
   hostPID: true
   hostNetwork: true
   containers:
-  - name: disk-util-avarath
+  - name: util-avarath
     image: archlinux:latest
     command: ["sleep", "infinity"]
     securityContext:
@@ -18,6 +18,8 @@ spec:
       mountPath: /dev
     - name: sys
       mountPath: /sys
+    - name: jellyfin-data
+      mountPath: /mnt/jellyfin
   volumes:
   - name: dev
     hostPath:
@@ -25,66 +27,69 @@ spec:
   - name: sys
     hostPath:
       path: /sys
+  - name: jellyfin-data
+    persistentVolumeClaim:
+      claimName: jellyfin
   restartPolicy: Never
 
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: disk-util-hummianet
-  namespace: default
-spec:
-  nodeName: hummianet  # Change this per node
-  hostPID: true
-  hostNetwork: true
-  containers:
-  - name: disk-util-hummianet
-    image: archlinux:latest
-    command: ["sleep", "infinity"]
-    securityContext:
-      privileged: true
-    volumeMounts:
-    - name: dev
-      mountPath: /dev
-    - name: sys
-      mountPath: /sys
-  volumes:
-  - name: dev
-    hostPath:
-      path: /dev
-  - name: sys
-    hostPath:
-      path: /sys
-  restartPolicy: Never
+# ---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: disk-util-hummianet
+#   namespace: default
+# spec:
+#   nodeName: hummianet  # Change this per node
+#   hostPID: true
+#   hostNetwork: true
+#   containers:
+#   - name: disk-util-hummianet
+#     image: archlinux:latest
+#     command: ["sleep", "infinity"]
+#     securityContext:
+#       privileged: true
+#     volumeMounts:
+#     - name: dev
+#       mountPath: /dev
+#     - name: sys
+#       mountPath: /sys
+#   volumes:
+#   - name: dev
+#     hostPath:
+#       path: /dev
+#   - name: sys
+#     hostPath:
+#       path: /sys
+#   restartPolicy: Never
 
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: disk-util-esutha
-  namespace: default
-spec:
-  nodeName: esutha  # Change this per node
-  hostPID: true
-  hostNetwork: true
-  containers:
-  - name: disk-util-esutha
-    image: archlinux:latest
-    command: ["sleep", "infinity"]
-    securityContext:
-      privileged: true
-    volumeMounts:
-    - name: dev
-      mountPath: /dev
-    - name: sys
-      mountPath: /sys
-  volumes:
-  - name: dev
-    hostPath:
-      path: /dev
-  - name: sys
-    hostPath:
-      path: /sys
-  restartPolicy: Never
+# ---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: disk-util-esutha
+#   namespace: default
+# spec:
+#   nodeName: esutha  # Change this per node
+#   hostPID: true
+#   hostNetwork: true
+#   containers:
+#   - name: disk-util-esutha
+#     image: archlinux:latest
+#     command: ["sleep", "infinity"]
+#     securityContext:
+#       privileged: true
+#     volumeMounts:
+#     - name: dev
+#       mountPath: /dev
+#     - name: sys
+#       mountPath: /sys
+#   volumes:
+#   - name: dev
+#     hostPath:
+#       path: /dev
+#   - name: sys
+#     hostPath:
+#       path: /sys
+#   restartPolicy: Never
 
----
+# ---
