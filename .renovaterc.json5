@@ -50,7 +50,7 @@
       overrideDepName: '{{packageName}}',
     },
     {
-      versioning: 'regex:^v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)((\\.|-r)(?<build>\\d+))?(-?(?<hash>[\\da-fA-F]+))-ls(?<revision>\\d+)$',
+      versioning: 'regex:^v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)((\\.|-r)(?<build>\\d+))?(ubu\\d{2,4})?(-?(?<hash>[\\da-fA-F]+))-ls(?<revision>\\d+)$',
       matchPackageNames: [
         '/^(gh|ls)cr\\.io\\/linuxserver\\//',
       ],
