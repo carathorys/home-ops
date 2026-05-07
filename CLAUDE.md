@@ -4,143 +4,86 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a GitOps-managed Kubernetes cluster configuration using Talos Linux as the OS and Flux for continuous deployment. The repository is structured to deploy applications on bare-metal or VM infrastructure with a focus on home operations.
+GitOps-managed single-cluster home-ops setup. Talos Linux runs Kubernetes; Flux v2 reconciles manifests from this Git repo; SOPS (age) encrypts secrets; Cloudflare Tunnel + external-dns expose chosen services. The repo was generated from `carathorys/cluster-template` (a `makejinja` template), so the working tree contains only rendered output — `cluster.sample.yaml` / `nodes.sample.yaml` referenced by README live in the upstream template, not here.
 
-## Key Commands
+Tools are pinned in `.mise.toml` — run `mise trust && mise install` before any task.
 
-### Development Environment Setup
+## Common Commands
+
+All workflows are driven through `task` (Taskfile.yaml + `.taskfiles/`). `task` with no args lists everything.
+
 ```bash
-# Install tools via mise
-mise trust && mise install
+# Bootstrap (one-time)
+task bootstrap:talos          # genconfig → apply --insecure → bootstrap → fetch kubeconfig
+task bootstrap:apps           # runs scripts/bootstrap-apps.sh (helmfile sync of CRDs + flux)
 
-# Generate initial configuration files
-task init
-
-# Template out Kubernetes and Talos configs
-task configure
+# Day-2 cluster ops
+task reconcile                                  # flux reconcile ks flux-system --with-source
+task talos:apply-node IP=<node-ip>              # MODE defaults to "auto"
+task talos:upgrade-node IP=<node-ip>            # image+version pulled from talconfig.yaml/talenv.yaml
+task talos:upgrade-k8s                          # version pulled from talenv.yaml
+task talos:reset                                # destructive; prompts before wiping
 ```
 
-### Cluster Operations
-```bash
-# Bootstrap Talos cluster
-task bootstrap:talos
+`task encrypt-secrets` / `decrypt-secrets` are marked `internal: true` — invoke via the dependent tasks rather than directly. They walk `bootstrap/`, `kubernetes/`, `talos/` for `*.sops.*` and toggle encryption based on `sops filestatus`.
 
-# Bootstrap applications into cluster
-task bootstrap:apps
+Required env (set automatically by `mise` and Taskfile):
+- `KUBECONFIG=./kubeconfig`
+- `SOPS_AGE_KEY_FILE=./age.key`
+- `TALOSCONFIG=./talos/clusterconfig/talosconfig`
 
-# Force Flux reconciliation
-task reconcile
+## Flux Layering — Read This Before Editing Manifests
 
-# Check cluster status
-flux check
-kubectl get pods --all-namespaces
-cilium status
+The cluster has exactly **one** Flux entrypoint Kustomization (`flux-system`, bootstrapped by `task bootstrap:apps`). It points at `kubernetes/flux/cluster/ks.yaml`, which declares two Kustomizations:
+
+1. `cluster-meta` → `./kubernetes/flux/meta` — Helm/OCI repos, the SOPS-encrypted `cluster-secrets` Secret, and other shared deps. Must reconcile first (`wait: true`).
+2. `cluster-apps` → `./kubernetes/apps` — `dependsOn: cluster-meta`. Recursively kustomizes everything under `kubernetes/apps/<namespace>/`. A patch is applied here that injects `decryption.provider: sops` and `postBuild.substituteFrom: cluster-secrets` into **every** child Kustomization, so individual app `ks.yaml` files don't need to repeat that.
+
+### Per-app convention
+
+Each app under `kubernetes/apps/<namespace>/<app>/` follows:
+
+```
+<app>/
+  ks.yaml           # Flux Kustomization: name=<app>, path=./kubernetes/apps/<ns>/<app>/app, targetNamespace=<ns>
+  app/
+    kustomization.yaml   # kustomize.config.k8s.io — lists helmrelease.yaml, secret.sops.yaml, etc.
+    helmrelease.yaml
+    secret.sops.yaml     # SOPS-encrypted; decrypted at reconcile time
+    ...
 ```
 
-### Talos Management
+`ks.yaml` may set `dependsOn` to gate ordering across apps in the same namespace (e.g. an app waiting on its database). Variables substituted from `cluster-secrets` are referenced as `${VAR}` inside any manifest under `app/`.
+
+`kubernetes/components/common/` provides reusable kustomize components (`repos/`, `sops/cluster-secrets.sops.yaml`) — referenced via `components:` in `kustomization.yaml` rather than copy-paste.
+
+### App namespaces present
+
+`auth`, `cert-manager`, `dbms`, `default`, `flux-system`, `games`, `home-assistant`, `immich`, `jobs`, `kube-system`, `media`, `network`, `observability`, `secrets`, `system`. Each has its own `kustomization.yaml` enumerating apps.
+
+## Talos Configuration
+
+Source of truth is `talos/talconfig.yaml` (consumed by `talhelper`). Versions live in `talos/talenv.yaml` (Renovate-managed via `# renovate: datasource=docker depName=...` comments). `talos/clusterconfig/` is generated output — regenerate with `task talos:generate-config`, never hand-edit. `talsecret.sops.yaml` is created on first bootstrap and committed encrypted.
+
+`talos/patches/` holds machine-config patches included from `talconfig.yaml`.
+
+## Secret Management
+
+- Age key: `./age.key` (gitignored). `.sops.yaml` configures recipients and the `path_regex` rules.
+- Convention: filename suffix `.sops.yaml` / `.sops.json` etc. — encryption status is detected via `sops filestatus`, not by suffix alone.
+- `cluster-secrets` (in `kubernetes/components/common/sops/`) is the global substitution Secret — add a key here to make it available as `${KEY}` to any app.
+- External Secrets Operator is deployed under the `secrets` namespace for syncing from external stores; use it instead of inlining a `secret.sops.yaml` when a store is appropriate.
+
+## Renovate
+
+`.renovaterc.json5` runs on weekends, manages Flux/Helmfile/Kustomize/Kubernetes/Docker deps, and ignores `**/*.sops.*`. Linuxserver images use a custom regex versioning scheme. When adding a new image, add a `# renovate:` comment if it isn't auto-detected.
+
+## Quick Sanity Checks
+
 ```bash
-# Generate Talos configuration
-task talos:generate-config
-
-# Apply config to specific node
-task talos:apply-node IP=<node-ip>
-
-# Upgrade Talos on a node
-task talos:upgrade-node IP=<node-ip>
-
-# Upgrade Kubernetes version
-task talos:upgrade-k8s
-
-# Reset cluster (destructive)
-task talos:reset
-```
-
-## Architecture
-
-### Directory Structure
-- `kubernetes/apps/` - Application manifests organized by namespace
-- `kubernetes/components/` - Common components and configurations
-- `kubernetes/flux/` - Flux system configuration
-- `talos/` - Talos Linux configuration files
-- `bootstrap/` - Bootstrap scripts and initial configurations
-- `.taskfiles/` - Task automation files
-
-### GitOps Workflow
-The cluster uses Flux v2 for GitOps with the following pattern:
-1. **Kustomization manifests** (`ks.yaml`) define how Flux should apply resources
-2. **HelmRelease manifests** manage Helm chart deployments
-3. **Components** provide shared configurations across namespaces
-4. **SOPS encryption** secures sensitive data (look for `.sops.yaml` files)
-
-### Secret Management
-- Secrets are encrypted with SOPS using age keys
-- Age key located at `age.key` (do not commit this file)
-- All `.sops.yaml` files contain encrypted secrets
-- External Secrets Operator can manage secrets from external sources
-
-### Networking
-- **Cilium CNI** with Gateway API support
-- **Cloudflare Tunnel** for external access
-- **Internal gateway** for cluster-local services
-- **External gateway** for public internet access
-
-## Important Files
-
-### Configuration Templates
-- `cluster.sample.yaml` - Main cluster configuration template
-- `nodes.sample.yaml` - Node-specific configuration template
-- `talenv.yaml` - Talos and Kubernetes version definitions
-
-### Bootstrap Files
-- `bootstrap/helmfile.d/` - Contains CRDs and initial applications
-- `scripts/bootstrap-apps.sh` - Application bootstrap automation
-
-### Environment
-- `.mise.toml` - Development tool versions and environment
-- `Taskfile.yaml` - Main task automation definitions
-- `.sops.yaml` - SOPS encryption configuration
-
-## Development Workflow
-
-1. **Configuration Changes**: Edit YAML manifests in `kubernetes/apps/`
-2. **Template Updates**: Run `task configure` after modifying configuration templates
-3. **Secret Management**: Use `sops` to edit encrypted files
-4. **Testing**: Use `kubectl diff` or `flux diff ks <name>` before applying
-5. **Deployment**: Changes are automatically deployed via Flux GitOps
-
-## Troubleshooting
-
-### Common Commands
-```bash
-# Check Flux status
-flux get sources git -A
-flux get ks -A
+flux get ks -A                 # any NotReady? check the failing Kustomization first
 flux get hr -A
-
-# Check application logs
-kubectl -n <namespace> logs <pod-name> -f
-
-# Describe resources for issues
-kubectl -n <namespace> describe <resource> <name>
-
-# Check namespace events
-kubectl -n <namespace> get events --sort-by='.metadata.creationTimestamp'
+flux diff ks <name> --path ./kubernetes/apps/<ns>/<app>     # preview before push
+kubectl -n <ns> get events --sort-by='.metadata.creationTimestamp'
+sops -d path/to/secret.sops.yaml          # view; use `sops path/to/secret.sops.yaml` to edit
 ```
-
-### Secret Decryption
-```bash
-# View encrypted secret
-sops -d path/to/secret.sops.yaml
-
-# Edit encrypted secret
-sops path/to/secret.sops.yaml
-```
-
-## Key Dependencies
-- **Talos Linux** - Immutable Kubernetes OS
-- **Flux v2** - GitOps continuous deployment
-- **Cilium** - Container networking (CNI)
-- **SOPS** - Secret encryption
-- **Cloudflare** - DNS and tunnel services
-- **External Secrets** - External secret management
-- **cert-manager** - TLS certificate automation
