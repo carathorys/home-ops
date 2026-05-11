@@ -6,6 +6,7 @@ metadata:
   name: &app rustdesk-server
   namespace: &namespace rustdesk
 spec:
+  suspend: true
   targetNamespace: *namespace
   commonMetadata:
     labels:
