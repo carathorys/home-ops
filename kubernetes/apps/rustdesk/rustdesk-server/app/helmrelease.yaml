@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          hbbs:
+            image:
+              # renovate: datasource=docker depName=rustdesk/rustdesk-server
+              repository: rustdesk/rustdesk-server
+              tag: 1.1.15
+            command: ["hbbs"]
+            args: ["-r", "192.168.2.5:21117", "-k", "_"]
+            ports:
+              - containerPort: 21115
+                protocol: TCP
+              - containerPort: 21116
+                protocol: TCP
+              - containerPort: 21116
+                protocol: UDP
+              - containerPort: 21118
+                protocol: TCP
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+          hbbr:
+            image:
+              # renovate: datasource=docker depName=rustdesk/rustdesk-server
+              repository: rustdesk/rustdesk-server
+              tag: 1.1.15
+            command: ["hbbr"]
+            args: ["-k", "_"]
+            ports:
+              - containerPort: 21117
+                protocol: TCP
+              - containerPort: 21119
+                protocol: TCP
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+    service:
+      main:
+        type: LoadBalancer
+        loadBalancerIP: 192.168.2.5
+        ports:
+          hbbs-nat:
+            port: 21115
+            protocol: TCP
+            targetPort: 21115
+          hbbs-tcp:
+            port: 21116
+            protocol: TCP
+            targetPort: 21116
+          hbbs-udp:
+            port: 21116
+            protocol: UDP
+            targetPort: 21116
+          hbbr:
+            port: 21117
+            protocol: TCP
+            targetPort: 21117
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        existingClaim: rustdesk-data
+        globalMounts:
+          - path: /root
