@@ -83,7 +83,7 @@ spec:
               PUID: ${APP_UID}
               PGID: ${APP_GID}
               ADVERTISE_IP: "https://${APP}:443,https://${APP}.${SECRET_DOMAIN}:443"
-              JELLYFIN_PublishedServerUrl: http://${APP}.${SECRET_DOMAIN}
+              JELLYFIN_PublishedServerUrl: https://${APP}.${SECRET_DOMAIN}
             resources:
               requests:
                 cpu: 100m
@@ -103,6 +103,9 @@ spec:
         hostnames: ["${APP}", "${APP}.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal
+            namespace: kube-system
+            sectionName: https
+          - name: external
             namespace: kube-system
             sectionName: https
         rules:
