@@ -38,7 +38,7 @@ spec:
             image:
               # renovate: datasource=docker depName=dpage/pgadmin4
               repository: docker.io/dpage/pgadmin4
-              tag: 9.14.0
+              tag: 9.15.0
             env:
               TZ: Europe/Budapest
             envFrom:
