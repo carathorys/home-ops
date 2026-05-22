@@ -36,7 +36,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/linuxserver/jackett
               repository: ghcr.io/linuxserver/jackett
-              tag: v0.24.1894-ls405
+              tag: v0.24.1914-ls408
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
