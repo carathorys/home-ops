@@ -36,7 +36,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/autobrr/qui
               repository:  ghcr.io/autobrr/qui
-              tag: v1.18.0
+              tag: v1.19.0
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
