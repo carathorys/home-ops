@@ -25,6 +25,12 @@ spec:
     keepHistory: false
   values:
     global:
+      env:
+        - name: AUTHENTIK_POSTGRESQL__PORT
+          valueFrom:
+            secretKeyRef:
+              name: postgres-app
+              key: port
       volumes:
         - name: postgres-creds
           secret:
@@ -41,9 +47,7 @@ spec:
         enabled: true
       log_level: debug
       postgresql:
-        enabled: true
         host: file:///postgres-creds/host
-        port: file:///postgres-creds/port
         name: file:///postgres-creds/dbname
         user: file:///postgres-creds/username
         password: file:///postgres-creds/password
