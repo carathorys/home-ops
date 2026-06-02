@@ -13,13 +13,13 @@ spec:
     command: ["sleep", "infinity"]
     securityContext:
       privileged: true
-    volumeMounts:
-    - name: dev
-      mountPath: /dev
-    - name: sys
-      mountPath: /sys
-    - name: jellyfin-data
-      mountPath: /mnt/jellyfin
+    volumeMounts: []
+    # - name: dev
+    #   mountPath: /dev
+    # - name: sys
+    #   mountPath: /sys
+    # - name: jellyfin-data
+    #   mountPath: /mnt/jellyfin
   volumes:
   - name: dev
     hostPath:
