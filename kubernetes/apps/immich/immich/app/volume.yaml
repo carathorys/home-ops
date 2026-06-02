@@ -1,13 +1,34 @@
 ---
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mlcache
+spec:
+  storageClassName: mlcache
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: nas.${SECRET_DOMAIN}
+    path: "/mnt/data/services/immich/mlcache"
+  mountOptions:
+    - vers=4.2
+    - rsize=1048576
+    - wsize=1048576
+    - async
+    - noatime
+    - nodiratime
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mlcache
 spec:
-  storageClassName: iscsi
+  storageClassName: mlcache
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 50Gi
-

@@ -137,7 +137,8 @@ spec:
                 cpu: 100m
                 memory: 250Mi
       machine-learning:
-        strategy: Recreate
+        strategy: RollingUpdate
+        replicas: 2
         pod:
           enableServiceLinks: false
           securityContext:
