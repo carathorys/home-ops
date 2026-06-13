@@ -36,7 +36,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/linuxserver/sonarr
               repository: ghcr.io/linuxserver/sonarr
-              tag: 4.0.17.2952-ls313
+              tag: 4.0.17.2952-ls314
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
