@@ -33,7 +33,7 @@ spec:
             image:
               # renovate: datasource=docker depName=alpine
               repository: alpine
-              tag: "3.24.0"
+              tag: "3.24.1"
             command:
               - /bin/sh
               - -c
