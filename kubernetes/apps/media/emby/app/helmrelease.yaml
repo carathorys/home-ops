@@ -42,7 +42,6 @@ spec:
                         operator: In
                         values:
                           - plex
-                          - jellyfin
                   topologyKey: kubernetes.io/hostname
         containers:
           main:
