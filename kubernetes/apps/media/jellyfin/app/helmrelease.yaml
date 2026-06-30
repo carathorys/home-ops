@@ -43,37 +43,10 @@ spec:
                         values:
                           - emby
                   topologyKey: kubernetes.io/hostname
-        # initContainers:
-        #   chown-config:
-        #     image:
-        #       # renovate: datasource=docker depName=alpine
-        #       repository: alpine
-        #       tag: "3.23.4"
-        #     resources:
-        #       requests:
-        #         cpu: 10m
-        #         memory: 16Mi
-        #     securityContext:
-        #       runAsUser: 0
-        #       runAsGroup: 0
-        #       runAsNonRoot: false
-        #       capabilities:
-        #         add:
-        #           - SYSADMIN
-        #     command:
-        #       - /bin/sh
-        #       - -c
-        #       - |
-        #         chown -R ${APP_UID}:${APP_GID} /config
         containers:
           main:
             securityContext:
               privileged: true
-              # runAsUser: ${APP_UID}
-              # runAsGroup: ${APP_GID}
-              # runAsNonRoot: true
-              # fsGroup: ${APP_GID}
-              # fsGroupChangePolicy: OnRootMismatch
             image:
               # renovate: datasource=docker depName=ghcr.io/linuxserver/jellyfin
               repository: ghcr.io/linuxserver/jellyfin
