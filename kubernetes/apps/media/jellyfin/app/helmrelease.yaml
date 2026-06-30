@@ -41,7 +41,7 @@ spec:
                       - key: app.kubernetes.io/name
                         operator: In
                         values:
-                          - emby
+                          - plex
                   topologyKey: kubernetes.io/hostname
         containers:
           main:
