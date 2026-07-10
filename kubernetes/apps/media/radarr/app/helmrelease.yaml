@@ -36,7 +36,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/linuxserver/radarr
               repository: ghcr.io/linuxserver/radarr
-              tag: 6.2.1.10461-ls308
+              tag: 6.2.1.10461-ls309
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
