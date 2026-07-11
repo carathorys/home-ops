@@ -31,6 +31,17 @@ default-internal-web: &default-internal-web
   conditions:
     - "len([BODY]) > 0"
 
+default-internal-tcp: &default-internal-tcp
+  group: internal
+  interval: 1m
+  ui:
+    hide-hostname: true
+    hide-url: true
+  client:
+    dns-resolver: tcp://10.43.0.10:53
+  conditions:
+    - "[CONNECTED] == true"
+
 endpoints:
   - name: auth
     <<: *default-external-web
@@ -97,3 +108,23 @@ endpoints:
   - name: zigbee2mqtt
     <<: *default-internal-web
     url: http://zigbee2mqtt.home-assistant.svc.cluster.local:8080
+
+  - name: rustdesk-hbbs-nat
+    <<: *default-internal-tcp
+    url: tcp://rustdesk-server.rustdesk.svc.cluster.local:21115
+
+  - name: rustdesk-hbbs
+    <<: *default-internal-tcp
+    url: tcp://rustdesk-server.rustdesk.svc.cluster.local:21116
+
+  - name: rustdesk-hbbr
+    <<: *default-internal-tcp
+    url: tcp://rustdesk-server.rustdesk.svc.cluster.local:21117
+
+  - name: rustdesk-hbbs-web
+    <<: *default-internal-tcp
+    url: tcp://rustdesk-server.rustdesk.svc.cluster.local:21118
+
+  - name: rustdesk-hbbr-web
+    <<: *default-internal-tcp
+    url: tcp://rustdesk-server.rustdesk.svc.cluster.local:21119

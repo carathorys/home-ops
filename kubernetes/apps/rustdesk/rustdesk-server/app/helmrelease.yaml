@@ -87,6 +87,14 @@ spec:
             port: 21117
             protocol: TCP
             targetPort: 21117
+          hbbs-web:
+            port: 21118
+            protocol: TCP
+            targetPort: 21118
+          hbbr-web:
+            port: 21119
+            protocol: TCP
+            targetPort: 21119
     persistence:
       data:
         type: persistentVolumeClaim
