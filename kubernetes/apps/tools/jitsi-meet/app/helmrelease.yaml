@@ -31,9 +31,20 @@ spec:
     publicURL: "https://meet.${SECRET_DOMAIN}"
     turnHost: home.${SECRET_DOMAIN}
     tz: Europe/Budapest
-    enableAuth: false
+    enableAuth: true
     enableGuests: true
     fullnameOverride: meet
+
+    prosody:
+      jwt:
+        existingSecretName: jitsi-meet-secrets
+      extraEnvs:
+        AUTH_TYPE: jwt
+        JWT_APP_ID: jitsi
+        JWT_ACCEPTED_ISSUERS: jitsi
+        JWT_ACCEPTED_AUDIENCES: jitsi
+        XMPP_MODULES: persistent_lobby
+        XMPP_MUC_MODULES: muc_wait_for_host
 
     websockets:
       colibri:
@@ -82,6 +93,10 @@ spec:
     # Router port-forwards for internet guests only (UDP):
     #   10000 -> 192.168.2.6 (JVB)
     #   3478  -> 192.168.2.7 (Coturn)
+    #
+    # JWT auth is required for Meetling (jitsi-admin) room supervision.
+    # JWT_APP_SECRET lives in jitsi-meet-secrets and must match Meetling env_local.
+    # Relatives should join via Meetling-generated conference links, not raw room URLs.
     #
     # Post-deploy checks:
     #   flux get ks -n tools
