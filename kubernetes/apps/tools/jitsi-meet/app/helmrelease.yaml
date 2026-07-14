@@ -1,0 +1,89 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: jitsi-meet
+spec:
+  interval: 1h
+  chart:
+    spec:
+      # renovate: datasource=helm depName=jitsi-meet registryUrl=https://jitsi-contrib.github.io/jitsi-helm/
+      chart: jitsi-meet
+      reconcileStrategy: ChartVersion
+      version: "2.20.0"
+      sourceRef:
+        kind: HelmRepository
+        name: jitsi-meet
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: cloudflare-tunnel
+      namespace: network
+  values:
+    publicURL: "https://meet.${SECRET_DOMAIN}"
+    turnHost: home.${SECRET_DOMAIN}
+    tz: Europe/Budapest
+    enableAuth: false
+    enableGuests: true
+    fullnameOverride: meet
+
+    websockets:
+      colibri:
+        enabled: false
+      xmpp:
+        enabled: true
+
+    web:
+      ingress:
+        enabled: false
+      gateway:
+        enabled: false
+      service:
+        type: ClusterIP
+
+    jicofo:
+      xmpp:
+        existingSecretName: jitsi-meet-secrets
+
+    jvb:
+      useInternalStun: true
+      xmpp:
+        existingSecretName: jitsi-meet-secrets
+      service:
+        type: LoadBalancer
+        loadBalancerIP: 192.168.2.6
+      publicIPs:
+        - 192.168.2.6
+      UDPPort: 10000
+
+    coturn:
+      enabled: true
+      staticAuth:
+        existingSecretName: jitsi-meet-secrets
+      turn:
+        transport: udp
+      service:
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: "192.168.2.7"
+      allowedPeerIPs:
+        - "10.42.0.0-10.42.255.255"
+
+    # Local (static): web via internal gateway, JVB media via 192.168.2.6:10000 — no port-forward needed on LAN.
+    # External (dynamic WAN): home.gallay.hu DDNS for TURN; JVB discovers WAN IP via STUN at startup.
+    # Router port-forwards for internet guests only (UDP):
+    #   10000 -> 192.168.2.6 (JVB)
+    #   3478  -> 192.168.2.7 (Coturn)
+    #
+    # Post-deploy checks:
+    #   flux get ks -n tools
+    #   kubectl -n tools get pods,svc,httproute
+    #   open https://meet.${SECRET_DOMAIN}
