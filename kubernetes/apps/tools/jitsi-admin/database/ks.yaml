@@ -15,9 +15,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  dependsOn:
-    - name: democratic-csi
-      namespace: system
   postBuild:
     substituteFrom:
       - name: cluster-secrets

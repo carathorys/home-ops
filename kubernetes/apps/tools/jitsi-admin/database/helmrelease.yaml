@@ -18,9 +18,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: democratic-csi
-      namespace: system
   values:
     auth:
       rootPassword: ${MARIADB_ROOT_PASSWORD}
