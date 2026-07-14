@@ -18,6 +18,7 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+
   values:
     auth:
       rootPassword: ${MARIADB_ROOT_PASSWORD}
