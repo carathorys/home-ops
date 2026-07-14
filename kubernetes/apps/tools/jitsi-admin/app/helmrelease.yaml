@@ -1,0 +1,125 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: jitsi-admin
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: jitsi-admin
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: jitsi-admin-mariadb
+      namespace: tools
+    - name: cloudflare-tunnel
+      namespace: network
+    - name: democratic-csi
+      namespace: system
+  values:
+    ingress:
+      enabled: false
+
+    application:
+      service:
+        type: ClusterIP
+        port: 8080
+      volumes:
+        storageClass: iscsi
+        data:
+          enabled: true
+          storage: 30Gi
+        uploads:
+          enabled: true
+          storage: 10Gi
+      secrets:
+        env_local: |
+          APP_ENV=prod
+          APP_SECRET='${JITSI_ADMIN_APP_SECRET}'
+          DATABASE_URL='mysql://jitsi_admin:${MARIADB_PASSWORD}@jitsi-admin-mariadb.tools.svc:3306/jitsi_admin'
+          TRUSTED_PROXIES='127.0.0.1,10.0.0.0/8'
+          STRICT_EMAIL_SET_ENVELOP_FROM='0'
+          CRON_TOKEN='${JITSI_ADMIN_CRON_TOKEN}'
+          CRON_IPADRESS='127.0.0.1'
+          MAILER_DSN='null://null'
+          laF_startpage='0'
+          laF_baseUrl='https://meetling.${SECRET_DOMAIN}'
+          LAF_WHITEBOARD_FUNCTION='0'
+          LAF_ETHERPAD_FUNCTION='0'
+          DEFAULT_LANGUAGE='hu'
+          VICH_BASE='https://meetling.${SECRET_DOMAIN}'
+          MERCURE_PUBLIC_URL='https://meetling-ws.${SECRET_DOMAIN}'
+          JWT_APP_ID='jitsi'
+          JWT_APP_SECRET='${JWT_APP_SECRET}'
+          JITSI_EVENTS_TOKEN='${JITSI_ADMIN_JITSI_EVENTS_TOKEN}'
+          ldap_url='ldap://authentik-ldap-outpost.auth.svc:389'
+          ldap_bind_dn='${LDAP_BIND_DN}'
+          ldap_password='${LDAP_PASSWORD}'
+          ldap_user_dn='${LDAP_USER_DN}'
+          OAUTH_KEYCLOAK_CLIENT_ID=unused
+          OAUTH_KEYCLOAK_CLIENT_SECRET=unused
+          OAUTH_KEYCLOAK_SERVER=https://unused.example.com
+          OAUTH_KEYCLOAK_REALM=unused
+
+    websocket:
+      enabled: true
+      service:
+        type: ClusterIP
+        port: 3000
+      config:
+        secret: ${JITSI_ADMIN_WEBSOCKET_SECRET}
+        internal_url: https://meetling-ws.${SECRET_DOMAIN}/.well-known/mercure
+        public_url: https://meetling-ws.${SECRET_DOMAIN}
+
+    rabbitmq:
+      enabled: true
+      auth:
+        username: admin
+        password: ${JITSI_ADMIN_RABBITMQ_PASSWORD}
+        erlangCookie: ${JITSI_ADMIN_RABBITMQ_ERLANG_COOKIE}
+      volumes:
+        storageClass: iscsi
+        server_data:
+          enabled: true
+          storage: 5Gi
+
+    notes:
+      enabled: false
+
+    whiteboard:
+      enabled: false
+
+    reminder:
+      env:
+        token: ${JITSI_ADMIN_CRON_TOKEN}
+
+    # -------------------------------------------------------------------------
+    # Post-deploy: Authentik LDAP Outpost (Meetling does not support Authentik OIDC)
+    # -------------------------------------------------------------------------
+    # 1. Authentik Admin → Applications → Providers → Create LDAP Provider for Meetling
+    # 2. Bind to your user/group; deploy or attach an LDAP Outpost in the auth namespace
+    #    (Service is typically authentik-ldap-outpost.auth.svc:389 — adjust ldap_url above)
+    # 3. Copy bind DN, password, and user search base into jitsi-admin-secrets:
+    #      LDAP_BIND_DN, LDAP_PASSWORD, LDAP_USER_DN
+    # 4. Flux reconcile: task reconcile (or flux reconcile ks jitsi-admin -n tools)
+    #
+    # Post-deploy: Register Jitsi server in Meetling UI (https://meetling.${SECRET_DOMAIN})
+    #   Server management → Add server:
+    #     URL: https://meet.${SECRET_DOMAIN}
+    #     JWT App ID: jitsi
+    #     JWT Secret: same value as JWT_APP_SECRET in jitsi-meet-secrets
+    #
+    # Fixed room workflow (e.g. FamilyHelp for relatives):
+    #   1. Create a permanent conference in Meetling — stable JWT-protected guest link
+    #   2. Dashboard shows running conferences and participant counts
+    #   3. Join the same conference from Meetling as admin/moderator
+    #   4. Enable lobby in Jitsi Security settings for wait-for-host if needed

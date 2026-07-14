@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: jitsi-admin-mariadb
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    # renovate: datasource=docker depName=reg.h2-invent.com/charts/mariadb
+    tag: 2.0.8
+  url: oci://reg.h2-invent.com/charts/mariadb
