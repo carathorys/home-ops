@@ -59,7 +59,7 @@ spec:
               SMTP_PASSWORD: "${SMTP_PASSWORD}"
               SMTP_USER: "${SMTP_USER}"
               UI_CONFIG_DISABLED: "true"
-              APP_NAME: "Gallay.HU"
+              APP_NAME: "${SECRET_DOMAIN}"
               EMAILS_VERIFIED: "true"
               ALLOW_OWN_ACCOUNT_EDIT: "false"
               EMAIL_LOGIN_NOTIFICATION_ENABLED: "true"

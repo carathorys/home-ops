@@ -78,7 +78,7 @@ spec:
         - "10.42.0.0-10.42.255.255"
 
     # Local (static): web via internal gateway, JVB media via 192.168.2.6:10000 — no port-forward needed on LAN.
-    # External (dynamic WAN): home.gallay.hu DDNS for TURN; JVB discovers WAN IP via STUN at startup.
+    # External (dynamic WAN): home.${SECRET_DOMAIN} DDNS for TURN; JVB discovers WAN IP via STUN at startup.
     # Router port-forwards for internet guests only (UDP):
     #   10000 -> 192.168.2.6 (JVB)
     #   3478  -> 192.168.2.7 (Coturn)
