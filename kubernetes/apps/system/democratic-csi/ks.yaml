@@ -21,7 +21,7 @@ spec:
   prune: true
   wait: true
   interval: 30m
-  timeout: 15m
+  timeout: 5m
 
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -56,4 +56,4 @@ spec:
   prune: true
   wait: true
   interval: 30m
-  timeout: 15m
+  timeout: 5m
