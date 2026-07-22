@@ -30,7 +30,7 @@ spec:
             image:
               # renovate: datasource=docker depName=rustdesk/rustdesk-server
               repository: rustdesk/rustdesk-server
-              tag: 1.1.15
+              tag: 1.1.16
             command: ["hbbs"]
             args: ["-r", "192.168.2.5:21117", "-k", "_"]
             ports:
@@ -52,7 +52,7 @@ spec:
             image:
               # renovate: datasource=docker depName=rustdesk/rustdesk-server
               repository: rustdesk/rustdesk-server
-              tag: 1.1.15
+              tag: 1.1.16
             command: ["hbbr"]
             args: ["-k", "_"]
             ports:
