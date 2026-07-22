@@ -37,7 +37,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/home-operations/home-assistant
               repository: ghcr.io/home-operations/home-assistant
-              tag: 2026.7.2
+              tag: 2026.7.3
             envFrom:
               - secretRef:
                   name: home-assistant-secret
