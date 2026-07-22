@@ -10,7 +10,7 @@ spec:
       # renovate: datasource=helm depName=jitsi-meet registryUrl=https://jitsi-contrib.github.io/jitsi-helm/
       chart: jitsi-meet
       reconcileStrategy: ChartVersion
-      version: "2.20.0"
+      version: "2.22.0"
       sourceRef:
         kind: HelmRepository
         name: jitsi-meet
