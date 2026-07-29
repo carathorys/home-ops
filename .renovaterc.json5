@@ -5,11 +5,15 @@
     'docker:enableMajor',
     'helpers:pinGitHubActionDigests',
     ':automergeBranch',
-    ':dependencyDashboard',
     ':disableRateLimiting',
     ':semanticCommits',
+    'schedule:automergeDaily',
+    ':disableDependencyDashboard',
   ],
-  dependencyDashboard: true,
+  _extends: [
+    ':dependencyDashboard',
+  ],
+  dependencyDashboard: false,
   dependencyDashboardTitle: 'Renovate Dashboard 🤖',
   schedule: [
     'every weekend',
