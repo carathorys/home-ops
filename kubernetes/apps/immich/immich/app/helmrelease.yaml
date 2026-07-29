@@ -30,15 +30,15 @@ spec:
               IMMICH_CONFIG_FILE: /config/immich-config.yaml
               IMMICH_WORKERS_EXCLUDE: api
         pod:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: feature.node.kubernetes.io/amd-gpu
-                        operator: NotIn
-                        values:
-                          - "true"
+          # affinity:
+          #   nodeAffinity:
+          #     requiredDuringSchedulingIgnoredDuringExecution:
+          #       nodeSelectorTerms:
+          #         - matchExpressions:
+          #             - key: feature.node.kubernetes.io/amd-gpu
+          #               operator: NotIn
+          #               values:
+          #                 - "true"
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
@@ -91,15 +91,15 @@ spec:
           secret.reloader.stakater.com/reload: *secret
         replicas: 2
         pod:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: feature.node.kubernetes.io/amd-gpu
-                        operator: In
-                        values:
-                          - "true"
+          # affinity:
+          #   nodeAffinity:
+          #     requiredDuringSchedulingIgnoredDuringExecution:
+          #       nodeSelectorTerms:
+          #         - matchExpressions:
+          #             - key: feature.node.kubernetes.io/amd-gpu
+          #               operator: In
+          #               values:
+          #                 - "true"
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
