@@ -9,6 +9,7 @@
     ':semanticCommits',
     'schedule:automergeDaily',
     ':disableDependencyDashboard',
+    ":dependencyDashboardApproval"
   ],
   dependencyDashboard: false,
   dependencyDashboardTitle: 'Renovate Dashboard 🤖',
@@ -249,4 +250,7 @@
       datasourceTemplate: 'docker',
     },
   ],
+  major: {
+    'dependencyDashboardApproval': true
+  }
 }
