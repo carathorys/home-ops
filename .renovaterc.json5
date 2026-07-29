@@ -14,7 +14,7 @@
   dependencyDashboard: false,
   dependencyDashboardTitle: 'Renovate Dashboard 🤖',
   schedule: [
-    'every weekend',
+    'every day',
   ],
   ignorePaths: [
     '**/*.sops.*',
