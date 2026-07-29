@@ -10,9 +10,6 @@
     'schedule:automergeDaily',
     ':disableDependencyDashboard',
   ],
-  _extends: [
-    ':dependencyDashboard',
-  ],
   dependencyDashboard: false,
   dependencyDashboardTitle: 'Renovate Dashboard 🤖',
   schedule: [
