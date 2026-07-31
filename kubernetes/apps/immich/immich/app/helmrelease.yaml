@@ -57,7 +57,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
               repository: ghcr.io/immich-app/immich-server
-              tag: v3.0.3@sha256:c716dc20f957aafd89fa9d284a2ec63e25c9e2d8d8e87c6197d540a3dce237db
+              tag: v3.1.0@sha256:b434cb9287eea1471c9974845914d4dd328c9c2d652e446ed4930f99944f0ceb
             envFrom:
               - secretRef:
                   name: *secret
@@ -123,7 +123,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
               repository: ghcr.io/immich-app/immich-server
-              tag: v3.0.3@sha256:c716dc20f957aafd89fa9d284a2ec63e25c9e2d8d8e87c6197d540a3dce237db
+              tag: v3.1.0@sha256:b434cb9287eea1471c9974845914d4dd328c9c2d652e446ed4930f99944f0ceb
             envFrom:
               - secretRef:
                   name: *secret
@@ -159,7 +159,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/immich-app/immich-machine-learning
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v3.0.3
+              tag: v3.1.0
             env:
               MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL: ViT-B-16-SigLIP__webli
               MACHINE_LEARNING_PRELOAD__CLIP__VISUAL: ViT-B-16-SigLIP__webli
