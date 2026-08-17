@@ -62,7 +62,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/linuxserver/plex
               repository: ghcr.io/linuxserver/plex
-              tag: 1.43.3.10828-00f62d37d-ls316@sha256:507713a14f9586f827d00c81381ecdcd438009172342b322b62a0e2b65081fdf
+              tag: 1.43.3.10861-07dfddaeb-ls319@sha256:d5ee6068a20ae57f95060038eaef292cdfd4285efb213ea4daaccdc184e45d1b
               pullPolicy: Always
             env:
               TZ: "Europe/Budapest"
