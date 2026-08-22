@@ -38,6 +38,8 @@ spec:
               # renovate: datasource=docker depName=ghcr.io/home-operations/home-assistant
               repository: ghcr.io/home-operations/home-assistant
               tag: 2026.8.2
+            hostNetwork: true
+            dnsPolicy: ClusterFirstWithHostNet
             envFrom:
               - secretRef:
                   name: home-assistant-secret
