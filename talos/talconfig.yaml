@@ -4,7 +4,6 @@ clusterName: kubernetes
 
 talosVersion: "${talosVersion}"
 kubernetesVersion: "${kubernetesVersion}"
-
 endpoint: https://192.168.1.1:6443
 additionalApiServerCertSans: &sans
   - "127.0.0.1"
@@ -38,6 +37,11 @@ nodes:
             gateway: "192.168.0.1"
         vip:
           ip: "192.168.1.1"
+    schematic:
+      customization:
+        extraKernelArgs:
+          - "cpufreq.default_governor=powersave"
+          - "amd_pstate=passive"
 
   - hostname: "hummianet"
     controlPlane: true
@@ -56,7 +60,11 @@ nodes:
             gateway: "192.168.0.1"
         vip:
           ip: "192.168.1.1"
-
+    schematic:
+      customization:
+        extraKernelArgs:
+          - "cpufreq.default_governor=powersave"
+          - "amd_pstate=passive"
   - hostname: "esutha"
     controlPlane: true
     ipAddress: "192.168.20.3"
