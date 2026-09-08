@@ -151,7 +151,7 @@ There are **5 stages** outlined below for completing this project, make sure you
 
     ```sh
     git add -A
-    git commit -m "chore: add talhelper encrypted secret :lock:"
+    git commit -m "chore: add TOPF encrypted secret :lock:"
     git push
     ```
 
@@ -262,10 +262,10 @@ task talos:reset
 ### ⚙️ Updating Talos node configuration
 
 > [!TIP]
-> Ensure you have updated `talconfig.yaml` and any patches with your updated configuration. In some cases you **not only need to apply the configuration but also upgrade talos** to apply new configuration.
+> Ensure you have updated `topf.yaml` and any patches with your updated configuration. In some cases you **not only need to apply the configuration but also upgrade talos** to apply new configuration.
 
 ```sh
-# (Re)generate the Talos config
+# Preview the generated Talos config
 task talos:generate-config
 # Apply the config to the node
 task talos:apply-node IP=? MODE=?
@@ -275,7 +275,7 @@ task talos:apply-node IP=? MODE=?
 ### ⬆️ Updating Talos and Kubernetes versions
 
 > [!TIP]
-> Ensure the `talosVersion` and `kubernetesVersion` in `talenv.yaml` are up-to-date with the version you wish to upgrade to.
+> Ensure the `talosVersion` and `kubernetesVersion` in `topf.yaml` are up-to-date with the version you wish to upgrade to.
 
 ```sh
 # Upgrade node to a newer Talos version
@@ -287,6 +287,7 @@ task talos:upgrade-node IP=?
 # Upgrade cluster to a newer Kubernetes version
 task talos:upgrade-k8s
 # e.g. task talos:upgrade-k8s
+# override target: task talos:upgrade-k8s KUBERNETES_VERSION=1.37.0
 ```
 
 ## 🤖 Renovate

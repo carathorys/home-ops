@@ -1,0 +1,37 @@
+clusterName: kubernetes
+clusterEndpoint: https://192.168.1.1:6443
+# renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+talosVersion: v1.14.0
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+kubernetesVersion: v1.37.0
+data:
+  SECRET_DOMAIN: ENC[AES256_GCM,data:oexJa5FvjEmT,iv:thefZ/mG6SB7RT3pIg1AcwWYMfXeHDjGbPB8f/hGV+Y=,tag:zOLajJ0Ouy59FzWx47u0Ag==,type:str]
+nodes:
+  - host: avarath
+    ip: 192.168.20.1
+    role: control-plane
+    schematicId: '@schematic-amd.yaml'
+  - host: hummianet
+    ip: 192.168.20.2
+    role: control-plane
+    schematicId: '@schematic-amd.yaml'
+  - host: esutha
+    ip: 192.168.20.3
+    role: control-plane
+    schematicId: '@schematic-esutha.yaml'
+sops:
+  age:
+    - enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB0NlJjZTFMOS9pU0t5SFFH
+        d1dwNnhBWms2WlgvcnNnK2V1b3lKN2VxcVMwCithdHFDWkNBaE9ZcWVyVXU5dW1D
+        dWtEV25vWE5IMjliYS9FZmtwd0dLUFUKLS0tIFVER1RYRmFvWGNnOVBSemVta0Ny
+        bkEycGkzODNwOVo4S2svRXZKOGVJZHcKQUNkLcVmr8ZFvy11uVOargyBT4dzU6zh
+        Bd6L22kfjIahz4GSsgE50R4ALavnVFGrUeTayhcq1CLxWO9Ok3gisg==
+        -----END AGE ENCRYPTED FILE-----
+      recipient: age17kkjwh97ech8ky6sa05xnyuxr9gpqwdjq8wjqc55a2mu7mdv9s8qvdfxpv
+  encrypted_regex: ^data$
+  lastmodified: "2026-09-08T06:19:03Z"
+  mac: ENC[AES256_GCM,data:ftEX1dc5jl/c8RCgy9PBjLw4BtepVpZ2D3sI3NFvTy+jcYOoG9WlUoYWteBaCWXktaAWlWc7v6NBEMjV1DW/G9Ygzqc8j07w0Z8LnEGOHb9dflkpn26WFISjeq/uNHAQDycDKCWpJt0CcBKiVWcYJ094szfh8CTlVxZos2XqtSE=,iv:Ff0GXkTM2bqyrc0Zkgq4XSCin0Q7vfMTpPh8M+JnriQ=,tag:sF7nnz0xvcYgpbgqZA595g==,type:str]
+  mac_only_encrypted: true
+  version: 3.13.3

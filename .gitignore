@@ -13,6 +13,9 @@
 # Kubernetes
 kubeconfig
 talosconfig
+# TOPF generated output (contains cluster secrets in plaintext)
+talos/output/
+talos/talosconfig
 # Misc.
 .private/
 .task/

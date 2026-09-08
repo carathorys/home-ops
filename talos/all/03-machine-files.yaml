@@ -1,0 +1,17 @@
+---
+apiVersion: v1alpha1
+kind: UdevRulesConfig
+rules:
+  - KERNEL=="ttyACM[0-9]*", MODE="0666"
+  - ACTION=="add", ENV{ID_TYPE}=="disk", ENV{ID_BUS}=="usb", ENV{ID_BUS}="scsi"
+  - ACTION=="change", ENV{ID_TYPE}=="disk", ENV{ID_BUS}=="usb", ENV{ID_BUS}="scsi"
+  - ACTION=="online", ENV{ID_TYPE}=="disk", ENV{ID_BUS}=="usb", ENV{ID_BUS}="scsi"
+---
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: cri-customization
+content: |
+  [plugins."io.containerd.cri.v1.images"]
+    discard_unpacked_layers = false
+  [plugins."io.containerd.cri.v1.runtime"]
+    device_ownership_from_security_context = true

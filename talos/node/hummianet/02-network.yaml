@@ -1,0 +1,20 @@
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: ethSel0
+selector:
+  match: glob("00:e0:4c:68:02:a0", mac(link.hardware_addr))
+---
+apiVersion: v1alpha1
+kind: Layer2VIPConfig
+name: 192.168.1.1
+link: ethSel0
+---
+apiVersion: v1alpha1
+kind: LinkConfig
+name: ethSel0
+mtu: 9000
+addresses:
+  - address: 192.168.20.2/16
+routes:
+  - gateway: 192.168.0.1

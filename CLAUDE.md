@@ -14,23 +14,23 @@ All workflows are driven through `task` (Taskfile.yaml + `.taskfiles/`). `task` 
 
 ```bash
 # Bootstrap (one-time)
-task bootstrap:talos          # genconfig → apply --insecure → bootstrap → fetch kubeconfig
+task bootstrap:talos          # apply --auto-bootstrap → kubeconfig + talosconfig
 task bootstrap:apps           # runs scripts/bootstrap-apps.sh (helmfile sync of CRDs + flux)
 
 # Day-2 cluster ops
 task reconcile                                  # flux reconcile ks flux-system --with-source
 task talos:apply-node IP=<node-ip>              # MODE defaults to "auto"
-task talos:upgrade-node IP=<node-ip>            # image+version pulled from talconfig.yaml/talenv.yaml
-task talos:upgrade-k8s                          # version pulled from talenv.yaml
+task talos:upgrade-node IP=<node-ip>            # image+version pulled from topf.yaml
+task talos:upgrade-k8s                          # version pulled from topf.yaml
 task talos:reset                                # destructive; prompts before wiping
 ```
 
-`task encrypt-secrets` / `decrypt-secrets` are marked `internal: true` — invoke via the dependent tasks rather than directly. They walk `bootstrap/`, `kubernetes/`, `talos/` for `*.sops.*` and toggle encryption based on `sops filestatus`.
+`task encrypt-secrets` / `decrypt-secrets` are marked `internal: true` — invoke via the dependent tasks rather than directly. They walk `bootstrap/`, `kubernetes/`, `talos/` for `*.sops.*` plus `talos/secrets.yaml` and `talos/topf.yaml`, and toggle encryption based on `sops filestatus`.
 
 Required env (set automatically by `mise` and Taskfile):
 - `KUBECONFIG=./kubeconfig`
 - `SOPS_AGE_KEY_FILE=./age.key`
-- `TALOSCONFIG=./talos/clusterconfig/talosconfig`
+- `TALOSCONFIG=./talos/talosconfig`
 
 ## Flux Layering — Read This Before Editing Manifests
 
@@ -63,9 +63,7 @@ Each app under `kubernetes/apps/<namespace>/<app>/` follows:
 
 ## Talos Configuration
 
-Source of truth is `talos/talconfig.yaml` (consumed by `talhelper`). Versions live in `talos/talenv.yaml` (Renovate-managed via `# renovate: datasource=docker depName=...` comments). `talos/clusterconfig/` is generated output — regenerate with `task talos:generate-config`, never hand-edit. `talsecret.sops.yaml` is created on first bootstrap and committed encrypted.
-
-`talos/patches/` holds machine-config patches included from `talconfig.yaml`.
+Source of truth is `talos/topf.yaml` (consumed by TOPF). Versions live in `topf.yaml` (Renovate-managed via `# renovate: datasource=docker depName=...` comments). Machine-config patches live in `talos/all/`, `talos/control-plane/`, and `talos/node/<host>/`. `talos/secrets.yaml` is the Talos secrets bundle (created on first bootstrap, committed encrypted). `talos/output/` is generated plaintext — do not commit it; regenerate with `task talos:generate-config`.
 
 ## Secret Management
 
