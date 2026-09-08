@@ -50,7 +50,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/linuxserver/jellyfin
               repository: ghcr.io/linuxserver/jellyfin
-              tag: 10.11.11ubu2404-ls36@sha256:c123ef2f82195e377d8ca3df275f13f9dfa5c6e61b195958662b42b5e54362ab
+              tag: 12.0ubu2604-ls48
             env:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
