@@ -21,6 +21,17 @@ nodes:
       mtu: 9000
       encryptDisk: false
       kernelModules: []
+  - host: "hummianet"
+    ip: "192.168.20.2"
+    role: control-plane
+    schematicId: "684f0096988e93938d47d3a13a22795c87258cdfdfd7b4cfb8ccba69ed905894"
+    data:
+      installDisk: "/dev/nvme0n1"
+      installDiskSerial: ""
+      macAddr: "00:e0:4c:68:02:a0"
+      mtu: 9000
+      encryptDisk: false
+      kernelModules: []
   - host: "esutha"
     ip: "192.168.20.3"
     role: control-plane
