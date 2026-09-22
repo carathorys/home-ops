@@ -18,8 +18,6 @@ spec:
   dependsOn:
     - name: external-secrets
       namespace: secrets
-    - name: democratic-csi
-      namespace: system
     - name: mosquitto
       namespace: home-assistant
   components: []
