@@ -1,0 +1,80 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres
+  labels:
+    app.kubernetes.io/name: postgres-db
+spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:18-standard-trixie
+  instances: 1
+  # primaryUpdateStrategy: supervised
+  storage:
+    size: 64Gi
+    storageClass: iscsi
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: postgres-superuser
+  backup:
+    retentionPolicy: 7d
+    volumeSnapshot:
+      labels:
+        app.kubernetes.io/name: media-cluster-db-backup
+      online: true
+      onlineConfiguration:
+        waitForArchive: true
+      className: iscsi
+      walClassName: iscsi
+  postgresql:
+    parameters:
+      wal_receiver_timeout: 60s
+      wal_keep_size: "32GB"
+      max_slot_wal_keep_size: "32GB"
+  replicationSlots:
+    highAvailability:
+      enabled: true
+  managed:
+    roles:
+      - connectionLimit: -1
+        ensure: present
+        name: "${RADARR_USERNAME}"
+        comment: Radarr app user
+        inherit: false
+        login: true
+        superuser: false
+        createdb: false
+        passwordSecret:
+          name: radarr-user
+      - connectionLimit: -1
+        ensure: present
+        name: "${SONARR_USERNAME}"
+        comment: sonarr app user
+        inherit: false
+        login: true
+        superuser: false
+        createdb: false
+        passwordSecret:
+          name: sonarr-user
+      - connectionLimit: -1
+        ensure: present
+        name: "${JELLYSEERR_USERNAME}"
+        comment: Jellyseerr app user
+        inherit: false
+        login: true
+        superuser: false
+        createdb: false
+        passwordSecret:
+          name: jellyseerr-user
+      - connectionLimit: -1
+        ensure: present
+        name: "${JACKETT_USERNAME}"
+        comment: Jackett app user
+        inherit: false
+        login: true
+        superuser: false
+        createdb: false
+        passwordSecret:
+          name: jackett-user
+  monitoring:
+    enablePodMonitor: true

@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/postgresql.cnpg.io/database_v1.json
+
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: jellyseerr-db
+spec:
+  cluster:
+    name: postgres
+  name: ${JELLYSEERR_DATABASE}
+  owner: ${JELLYSEERR_USERNAME}
+  ensure: present
+  allowConnections: true
