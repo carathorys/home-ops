@@ -8,8 +8,8 @@ metadata:
     app.kubernetes.io/name: postgres-db
 spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:18-standard-trixie
-  instances: 1
-  # primaryUpdateStrategy: supervised
+  instances: 3
+  primaryUpdateStrategy: supervised
   storage:
     size: 64Gi
     storageClass: iscsi
