@@ -1,0 +1,127 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        replicas: ${REPLICAS}
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            securityContext:
+              privileged: true
+            image:
+              # renovate: datasource=docker depName=ghcr.io/linuxserver/jellyfin
+              repository: ghcr.io/linuxserver/jellyfin
+              tag: 12.0ubu2604-ls48
+            env:
+              TZ: "Europe/Budapest"
+              PUID: ${APP_UID}
+              PGID: ${APP_GID}
+              ADVERTISE_IP: "https://${APP}:443,https://${APP}.${SECRET_DOMAIN}:443"
+              JELLYFIN_PublishedServerUrl: https://${APP}.${SECRET_DOMAIN}
+            resources:
+              requests:
+                cpu: 100m
+                memory: 2Gi
+              limits:
+                memory: 10Gi
+
+    service:
+      main:
+        type: LoadBalancer
+        ports:
+          http:
+            port: &port 8096
+            protocol: TCP
+    route:
+      internal:
+        hostnames: ["${APP}", "${APP}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: *port
+    persistence:
+      dri:
+        type: hostPath
+        hostPath: /dev/dri
+        globalMounts:
+          - path: /dev/dri
+      config:
+        type: persistentVolumeClaim
+        existingClaim: jellyfin
+        globalMounts:
+          - path: /config
+      movies:
+        type: persistentVolumeClaim
+        existingClaim: movies
+        globalMounts:
+          - path: /movies
+            readOnly: true
+      tv:
+        type: persistentVolumeClaim
+        existingClaim: tv
+        globalMounts:
+          - path: /tv
+            readOnly: true
+      kids-movies:
+        type: persistentVolumeClaim
+        existingClaim: kids-movies
+        globalMounts:
+          - path: /mnt/Gyerek/Filmek
+            readOnly: true
+      kids-tv:
+        type: persistentVolumeClaim
+        existingClaim: kids-tv
+        globalMounts:
+          - path: /mnt/Gyerek/Sorozatok
+            readOnly: true
+      music-video:
+        type: persistentVolumeClaim
+        existingClaim: music-video
+        globalMounts:
+          - path: /music/video
+            readOnly: true
+      music-sound:
+        type: persistentVolumeClaim
+        existingClaim: music-sound
+        globalMounts:
+          - path: /music/sound
+            readOnly: true
+      transcode:
+        type: emptyDir
+        globalMounts:
+          - path: /transcoding
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /config/cache
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/log
