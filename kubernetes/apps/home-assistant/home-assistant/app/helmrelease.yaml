@@ -1,0 +1,99 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: home-assistant
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
+          securityContext:
+            runAsUser: "${APP_UID}"
+            runAsGroup: "${APP_GID}"
+            runAsNonRoot: true
+            fsGroup: "${APP_GID}"
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          main:
+            image:
+              # renovate: datasource=docker depName=ghcr.io/home-operations/home-assistant
+              repository: ghcr.io/home-operations/home-assistant
+              tag: 2026.9.3
+            envFrom:
+              - secretRef:
+                  name: home-assistant-secret
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+    service:
+      main:
+        type: LoadBalancer
+        loadBalancerIP: 192.168.2.4
+        ports:
+          http:
+            port: 8123
+            protocol: TCP
+    serviceMonitor:
+      main:
+        serviceName: home-assistant
+        enabled: true
+        endpoints:
+          - port: http
+            scheme: http
+            path: /api/prometheus
+            bearerTokenSecret:
+              name: home-assistant-secret
+              key: HASS_BEARER_TOKEN
+    route:
+      internal-app:
+        hostnames: ["home-assistant.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs: [{}]
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: home-assistant
+        advancedMounts:
+          main:
+            main:
+              - path: /config
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          main:
+            main:
+              - path: /tmp
+                subPath: hass-tmp
