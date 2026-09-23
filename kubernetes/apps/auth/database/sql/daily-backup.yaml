@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://schemas.gallay.io/postgresql.cnpg.io/scheduledbackup_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: auth-cluster-db-backup
+spec:
+  cluster:
+    name: postgres
+  schedule: "0 30 0 * *"
+  online: true
+  onlineConfiguration:
+    waitForArchive: true
+    immediateCheckpoint: true
+  method: volumeSnapshot
+  target: primary
+  immediate: true
+
