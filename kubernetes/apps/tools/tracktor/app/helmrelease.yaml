@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${APP}
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        replicas: 1
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              # renovate: datasource=docker depName=ghcr.io/javedh-dev/tracktor
+              repository: ghcr.io/javedh-dev/tracktor
+              tag: "2.1.0"
+            env:
+              TZ: Europe/Budapest
+              HTTP_MODE: https
+              TRACKTOR_DEMO_MODE: "false"
+    service:
+      main:
+        ports:
+          http:
+            port: &port 3000
+    route:
+      internal:
+        hostnames: ["cars.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: *port
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        existingClaim: tracktor
+        advancedMounts:
+          main:
+            main:
+              - path: /data
+                readOnly: false
