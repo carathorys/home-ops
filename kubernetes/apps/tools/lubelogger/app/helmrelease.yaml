@@ -41,7 +41,7 @@ spec:
             port: &port 8080
     route:
       internal:
-        hostnames: ["cars.${SECRET_DOMAIN}"]
+        hostnames: ["lubelogger.${SECRET_DOMAIN}"]
         parentRefs:
           - name: envoy-internal
             namespace: network
