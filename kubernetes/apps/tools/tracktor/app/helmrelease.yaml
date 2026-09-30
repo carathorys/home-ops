@@ -31,7 +31,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/javedh-dev/tracktor
               repository: ghcr.io/javedh-dev/tracktor
-              tag: "2.1.0"
+              tag: "2.0.0"
             env:
               TZ: Europe/Budapest
               HTTP_MODE: https

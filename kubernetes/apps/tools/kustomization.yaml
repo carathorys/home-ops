@@ -9,4 +9,3 @@ components:
 
 resources:
   - ./tracktor/ks.yaml
-  - ./may/ks.yaml
