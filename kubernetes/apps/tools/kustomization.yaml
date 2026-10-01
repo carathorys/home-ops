@@ -7,7 +7,7 @@ namespace: tools
 components:
   - ../../components/common
 
-resources:
-  - ./secrets/ks.yaml
-  - ./database/ks.yaml
-  - ./tankstat/ks.yaml
+resources: []
+  # - ./secrets/ks.yaml
+  # - ./database/ks.yaml
+  # - ./tankstat/ks.yaml
