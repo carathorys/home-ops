@@ -7,6 +7,4 @@ namespace: tools
 components:
   - ../../components/common
 
-resources:
-  - ./lubelogger/ks.yaml
-  - ./tracktor/ks.yaml
+resources: []
