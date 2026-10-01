@@ -58,16 +58,6 @@ spec:
                   secretKeyRef:
                     name: tankstat-secrets
                     key: Auth__AdminEmails__0
-              Auth__AdminEmails__1:
-                valueFrom:
-                  secretKeyRef:
-                    name: tankstat-secrets
-                    key: Auth__AdminEmails__1
-              Auth__AdminEmails__2:
-                valueFrom:
-                  secretKeyRef:
-                    name: tankstat-secrets
-                    key: Auth__AdminEmails__2
               Database__ConnectionString:
                 valueFrom:
                   secretKeyRef:
