@@ -37,12 +37,14 @@ spec:
               repository: ghcr.io/carathorys/tankstat
               tag: "0.1.0"
             env:
+              ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
               TZ: Europe/Budapest
               Database__Provider: PostgreSql
               Auth__Mode: Oidc
               Auth__Oidc__Authority: https://auth.${SECRET_DOMAIN}/application/o/tankstat/
               Auth__PublicUrl: https://cars.${SECRET_DOMAIN}
               Storage__Path: /data/uploads
+              Auth__Oidc__Scopes__0: "openid"
               Auth__Oidc__ClientId:
                 valueFrom:
                   secretKeyRef:
