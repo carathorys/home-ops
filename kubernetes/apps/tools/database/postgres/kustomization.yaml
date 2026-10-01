@@ -3,5 +3,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./tankstat-secrets.yaml
-  - ./postgres-superuser.yaml
+  - ./cluster.yaml
+  - ./prometheus-rule.yaml
+  - ./daily-backup.yaml
