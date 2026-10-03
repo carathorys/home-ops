@@ -35,7 +35,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/carathorys/tankstat
               repository: ghcr.io/carathorys/tankstat
-              tag: "0.5.0"
+              tag: "0.6.0"
             env:
               ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
               TZ: Europe/Budapest
@@ -86,7 +86,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/carathorys/tankstat-reader
               repository: ghcr.io/carathorys/tankstat-reader
-              tag: "0.5.0"
+              tag: "0.6.0"
             env:
               TZ: Europe/Budapest
               Reader__DataPath: /data
