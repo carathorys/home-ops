@@ -42,6 +42,7 @@ spec:
               PUID: ${APP_UID}
               PGID: ${APP_GID}
               SONARR__AUTH__APIKEY: "${SONARR_API_KEY}"
+              SONARR__AUTH__METHOD: "External"
               SONARR__POSTGRES__HOST: "postgres.media.svc.cluster.local"
               SONARR__POSTGRES__USER: "${SONARR_USERNAME}"
               SONARR__POSTGRES__PASSWORD: "${SONARR_PASSWORD}"

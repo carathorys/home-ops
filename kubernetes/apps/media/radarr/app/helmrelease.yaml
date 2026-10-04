@@ -42,6 +42,7 @@ spec:
               PUID: ${APP_UID}
               PGID: ${APP_GID}
               RADARR__AUTH__APIKEY: "${RADARR_API_KEY}"
+              RADARR__AUTH__METHOD: "External"
               RADARR__POSTGRES__HOST: "postgres.media.svc.cluster.local"
               RADARR__POSTGRES__USER: "${RADARR_USERNAME}"
               RADARR__POSTGRES__PASSWORD: "${RADARR_PASSWORD}"
