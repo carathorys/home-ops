@@ -106,17 +106,6 @@ spec:
         ports:
           http:
             port: *port
-    route:
-      internal:
-        hostnames: ["${APP}", "${APP}.${SECRET_DOMAIN}"]
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: main
-                port: *port
     persistence:
       kfd:
         type: hostPath
