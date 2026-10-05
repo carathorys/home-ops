@@ -12,3 +12,4 @@ resources:
   - ./database/ks.yaml
   - ./tankstat/ks.yaml
   - ./ollama/ks.yaml
+  - ./open-webui/ks.yaml
