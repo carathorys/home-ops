@@ -35,11 +35,16 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/carathorys/tankstat
               repository: ghcr.io/carathorys/tankstat
-              tag: "0.6.0"
+              tag: "0.7.0"
             env:
               ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
               TZ: Europe/Budapest
               Database__Provider: PostgreSql
+              Recognition__Provider: OpenAiCompatible
+              Recognition__OpenAiCompatible__BaseUrl: http://ollama:11434/v1
+              Recognition__OpenAiCompatible__Model: gemma4:e2b
+              Recognition__OpenAiCompatible__Temperature: "0"
+              Recognition__MaxConcurrent: "1"
               Auth__Mode: Oidc
               Auth__Oidc__Authority: https://auth.${SECRET_DOMAIN}/application/o/tankstat/
               Auth__PublicUrl: https://cars.${SECRET_DOMAIN}

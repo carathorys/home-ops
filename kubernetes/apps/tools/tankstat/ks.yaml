@@ -53,6 +53,8 @@ spec:
       namespace: tools
     - name: tankstat-secrets
       namespace: tools
+    - name: ollama
+      namespace: tools
   components: []
   postBuild:
     substitute:

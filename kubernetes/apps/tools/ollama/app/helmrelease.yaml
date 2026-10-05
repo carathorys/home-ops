@@ -60,6 +60,7 @@ spec:
               TZ: Europe/Budapest
               HSA_OVERRIDE_GFX_VERSION: "11.0.0"
               OLLAMA_KEEP_ALIVE: "-1"
+              OLLAMA_CONTEXT_LENGTH: "8192"
               OLLAMA_MODEL: gemma4:e2b
             probes:
               startup:
