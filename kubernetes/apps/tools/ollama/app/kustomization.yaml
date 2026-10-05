@@ -2,13 +2,5 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: tools
-
-components:
-  - ../../components/common
-
 resources:
-  - ./secrets/ks.yaml
-  - ./database/ks.yaml
-  - ./tankstat/ks.yaml
-  - ./ollama/ks.yaml
+  - helmrelease.yaml
