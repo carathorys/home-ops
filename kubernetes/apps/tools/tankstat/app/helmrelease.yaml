@@ -45,8 +45,6 @@ spec:
               Auth__PublicUrl: https://cars.${SECRET_DOMAIN}
               Storage__Path: /data/uploads
               Auth__Oidc__Scopes__0: "openid"
-              Recognition__Provider: Reader
-              Recognition__Reader__BaseUrl: http://tankstat-reader:8081
               Auth__Oidc__ClientId:
                 valueFrom:
                   secretKeyRef:
@@ -67,58 +65,12 @@ spec:
                   secretKeyRef:
                     name: tankstat-env
                     key: Database__ConnectionString
-              Recognition__Reader__ApiKey:
-                valueFrom:
-                  secretKeyRef:
-                    name: tankstat-secrets
-                    key: readerApiKey
-      reader:
-        replicas: 1
-        strategy: Recreate
-        annotations:
-          reloader.stakater.com/auto: "true"
-        pod:
-          securityContext:
-            fsGroup: 1654
-            fsGroupChangePolicy: OnRootMismatch
-        containers:
-          reader:
-            image:
-              # renovate: datasource=docker depName=ghcr.io/carathorys/tankstat-reader
-              repository: ghcr.io/carathorys/tankstat-reader
-              tag: "0.6.0"
-            env:
-              TZ: Europe/Budapest
-              Reader__DataPath: /data
-              Reader__ApiKey:
-                valueFrom:
-                  secretKeyRef:
-                    name: tankstat-secrets
-                    key: readerApiKey
-            probes:
-              liveness: &readerProbes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /v1/health
-                    port: &readerPort 8081
-                  initialDelaySeconds: 10
-                  periodSeconds: 30
-                  timeoutSeconds: 5
-                  failureThreshold: 3
-              readiness: *readerProbes
     service:
       main:
         controller: main
         ports:
           http:
             port: &port 8080
-      reader:
-        controller: reader
-        ports:
-          http:
-            port: *readerPort
     route:
       internal:
         hostnames: ["cars.${SECRET_DOMAIN}"]
@@ -140,13 +92,5 @@ spec:
         advancedMounts:
           main:
             main:
-              - path: /data
-                readOnly: false
-      reader-data:
-        type: persistentVolumeClaim
-        existingClaim: tankstat-reader
-        advancedMounts:
-          reader:
-            reader:
               - path: /data
                 readOnly: false
