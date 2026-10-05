@@ -62,6 +62,9 @@ spec:
               OLLAMA_KEEP_ALIVE: "-1"
               OLLAMA_CONTEXT_LENGTH: "8192"
               OLLAMA_MODEL: gemma4:e2b
+              OLLAMA_IGPU_ENABLE: "1"
+              # GGML_VULKAN: "1"
+              # OLLAMA_VULKAN: "1"
             probes:
               startup:
                 enabled: true
