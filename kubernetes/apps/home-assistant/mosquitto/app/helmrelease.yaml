@@ -40,6 +40,13 @@ spec:
           http:
             port: 1883
             protocol: TCP
+    route:
+      main:
+        hostnames: ["mosquitto.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
     persistence:
       mosquitto:
         type: persistentVolumeClaim
