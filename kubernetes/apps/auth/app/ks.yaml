@@ -22,7 +22,9 @@ spec:
       - name: auth-cluster-secrets
         kind: Secret
   dependsOn:
-    - name: sql-cluster
+    - name: postgres-cluster
+      namespace: dbms
+    - name: secrets
       namespace: *namespace
     - name: democratic-csi
       namespace: system
@@ -73,4 +75,3 @@ spec:
 #   targetNamespace: *namespace
 #   timeout: 5m
 #   wait: false
-

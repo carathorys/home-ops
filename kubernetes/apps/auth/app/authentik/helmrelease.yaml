@@ -29,27 +29,27 @@ spec:
         - name: AUTHENTIK_POSTGRESQL__HOST
           valueFrom:
             secretKeyRef:
-              name: postgres-app
+              name: authentik-db
               key: host
         - name: AUTHENTIK_POSTGRESQL__PORT
           valueFrom:
             secretKeyRef:
-              name: postgres-app
+              name: authentik-db
               key: port
         - name: AUTHENTIK_POSTGRESQL__NAME
           valueFrom:
             secretKeyRef:
-              name: postgres-app
+              name: authentik-db
               key: dbname
         - name: AUTHENTIK_POSTGRESQL__USER
           valueFrom:
             secretKeyRef:
-              name: postgres-app
+              name: authentik-db
               key: username
         - name: AUTHENTIK_POSTGRESQL__PASSWORD
           valueFrom:
             secretKeyRef:
-              name: postgres-app
+              name: authentik-db
               key: password
     authentik:
       secret_key: "${SECRET_KEY}"
@@ -59,7 +59,7 @@ spec:
         enabled: true
       log_level: debug
     server:
-      replicas: 0 # db-migration: restore 1
+      replicas: 1
       service:
         type: LoadBalancer
       metrics:
@@ -81,4 +81,4 @@ spec:
           rules:
             - backendRefs: [{}]
     worker:
-      replicas: 0 # db-migration: restore 1
+      replicas: 1
