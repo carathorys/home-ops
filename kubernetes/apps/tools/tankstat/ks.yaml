@@ -18,8 +18,8 @@ spec:
   dependsOn:
     - name: external-secrets
       namespace: secrets
-    - name: tankstat-database
-      namespace: tools
+    - name: postgres-cluster
+      namespace: dbms
   prune: true
   wait: false
   interval: 30m
@@ -49,8 +49,8 @@ spec:
       namespace: system
     - name: secrets
       namespace: tools
-    - name: tankstat-database
-      namespace: tools
+    - name: postgres-cluster
+      namespace: dbms
     - name: tankstat-secrets
       namespace: tools
     - name: ollama
