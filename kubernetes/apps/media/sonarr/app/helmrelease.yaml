@@ -21,7 +21,7 @@ spec:
   values:
     controllers:
       main:
-        replicas: ${REPLICAS}
+        replicas: 0 # db-migration: restore ${REPLICAS}
         annotations:
           reloader.stakater.com/auto: "true"
         pod:

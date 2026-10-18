@@ -59,7 +59,7 @@ spec:
         enabled: true
       log_level: debug
     server:
-      replicas: 1
+      replicas: 0 # db-migration: restore 1
       service:
         type: LoadBalancer
       metrics:
@@ -81,4 +81,4 @@ spec:
           rules:
             - backendRefs: [{}]
     worker:
-      replicas: 1
+      replicas: 0 # db-migration: restore 1
