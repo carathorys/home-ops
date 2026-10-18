@@ -41,12 +41,6 @@ spec:
               TZ: "Europe/Budapest"
               PUID: ${APP_UID}
               PGID: ${APP_GID}
-              DB_TYPE: "postgres"
-              DB_HOST: "postgres.media.svc.cluster.local"
-              DB_PORT: "5432"
-              DB_USER: "${JACKETT_USERNAME}"
-              DB_PASS: "${JACKETT_PASSWORD}"
-              DB_NAME: "${JACKETT_DATABASE}"
     service:
       main:
         type: LoadBalancer

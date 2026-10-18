@@ -9,7 +9,6 @@ components:
 
 resources:
   - ./secrets/ks.yaml
-  - ./database/ks.yaml
   - ./tankstat/ks.yaml
   - ./ollama/ks.yaml
   - ./open-webui/ks.yaml
