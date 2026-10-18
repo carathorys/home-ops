@@ -8,3 +8,4 @@ resources:
   - ./databases.yaml
   - ./prometheus-rule.yaml
   - ./daily-backup.yaml
+  - ./backup-pruner.yaml

@@ -34,6 +34,8 @@ spec:
         immediateCheckpoint: true
       className: iscsi
       walClassName: iscsi
+      # deleting a Backup also deletes its snapshot (pruned by backup-pruner.yaml)
+      snapshotOwnerReference: backup
   postgresql:
     parameters:
       max_connections: "200"

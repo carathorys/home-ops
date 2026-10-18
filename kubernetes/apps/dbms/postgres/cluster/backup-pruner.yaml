@@ -1,0 +1,118 @@
+---
+# cnpg's retentionPolicy only applies to barman, so volume snapshot backups are pruned here.
+# Deleting a Backup's VolumeSnapshot deletes the ZFS snapshot on the NAS (VolumeSnapshotClass iscsi: deletionPolicy Delete).
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.35.1-standalone-strict/serviceaccount-v1.json
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: postgres-backup-pruner
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.35.1-standalone-strict/role-rbac-v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: postgres-backup-pruner
+rules:
+  - apiGroups: ["postgresql.cnpg.io"]
+    resources: ["backups"]
+    verbs: ["get", "list", "delete"]
+  - apiGroups: ["snapshot.storage.k8s.io"]
+    resources: ["volumesnapshots"]
+    verbs: ["get", "list", "delete"]
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.35.1-standalone-strict/rolebinding-rbac-v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: postgres-backup-pruner
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: postgres-backup-pruner
+subjects:
+  - kind: ServiceAccount
+    name: postgres-backup-pruner
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.35.1-standalone-strict/cronjob-batch-v1.json
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup-pruner
+  annotations:
+    # the script uses shell variables; keep flux postBuild substitution away from it
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+spec:
+  # after the 00:30 UTC ScheduledBackup
+  schedule: "0 2 * * *"
+  timeZone: Etc/UTC
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          serviceAccountName: postgres-backup-pruner
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: prune
+              image: docker.io/alpine/k8s:1.37.1@sha256:712dc5385d1c1a3f83b747fa9e40f64d433a97f72ff42f9755ff7dd1f62846e4
+              env:
+                - name: CLUSTER
+                  value: postgres
+                # delete backups older than this many days ...
+                - name: RETAIN_DAYS
+                  value: "14"
+                # ... but never the newest N completed ones, so a run of failed backups can't prune the last good ones
+                - name: KEEP_MIN
+                  value: "7"
+                - name: DRY_RUN
+                  value: "false"
+                - name: HOME
+                  value: /tmp
+              command: ["/bin/bash", "-c"]
+              args:
+                - |
+                  set -euo pipefail
+                  cutoff=$(( $(date +%s) - RETAIN_DAYS * 86400 ))
+                  # completed backups beyond the newest KEEP_MIN, plus any non-completed one, older than the cutoff
+                  victims=$(kubectl get backups.postgresql.cnpg.io -o json | jq -r \
+                    --arg c "$CLUSTER" --argjson cutoff "$cutoff" --argjson keep "$KEEP_MIN" '
+                      [.items[] | select(.spec.cluster.name == $c)
+                        | {name: .metadata.name, phase: (.status.phase // ""),
+                           ts: (.metadata.creationTimestamp | fromdateiso8601)}] as $all
+                      | ([$all[] | select(.phase == "completed")] | sort_by(.ts) | reverse | .[$keep:])
+                        + [$all[] | select(.phase != "completed")]
+                      | .[] | select(.ts < $cutoff) | .name')
+                  echo "cluster=$CLUSTER retain=${RETAIN_DAYS}d keep_min=$KEEP_MIN dry_run=$DRY_RUN"
+                  [ -z "$victims" ] && { echo "nothing to prune"; exit 0; }
+                  for b in $victims; do
+                    echo "pruning backup $b"
+                    [ "$DRY_RUN" = "true" ] && continue
+                    kubectl delete volumesnapshots.snapshot.storage.k8s.io -l "cnpg.io/backupName=$b" --wait=false
+                    kubectl delete backups.postgresql.cnpg.io "$b" --wait=false
+                  done
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 32Mi
+                limits:
+                  memory: 128Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: ["ALL"]
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+          volumes:
+            - name: tmp
+              emptyDir: {}
