@@ -21,7 +21,7 @@ spec:
   values:
     controllers:
       main:
-        replicas: 0 # db-migration: restore ${REPLICAS}
+        replicas: ${REPLICAS}
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -42,7 +42,7 @@ spec:
               PUID: ${APP_UID}
               PGID: ${APP_GID}
               DB_TYPE: "postgres"
-              DB_HOST: "postgres.media.svc.cluster.local"
+              DB_HOST: "postgres-rw.dbms.svc.cluster.local"
               DB_PORT: "5432"
               DB_USER: "${JELLYSEERR_USERNAME}"
               DB_PASS: "${JELLYSEERR_PASSWORD}"

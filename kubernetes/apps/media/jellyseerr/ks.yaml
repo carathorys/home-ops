@@ -18,8 +18,8 @@ spec:
   dependsOn:
     - name: external-secrets
       namespace: secrets
-    - name: cluster
-      namespace: media
+    - name: postgres-cluster
+      namespace: dbms
     - name: secrets
       namespace: media
     - name: persistent-volume-claims
