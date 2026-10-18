@@ -25,7 +25,9 @@ spec:
       create: true
     config:
       data:
-        INHERITED_LABELS: app.kubernetes.io/*
+        # no INHERITED_LABELS for app.kubernetes.io/*: inheriting app.kubernetes.io/name overrides the
+        # app.kubernetes.io/name=postgresql label cnpg relies on to find an instance's PVCs, so volume
+        # snapshot backups silently never create a snapshot and stay `started` forever
         # swap the instance manager in place on operator upgrades instead of rolling every
         # cluster (which, with primaryUpdateStrategy: supervised, waits for a manual promote)
         ENABLE_INSTANCE_MANAGER_INPLACE_UPDATES: "true"
