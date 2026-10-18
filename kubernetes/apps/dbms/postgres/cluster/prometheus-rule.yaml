@@ -65,3 +65,33 @@ spec:
           for: 1m
           labels:
             severity: warning
+    - name: postgres-backup.rules
+      rules:
+        - alert: PostgresBackupTooOld
+          annotations:
+            description: The last successful backup of {{ $labels.job }} is {{ $value | humanizeDuration }} old; the daily ScheduledBackup did not complete.
+            summary: No successful Postgres backup in the last 26 hours.
+          expr: |-
+            time() - max by (job) (cnpg_collector_last_available_backup_timestamp{job="dbms/postgres"}) > 26 * 3600
+          for: 10m
+          labels:
+            severity: critical
+        - alert: PostgresBackupFailed
+          annotations:
+            description: The most recent backup attempt of {{ $labels.job }} failed after the last successful one.
+            summary: A Postgres backup failed.
+          expr: |-
+            max by (job) (cnpg_collector_last_failed_backup_timestamp{job="dbms/postgres"})
+              > max by (job) (cnpg_collector_last_available_backup_timestamp{job="dbms/postgres"})
+          for: 5m
+          labels:
+            severity: critical
+        - alert: PostgresBackupMetricsMissing
+          annotations:
+            description: No backup metrics are scraped for dbms/postgres, so backup age cannot be checked.
+            summary: Postgres backup metrics are missing.
+          expr: |-
+            absent(cnpg_collector_last_available_backup_timestamp{job="dbms/postgres"})
+          for: 1h
+          labels:
+            severity: warning
