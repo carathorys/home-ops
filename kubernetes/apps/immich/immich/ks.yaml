@@ -23,7 +23,7 @@ spec:
     - name: dragonfly-cluster
       namespace: immich
     - name: postgres-cluster
-      namespace: immich
+      namespace: dbms
   postBuild:
     substituteFrom:
       - name: cluster-secrets
@@ -61,6 +61,8 @@ spec:
       namespace: secrets
     - name: persistent-volume-claims
       namespace: immich
+    - name: postgres-cluster
+      namespace: dbms
   postBuild:
     substituteFrom:
       - name: cluster-secrets
