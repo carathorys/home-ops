@@ -23,6 +23,14 @@ spec:
   values:
     crds:
       create: true
+    image:
+      # chart 0.28.x ships 1.29.1; 1.29.2+ fixes volumeSnapshot backups stuck in `started` (cnpg#10859, #11069, #11132)
+      # drop this override once the chart's appVersion is >= 1.29.3
+      repository: ghcr.io/cloudnative-pg/cloudnative-pg
+      tag: 1.29.3@sha256:cc0594bd9fd8cdd654dfbd91e4cf2c8fc1bfc4e3a09c4a90a2ab4ffc524f1db5
     config:
       data:
         INHERITED_LABELS: app.kubernetes.io/*
+        # swap the instance manager in place on operator upgrades instead of rolling every
+        # cluster (which, with primaryUpdateStrategy: supervised, waits for a manual promote)
+        ENABLE_INSTANCE_MANAGER_INPLACE_UPDATES: "true"
