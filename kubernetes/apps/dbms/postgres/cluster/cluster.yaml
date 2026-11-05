@@ -62,7 +62,10 @@ spec:
       huge_pages: "off"
       wal_sender_timeout: 60s
       wal_receiver_timeout: 60s
-      wal_keep_size: "32GB"
+      # replication slots (below) retain the WAL each standby needs, capped by
+      # max_slot_wal_keep_size; wal_keep_size is only a small extra safety margin.
+      # 32GB here made every pg_rewind copy ~33GB for <1GB of actual data.
+      wal_keep_size: "4GB"
       max_slot_wal_keep_size: "32GB"
     shared_preload_libraries:
       - vchord.so
