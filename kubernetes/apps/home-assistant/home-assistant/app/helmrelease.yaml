@@ -67,7 +67,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/coder/code-server
               repository: ghcr.io/coder/code-server
-              tag: 4.144.0
+              tag: 4.145.0
             # bypass the image entrypoint (fixuid expects uid 1000); run as APP_UID like home-assistant
             command: ["/usr/bin/dumb-init", "/usr/bin/code-server"]
             args:
