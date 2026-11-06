@@ -22,6 +22,8 @@ spec:
   values:
     controllers:
       main:
+        # keep the original resource name now that there is a second controller
+        forceRename: home-assistant
         replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
@@ -50,13 +52,59 @@ spec:
                 enabled: false
               startup:
                 enabled: false
+      code-server:
+        replicas: 1
+        strategy: Recreate
+        pod:
+          securityContext:
+            runAsUser: "${APP_UID}"
+            runAsGroup: "${APP_GID}"
+            runAsNonRoot: true
+            fsGroup: "${APP_GID}"
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          main:
+            image:
+              # renovate: datasource=docker depName=ghcr.io/coder/code-server
+              repository: ghcr.io/coder/code-server
+              tag: 4.144.0
+            # bypass the image entrypoint (fixuid expects uid 1000); run as APP_UID like home-assistant
+            command: ["/usr/bin/dumb-init", "/usr/bin/code-server"]
+            args:
+              - --auth
+              - none
+              - --bind-addr
+              - 0.0.0.0:12321
+              - --disable-telemetry
+              - --disable-update-check
+              - --user-data-dir
+              - /config/.vscode
+              - --extensions-dir
+              - /config/.vscode
+              - /config
+            env:
+              TZ: Europe/Budapest
+              HOME: /tmp/code-server
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
     service:
       main:
+        forceRename: home-assistant
+        controller: main
         type: LoadBalancer
         loadBalancerIP: 192.168.2.4
         ports:
           http:
             port: 8123
+            protocol: TCP
+      code-server:
+        controller: code-server
+        ports:
+          http:
+            port: 12321
             protocol: TCP
     serviceMonitor:
       main:
@@ -71,6 +119,7 @@ spec:
               key: HASS_BEARER_TOKEN
     route:
       internal-app:
+        forceRename: home-assistant
         hostnames: ["home-assistant.${SECRET_DOMAIN}"]
         parentRefs:
           - name: envoy-internal
@@ -80,7 +129,20 @@ spec:
             namespace: network
             sectionName: https
         rules:
-          - backendRefs: [{}]
+          - backendRefs:
+              - identifier: main
+                port: 8123
+      code-server:
+        # internal network only: attached to envoy-internal, not envoy-external
+        hostnames: ["hass-code.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: code-server
+                port: 12321
 
     persistence:
       config:
@@ -90,6 +152,9 @@ spec:
           main:
             main:
               - path: /config
+          code-server:
+            main:
+              - path: /config
       tmpfs:
         type: emptyDir
         advancedMounts:
@@ -97,3 +162,7 @@ spec:
             main:
               - path: /tmp
                 subPath: hass-tmp
+          code-server:
+            main:
+              - path: /tmp
+                subPath: code-server-tmp
