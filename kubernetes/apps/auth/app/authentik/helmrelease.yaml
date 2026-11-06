@@ -69,7 +69,6 @@ spec:
       route:
         main:
           enabled: true
-
           hostnames: ["auth.${SECRET_DOMAIN}"]
           parentRefs:
             - name: envoy-internal
@@ -79,6 +78,18 @@ spec:
               namespace: network
               sectionName: https
           rules:
+            - matches:
+                - path:
+                    type: PathPrefix
+                    value: /if/flow/
+              filters:
+                - type: ResponseHeaderModifier
+                  responseHeaderModifier:
+                    remove: ["X-Frame-Options"]
+                    set:
+                      - name: Content-Security-Policy
+                        value: "frame-ancestors 'self' https://*.${SECRET_DOMAIN}"
+              backendRefs: [{}]
             - backendRefs: [{}]
     worker:
       replicas: 1
