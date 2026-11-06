@@ -51,6 +51,7 @@ spec:
           - zone: radarr.${SECRET_DOMAIN}
           - zone: jackett.${SECRET_DOMAIN}
           - zone: qbittorrent.${SECRET_DOMAIN}
+          - zone: z2m.${SECRET_DOMAIN}
         port: 53
         plugins:
           - name: errors
