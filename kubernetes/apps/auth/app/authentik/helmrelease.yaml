@@ -77,7 +77,7 @@ spec:
             - name: envoy-external
               namespace: network
               sectionName: https
-          rules:
+          additionalRules:
             - matches:
                 - path:
                     type: PathPrefix
@@ -89,7 +89,8 @@ spec:
                     set:
                       - name: Content-Security-Policy
                         value: "frame-ancestors 'self' https://*.${SECRET_DOMAIN}"
-              backendRefs: [{}]
-            - backendRefs: [{}]
+              backendRefs:
+                - name: authentik-server
+                  port: 80
     worker:
       replicas: 1
