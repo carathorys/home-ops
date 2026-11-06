@@ -39,3 +39,25 @@ spec:
           - name: loop
           - name: reload
           - name: loadbalance
+      # Internal-only hostnames: on the LAN these resolve ONLY to envoy-internal,
+      # even if they also have an envoy-external route (e.g. Authentik outpost).
+      # CoreDNS picks the most specific zone, so these win over `.` above.
+      # To add an app, append one `- zone:` line.
+      - zones:
+          - zone: hass-code.${SECRET_DOMAIN}
+          - zone: it-tools.${SECRET_DOMAIN}
+          - zone: home-assistant.${SECRET_DOMAIN}
+        port: 53
+        plugins:
+          - name: errors
+          - name: log
+          - name: template
+            parameters: IN A
+            # envoy-internal's pinned IP (network/envoy-gateway/app/envoy.yaml)
+            configBlock: |-
+              answer "{{ .Name }} 1 IN A 192.168.1.100"
+          - name: template
+            parameters: ANY ANY
+            # AAAA/HTTPS/etc.: empty NOERROR, so clients fall back to the A record
+            configBlock: |-
+              rcode NOERROR
