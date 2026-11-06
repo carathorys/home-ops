@@ -82,9 +82,6 @@ spec:
                 - path:
                     type: PathPrefix
                     value: /if/flow/
-                - path:
-                    type: PathPrefix
-                    value: /outpost.goauthentik.io/
               filters:
                 - type: ResponseHeaderModifier
                   responseHeaderModifier:
