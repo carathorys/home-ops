@@ -1,0 +1,149 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: gitea
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        replicas: 1
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          main:
+            image:
+              # renovate: datasource=docker depName=docker.io/gitea/gitea
+              repository: docker.io/gitea/gitea
+              tag: 28.3.0-rootless
+            env:
+              TZ: Europe/Budapest
+              # keep app.ini on the PVC (the image defaults to /etc/gitea/app.ini)
+              GITEA_APP_INI: /var/lib/gitea/custom/conf/app.ini
+              GITEA__server__DOMAIN: gitea.${SECRET_DOMAIN}
+              GITEA__server__ROOT_URL: https://gitea.${SECRET_DOMAIN}/
+              GITEA__server__HTTP_PORT: "3000"
+              GITEA__server__START_SSH_SERVER: "true"
+              GITEA__server__SSH_DOMAIN: gitea-ssh.${SECRET_DOMAIN}
+              GITEA__server__SSH_PORT: "22"
+              GITEA__server__SSH_LISTEN_PORT: "2222"
+              GITEA__database__DB_TYPE: postgres
+              GITEA__database__HOST: postgres-rw.dbms.svc.cluster.local:5432
+              GITEA__database__NAME: gitea
+              GITEA__database__USER: gitea
+              GITEA__database__SSL_MODE: require
+              GITEA__security__INSTALL_LOCK: "true"
+              GITEA__security__REVERSE_PROXY_TRUSTED_PROXIES: 10.42.0.0/16
+              GITEA__service__DISABLE_REGISTRATION: "true"
+            envFrom:
+              - secretRef:
+                  name: gitea-secrets
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/healthz
+                    port: &port 3000
+                  periodSeconds: 10
+                  failureThreshold: 30
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/healthz
+                    port: *port
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/healthz
+                    port: *port
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    service:
+      main:
+        controller: main
+        primary: true
+        ports:
+          http:
+            port: *port
+      ssh:
+        controller: main
+        type: LoadBalancer
+        loadBalancerIP: 192.168.2.7
+        annotations:
+          # LAN DNS via k8s-gateway; external-dns ignores Services
+          coredns.io/hostname: gitea-ssh.${SECRET_DOMAIN}
+        ports:
+          ssh:
+            port: 22
+            targetPort: 2222
+    route:
+      main:
+        hostnames: ["gitea.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: *port
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        existingClaim: gitea
+        advancedMounts:
+          main:
+            main:
+              # repos, LFS, attachments and custom/conf/app.ini
+              - path: /var/lib/gitea
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          main:
+            main:
+              - path: /tmp/gitea

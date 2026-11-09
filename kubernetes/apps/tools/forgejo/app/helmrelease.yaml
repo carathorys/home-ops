@@ -1,0 +1,147 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: forgejo
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        replicas: 1
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          main:
+            image:
+              # renovate: datasource=docker depName=codeberg.org/forgejo/forgejo
+              repository: codeberg.org/forgejo/forgejo
+              tag: 17.0.1-rootless
+            env:
+              TZ: Europe/Budapest
+              FORGEJO__server__DOMAIN: forgejo.${SECRET_DOMAIN}
+              FORGEJO__server__ROOT_URL: https://forgejo.${SECRET_DOMAIN}/
+              FORGEJO__server__HTTP_PORT: "3000"
+              FORGEJO__server__START_SSH_SERVER: "true"
+              FORGEJO__server__SSH_DOMAIN: forgejo-ssh.${SECRET_DOMAIN}
+              FORGEJO__server__SSH_PORT: "22"
+              FORGEJO__server__SSH_LISTEN_PORT: "2222"
+              FORGEJO__database__DB_TYPE: postgres
+              FORGEJO__database__HOST: postgres-rw.dbms.svc.cluster.local:5432
+              FORGEJO__database__NAME: forgejo
+              FORGEJO__database__USER: forgejo
+              FORGEJO__database__SSL_MODE: require
+              FORGEJO__security__INSTALL_LOCK: "true"
+              FORGEJO__security__REVERSE_PROXY_TRUSTED_PROXIES: 10.42.0.0/16
+              FORGEJO__service__DISABLE_REGISTRATION: "true"
+            envFrom:
+              - secretRef:
+                  name: forgejo-secrets
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/healthz
+                    port: &port 3000
+                  periodSeconds: 10
+                  failureThreshold: 30
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/healthz
+                    port: *port
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/healthz
+                    port: *port
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    service:
+      main:
+        controller: main
+        primary: true
+        ports:
+          http:
+            port: *port
+      ssh:
+        controller: main
+        type: LoadBalancer
+        loadBalancerIP: 192.168.2.6
+        annotations:
+          # LAN DNS via k8s-gateway; external-dns ignores Services
+          coredns.io/hostname: forgejo-ssh.${SECRET_DOMAIN}
+        ports:
+          ssh:
+            port: 22
+            targetPort: 2222
+    route:
+      main:
+        hostnames: ["forgejo.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: *port
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        existingClaim: forgejo
+        advancedMounts:
+          main:
+            main:
+              # repos, LFS, attachments and custom/conf/app.ini
+              - path: /var/lib/gitea
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          main:
+            main:
+              - path: /tmp/gitea

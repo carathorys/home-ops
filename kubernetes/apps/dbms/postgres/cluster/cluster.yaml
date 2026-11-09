@@ -135,5 +135,23 @@ spec:
         createdb: false
         passwordSecret:
           name: tankstat-user
+      - connectionLimit: -1
+        ensure: present
+        name: forgejo
+        comment: Forgejo app user
+        login: true
+        superuser: false
+        createdb: false
+        passwordSecret:
+          name: forgejo-user
+      - connectionLimit: -1
+        ensure: present
+        name: gitea
+        comment: Gitea app user
+        login: true
+        superuser: false
+        createdb: false
+        passwordSecret:
+          name: gitea-user
   monitoring:
     enablePodMonitor: true

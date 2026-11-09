@@ -111,3 +111,29 @@ spec:
   owner: tankstat
   ensure: present
   allowConnections: true
+---
+# yaml-language-server: $schema=https://schemas.gallay.io/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: forgejo
+spec:
+  cluster:
+    name: postgres
+  name: forgejo
+  owner: forgejo
+  ensure: present
+  allowConnections: true
+---
+# yaml-language-server: $schema=https://schemas.gallay.io/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: gitea
+spec:
+  cluster:
+    name: postgres
+  name: gitea
+  owner: gitea
+  ensure: present
+  allowConnections: true

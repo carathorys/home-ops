@@ -13,3 +13,5 @@ resources:
   - ./tankstat/ks.yaml
   - ./ollama/ks.yaml
   - ./open-webui/ks.yaml
+  - ./forgejo/ks.yaml
+  - ./gitea/ks.yaml
