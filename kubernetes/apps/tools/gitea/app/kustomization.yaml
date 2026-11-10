@@ -6,3 +6,12 @@ resources:
   - externalsecret.yaml
   - volume.yaml
   - helmrelease.yaml
+configMapGenerator:
+  - name: gitea-scripts
+    files:
+      - configure-oauth.sh=./resources/configure-oauth.sh
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    # the script uses shell $vars; keep Flux postBuild from blanking them
+    kustomize.toolkit.fluxcd.io/substitute: disabled
