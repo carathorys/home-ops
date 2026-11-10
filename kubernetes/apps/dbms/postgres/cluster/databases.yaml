@@ -122,7 +122,8 @@ spec:
     name: postgres
   name: forgejo
   owner: forgejo
-  ensure: present
+  # Forgejo evaluation ended: drop the database, then delete this resource once it is gone
+  ensure: absent
   allowConnections: true
 ---
 # yaml-language-server: $schema=https://schemas.gallay.io/postgresql.cnpg.io/database_v1.json

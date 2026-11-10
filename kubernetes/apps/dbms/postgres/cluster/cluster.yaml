@@ -135,15 +135,9 @@ spec:
         createdb: false
         passwordSecret:
           name: tankstat-user
-      - connectionLimit: -1
-        ensure: present
+      # Forgejo evaluation ended: drop the role, then delete this entry once it is gone
+      - ensure: absent
         name: forgejo
-        comment: Forgejo app user
-        login: true
-        superuser: false
-        createdb: false
-        passwordSecret:
-          name: forgejo-user
       - connectionLimit: -1
         ensure: present
         name: gitea
