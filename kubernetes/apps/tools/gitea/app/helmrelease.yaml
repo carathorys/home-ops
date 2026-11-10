@@ -68,8 +68,10 @@ spec:
               # first SSO login links to the existing local account with the same email/username
               GITEA__oauth2_client__ACCOUNT_LINKING: auto
               GITEA__oauth2_client__UPDATE_AVATAR: "true"
-              # Uncomment once SSO login is confirmed working to hide the local password form
-              # GITEA__service__ENABLE_PASSWORD_SIGNIN_FORM: "false"
+              # SSO only: hide the local username/password form. Git over HTTPS
+              # uses access tokens (basic auth stays enabled), SSH is unaffected.
+              # Emergency access: set to "true" or `gitea admin user` via kubectl exec.
+              GITEA__service__ENABLE_PASSWORD_SIGNIN_FORM: "false"
               # read by the configure-oauth init container
               OIDC_DISCOVERY_URL: https://auth.${SECRET_DOMAIN}/application/o/gitea/.well-known/openid-configuration
             envFrom: &envFrom
