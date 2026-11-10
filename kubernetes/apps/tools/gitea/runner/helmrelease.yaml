@@ -1,0 +1,68 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: gitea-runner
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: gitea-actions
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    enabled: true
+    # StatefulSet is named <fullname>-runner => gitea-runner-0..2
+    fullnameOverride: gitea
+    # in-cluster Service of the gitea HelmRelease
+    giteaRootURL: http://gitea.tools.svc.cluster.local:3000
+    existingSecret: gitea-runner-secrets
+    existingSecretKey: token
+    global:
+      storageClass: iscsi
+    statefulset:
+      replicas: 3
+      timezone: Europe/Budapest
+      annotations:
+        reloader.stakater.com/auto: "true"
+      persistence:
+        # holds the .runner registration file, so restarts don't re-register
+        size: 1Gi
+      runner:
+        extraEnvs:
+          - name: GITEA_RUNNER_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+        resources:
+          requests:
+            cpu: 20m
+            memory: 64Mi
+          limits:
+            memory: 512Mi
+        config: |
+          log:
+            level: info
+          runner:
+            capacity: 1
+          cache:
+            enabled: false
+          container:
+            require_docker: true
+            docker_timeout: 300s
+      dind:
+        # jobs run inside this sidecar's Docker daemon
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            memory: 4Gi

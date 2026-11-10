@@ -56,6 +56,7 @@ spec:
               GITEA__database__SSL_MODE: require
               GITEA__security__INSTALL_LOCK: "true"
               GITEA__security__REVERSE_PROXY_TRUSTED_PROXIES: 10.42.0.0/16
+              GITEA__actions__ENABLED: "true"
               # Sign-up only through Authentik (who may sign in is decided by
               # the Authentik application's bindings); no local self-registration
               GITEA__service__DISABLE_REGISTRATION: "false"
