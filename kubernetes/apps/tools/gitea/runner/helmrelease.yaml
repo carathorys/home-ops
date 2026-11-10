@@ -22,8 +22,8 @@ spec:
     enabled: true
     # StatefulSet is named <fullname>-runner => gitea-runner-0..2
     fullnameOverride: gitea
-    # in-cluster Service of the gitea HelmRelease
-    giteaRootURL: http://gitea.tools.svc.cluster.local:3000
+    # in-cluster HTTP Service of the gitea HelmRelease (app-template: <release>-<service>)
+    giteaRootURL: http://gitea-main.tools.svc.cluster.local:3000
     existingSecret: gitea-runner-secrets
     existingSecretKey: token
     global:
