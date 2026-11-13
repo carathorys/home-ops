@@ -114,10 +114,12 @@ spec:
         hostnames: ["z2m.${SECRET_DOMAIN}"]
         parentRefs:
           - name: envoy-internal
-            namespace: kube-system
+            namespace: network
             sectionName: https
         rules:
-          - backendRefs: [{}]
+          - backendRefs:
+              - identifier: main
+                port: *httpPort
     persistence:
       zigbee-device:
         type: hostPath
