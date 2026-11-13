@@ -44,14 +44,28 @@ spec:
       # CoreDNS picks the most specific zone, so these win over `.` above.
       # To add an app, append one `- zone:` line.
       - zones:
+          - zone: auth.${SECRET_DOMAIN}
+          - zone: cars.${SECRET_DOMAIN}
+          - zone: emby.${SECRET_DOMAIN}
+          - zone: gitea.${SECRET_DOMAIN}
           - zone: hass-code.${SECRET_DOMAIN}
-          - zone: it-tools.${SECRET_DOMAIN}
           - zone: home-assistant.${SECRET_DOMAIN}
-          - zone: sonarr.${SECRET_DOMAIN}
-          - zone: radarr.${SECRET_DOMAIN}
+          - zone: it-tools.${SECRET_DOMAIN}
           - zone: jackett.${SECRET_DOMAIN}
+          - zone: jellyfin.${SECRET_DOMAIN}
+          - zone: jellyseerr.${SECRET_DOMAIN}
+          - zone: open-web-ui.${SECRET_DOMAIN}
+          - zone: pgadmin.${SECRET_DOMAIN}
+          - zone: plex.${SECRET_DOMAIN}
           - zone: qbittorrent.${SECRET_DOMAIN}
+          - zone: qui.${SECRET_DOMAIN}
+          - zone: radarr.${SECRET_DOMAIN}
+          - zone: sonarr.${SECRET_DOMAIN}
+          - zone: status.${SECRET_DOMAIN}
+          - zone: tankstat.${SECRET_DOMAIN}
+          - zone: tautulli.${SECRET_DOMAIN}
           - zone: z2m.${SECRET_DOMAIN}
+
         port: 53
         plugins:
           - name: errors
