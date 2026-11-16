@@ -37,7 +37,7 @@ spec:
           main:
             image: &image # renovate: datasource=docker depName=docker.io/gitea/gitea
               repository: docker.io/gitea/gitea
-              tag: 28.3.0-rootless
+              tag: 28.4.0-rootless
             env: &env
               TZ: Europe/Budapest
               # keep app.ini on the PVC (the image defaults to /etc/gitea/app.ini)
