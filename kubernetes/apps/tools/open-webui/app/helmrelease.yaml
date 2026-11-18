@@ -35,8 +35,34 @@ spec:
             env:
               TZ: Europe/Budapest
               OLLAMA_BASE_URL: http://ollama:11434
-              WEBUI_AUTH: "False"
               DEFAULT_MODELS: gemma4:e2b
+              # --- Login via Authentik (OIDC) only ---
+              WEBUI_AUTH: "True"
+              WEBUI_URL: https://${APP}.${SECRET_DOMAIN}
+              # keep the session signing key on the PVC; the image default
+              # (/app/backend/.webui_secret_key) is lost on every restart
+              WEBUI_SECRET_KEY_FILE: /app/backend/data/.webui_secret_key
+              # oauth.* settings are read from env on every start
+              # (ENABLE_OAUTH_PERSISTENT_CONFIG defaults to false)
+              OAUTH_PROVIDER_NAME: Authentik
+              OPENID_PROVIDER_URL: https://auth.${SECRET_DOMAIN}/application/o/open-webui/.well-known/openid-configuration
+              OPENID_REDIRECT_URI: https://${APP}.${SECRET_DOMAIN}/oauth/oidc/callback
+              OAUTH_SCOPES: openid email profile
+              ENABLE_OAUTH_SIGNUP: "true"
+              OAUTH_MERGE_ACCOUNTS_BY_EMAIL: "true"
+              # Role from Authentik groups on every login: members of
+              # "authentik Admins" become admin, everyone else a normal user
+              ENABLE_OAUTH_ROLE_MANAGEMENT: "true"
+              OAUTH_ROLES_CLAIM: groups
+              OAUTH_ALLOWED_ROLES: "*"
+              OAUTH_ADMIN_ROLES: authentik Admins
+              # No local passwords: hides the form and rejects password
+              # sign-in server-side (incl. the no-auth admin@localhost user)
+              ENABLE_LOGIN_FORM: "false"
+              ENABLE_PASSWORD_AUTH: "false"
+            envFrom:
+              - secretRef:
+                  name: open-webui-secrets
             probes:
               startup:
                 enabled: true

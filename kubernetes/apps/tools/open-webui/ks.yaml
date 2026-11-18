@@ -16,6 +16,8 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
+    - name: external-secrets
+      namespace: secrets
     - name: democratic-csi
       namespace: system
     - name: ollama
