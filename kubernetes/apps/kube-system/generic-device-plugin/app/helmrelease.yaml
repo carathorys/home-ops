@@ -1,0 +1,29 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: generic-device-plugin
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: generic-device-plugin
+  interval: 1h
+  # Exposes host devices as schedulable resources, so pods request a device
+  # (resources.limits) instead of running privileged with a hostPath mount.
+  values:
+    fullnameOverride: generic-device-plugin
+    image:
+      # renovate: datasource=docker depName=squat/generic-device-plugin
+      tag: 0.2.0
+      pullPolicy: IfNotPresent
+    devices:
+      # Requested by pods as "devic.es/dri" (the plugin's default domain).
+      # AMD iGPU render node (VAAPI transcoding, Vulkan). Shared, not
+      # exclusive: up to 10 pods per node may hold it at once. Nodes without
+      # the device (esutha) advertise 0, so GPU pods only land on avarath and
+      # hummianet.
+      - name: dri
+        groups:
+          - count: 10
+            paths:
+              - path: /dev/dri/renderD128

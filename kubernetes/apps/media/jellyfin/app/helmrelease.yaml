@@ -36,8 +36,6 @@ spec:
                           - "true"
         containers:
           main:
-            securityContext:
-              privileged: true
             image:
               # renovate: datasource=docker depName=ghcr.io/linuxserver/jellyfin
               repository: ghcr.io/linuxserver/jellyfin
@@ -54,6 +52,9 @@ spec:
                 memory: 2Gi
               limits:
                 memory: 10Gi
+                # AMD iGPU render node (/dev/dri/renderD128) for VAAPI
+                # transcoding, from generic-device-plugin (shared device)
+                devic.es/dri: 1
 
     service:
       main:
@@ -77,11 +78,6 @@ spec:
               - identifier: main
                 port: *port
     persistence:
-      dri:
-        type: hostPath
-        hostPath: /dev/dri
-        globalMounts:
-          - path: /dev/dri
       config:
         type: persistentVolumeClaim
         existingClaim: jellyfin
