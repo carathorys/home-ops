@@ -40,6 +40,11 @@ spec:
           containers:
             - name: grafana
               env:
+                # With disableDefaultAdminSecret the operator reads its login
+                # from these env vars; without the user it can't authenticate
+                # and never syncs datasources/dashboards to this instance.
+                - name: GF_SECURITY_ADMIN_USER
+                  value: admin
                 - name: GF_SECURITY_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef:
