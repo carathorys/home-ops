@@ -156,6 +156,20 @@ spec:
         serviceMonitorSelectorNilUsesHelmValues: false
         enableAdminAPI: true
         walCompression: true
+        # Receive app metrics pushed over OTLP by the otel-collector gateway
+        # (POST /api/v1/otlp/v1/metrics). job/instance come from
+        # service.name/service.instance.id; promote these too as labels.
+        enableOTLPReceiver: true
+        otlp:
+          promoteResourceAttributes:
+            - service.version
+            - k8s.namespace.name
+            - k8s.pod.name
+            - k8s.deployment.name
+            - k8s.statefulset.name
+            - k8s.node.name
+        tsdb:
+          outOfOrderTimeWindow: 30m # pushed samples can arrive late/out of order
         enableFeatures:
           - memory-snapshot-on-shutdown
         retention: 14d

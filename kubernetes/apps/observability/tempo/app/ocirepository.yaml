@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: tempo
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 3.2.1
+  # grafana/helm-charts' tempo charts are deprecated; maintained here now
+  url: oci://ghcr.io/grafana-community/helm-charts/tempo

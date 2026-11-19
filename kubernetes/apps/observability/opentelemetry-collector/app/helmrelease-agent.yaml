@@ -1,0 +1,80 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: otel-agent
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: opentelemetry-collector
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  # Agent (one per node): tails every container's stdout/stderr from
+  # /var/log/pods, adds Kubernetes metadata and sends it to Loki over OTLP.
+  values:
+    mode: daemonset
+    fullnameOverride: otel-agent
+    image:
+      repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-k8s
+    presets:
+      logsCollection:
+        enabled: true
+        storeCheckpoints: true # remember file offsets across restarts (hostPath /var/lib/otelcol)
+      kubernetesAttributes:
+        enabled: true # node-local pod metadata, incl. workload and service.name
+    # /var/log/pods is only readable by root on the node
+    securityContext:
+      runAsUser: 0
+      runAsGroup: 0
+    ports:
+      otlp: { enabled: false }
+      otlp-http: { enabled: false }
+      jaeger-compact: { enabled: false }
+      jaeger-thrift: { enabled: false }
+      jaeger-grpc: { enabled: false }
+      zipkin: { enabled: false }
+      metrics: { enabled: true }
+    podMonitor:
+      enabled: true
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        memory: 256Mi
+    config:
+      receivers:
+        otlp: null
+        jaeger: null
+        zipkin: null
+        prometheus: null
+      processors:
+        # Loki labels streams by service.name; fall back to the container
+        # name for pods the k8s attributes processor couldn't name.
+        transform/service-name:
+          log_statements:
+            - context: resource
+              statements:
+                - set(attributes["service.name"], attributes["k8s.container.name"]) where attributes["service.name"] == nil
+      exporters:
+        debug: null
+        otlphttp/loki:
+          endpoint: http://loki.observability.svc.cluster.local:3100/otlp
+      service:
+        pipelines:
+          logs:
+            receivers: []
+            processors: [memory_limiter, transform/service-name, batch]
+            exporters: [otlphttp/loki]
+          metrics: null
+          traces: null
