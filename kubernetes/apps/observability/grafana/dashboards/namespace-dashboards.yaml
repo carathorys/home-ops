@@ -1,0 +1,296 @@
+---
+# One "Namespace overview" dashboard per namespace, all built from the shared
+# namespace-overview.json; each sets its own uid, title, folder and namespace.
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespace-auth
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: auth
+  uid: namespace-auth
+  configMapRef:
+    name: grafana-dashboard-namespace-overview
+    key: namespace-overview.json
+  variables:
+    - name: namespace
+      value: auth
+  patch:
+    scripts:
+      - '.title = "Namespace: auth"'
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespace-cert-manager
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: cert-manager
+  uid: namespace-cert-manager
+  configMapRef:
+    name: grafana-dashboard-namespace-overview
+    key: namespace-overview.json
+  variables:
+    - name: namespace
+      value: cert-manager
+  patch:
+    scripts:
+      - '.title = "Namespace: cert-manager"'
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespace-dbms
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: dbms
+  uid: namespace-dbms
+  configMapRef:
+    name: grafana-dashboard-namespace-overview
+    key: namespace-overview.json
+  variables:
+    - name: namespace
+      value: dbms
+  patch:
+    scripts:
+      - '.title = "Namespace: dbms"'
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespace-default
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: default
+  uid: namespace-default
+  configMapRef:
+    name: grafana-dashboard-namespace-overview
+    key: namespace-overview.json
+  variables:
+    - name: namespace
+      value: default
+  patch:
+    scripts:
+      - '.title = "Namespace: default"'
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespace-flux-system
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: flux-system
+  uid: namespace-flux-system
+  configMapRef:
+    name: grafana-dashboard-namespace-overview
+    key: namespace-overview.json
+  variables:
+    - name: namespace
+      value: flux-system
+  patch:
+    scripts:
+      - '.title = "Namespace: flux-system"'
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespace-home-assistant
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: home-assistant
+  uid: namespace-home-assistant
+  configMapRef:
+    name: grafana-dashboard-namespace-overview
+    key: namespace-overview.json
+  variables:
+    - name: namespace
+      value: home-assistant
+  patch:
+    scripts:
+      - '.title = "Namespace: home-assistant"'
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespace-immich
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: immich
+  uid: namespace-immich
+  configMapRef:
+    name: grafana-dashboard-namespace-overview
+    key: namespace-overview.json
+  variables:
+    - name: namespace
+      value: immich
+  patch:
+    scripts:
+      - '.title = "Namespace: immich"'
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespace-kube-system
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: kube-system
+  uid: namespace-kube-system
+  configMapRef:
+    name: grafana-dashboard-namespace-overview
+    key: namespace-overview.json
+  variables:
+    - name: namespace
+      value: kube-system
+  patch:
+    scripts:
+      - '.title = "Namespace: kube-system"'
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespace-media
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: media
+  uid: namespace-media
+  configMapRef:
+    name: grafana-dashboard-namespace-overview
+    key: namespace-overview.json
+  variables:
+    - name: namespace
+      value: media
+  patch:
+    scripts:
+      - '.title = "Namespace: media"'
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespace-network
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: network
+  uid: namespace-network
+  configMapRef:
+    name: grafana-dashboard-namespace-overview
+    key: namespace-overview.json
+  variables:
+    - name: namespace
+      value: network
+  patch:
+    scripts:
+      - '.title = "Namespace: network"'
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespace-observability
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: observability
+  uid: namespace-observability
+  configMapRef:
+    name: grafana-dashboard-namespace-overview
+    key: namespace-overview.json
+  variables:
+    - name: namespace
+      value: observability
+  patch:
+    scripts:
+      - '.title = "Namespace: observability"'
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespace-secrets
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: secrets
+  uid: namespace-secrets
+  configMapRef:
+    name: grafana-dashboard-namespace-overview
+    key: namespace-overview.json
+  variables:
+    - name: namespace
+      value: secrets
+  patch:
+    scripts:
+      - '.title = "Namespace: secrets"'
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespace-system
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: system
+  uid: namespace-system
+  configMapRef:
+    name: grafana-dashboard-namespace-overview
+    key: namespace-overview.json
+  variables:
+    - name: namespace
+      value: system
+  patch:
+    scripts:
+      - '.title = "Namespace: system"'
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespace-tools
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: tools
+  uid: namespace-tools
+  configMapRef:
+    name: grafana-dashboard-namespace-overview
+    key: namespace-overview.json
+  variables:
+    - name: namespace
+      value: tools
+  patch:
+    scripts:
+      - '.title = "Namespace: tools"'

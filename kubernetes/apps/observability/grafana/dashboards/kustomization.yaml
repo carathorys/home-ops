@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace-dashboards.yaml
+configMapGenerator:
+  - name: grafana-dashboard-namespace-overview
+    files:
+      - namespace-overview.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    # dashboard JSON uses ${datasource}/$namespace template syntax
+    kustomize.toolkit.fluxcd.io/substitute: disabled
