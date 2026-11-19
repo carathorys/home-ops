@@ -22,8 +22,91 @@ spec:
     controllers:
       main:
         replicas: ${REPLICAS}
+        # gluetun's IP rules are pod-wide: never run old and new pod together
+        strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          # Name resolution only through gluetun's own DNS server (DNS over TLS
+          # inside the tunnel), so tracker lookups can't leak via cluster DNS.
+          # qBittorrent needs no cluster names; don't add containers that do.
+          dnsPolicy: None
+          dnsConfig:
+            nameservers: ["127.0.0.1"]
+            options:
+              - name: ndots
+                value: "1"
+        initContainers:
+          # Native sidecar (restartPolicy: Always): starts first, and the
+          # qBittorrent container only starts once the tunnel is up (startup
+          # probe). It shares the pod network namespace, so all of
+          # qBittorrent's internet traffic leaves through NordVPN (WireGuard);
+          # gluetun's firewall drops anything else (kill switch).
+          gluetun:
+            image:
+              # renovate: datasource=docker depName=ghcr.io/qdm12/gluetun
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.41.3
+            restartPolicy: Always
+            env:
+              TZ: "Europe/Budapest"
+              VPN_SERVICE_PROVIDER: nordvpn
+              VPN_TYPE: wireguard
+              # Talos' kernel has WireGuard built in, so no /dev/net/tun needed
+              WIREGUARD_IMPLEMENTATION: kernelspace
+              # qBittorrent is bound to this interface (Options -> Advanced)
+              VPN_INTERFACE: tun0
+              SERVER_COUNTRIES: Hungary
+              # WebUI (qui, envoy-internal, LoadBalancer, kubelet probes)
+              FIREWALL_INPUT_PORTS: "8080"
+              # Pods, Services and LAN stay on eth0. Required for replies to
+              # inbound WebUI connections too, else they go into the tunnel.
+              FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16,192.168.0.0/16
+              VERSION_INFORMATION: "off"
+              WIREGUARD_PRIVATE_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: qbittorrent-vpn
+                    key: WIREGUARD_PRIVATE_KEY
+            securityContext:
+              capabilities:
+                add: ["NET_ADMIN"]
+            lifecycle:
+              # Remove routing rules a previous, abruptly stopped gluetun left
+              # behind (gluetun wiki, Kubernetes: "adding IPv6 rule: file exists")
+              postStart:
+                exec:
+                  command:
+                    [
+                      "/bin/sh",
+                      "-c",
+                      "(ip rule del table 51820; ip -6 rule del table 51820) || true",
+                    ]
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["/gluetun-entrypoint", "healthcheck"]
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  failureThreshold: 60
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["/gluetun-entrypoint", "healthcheck"]
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
         containers:
           main:
             image:
@@ -35,14 +118,10 @@ spec:
               PUID: ${APP_UID}
               PGID: ${APP_GID}
               WEBUI_PORT: &webPort 8080
-              TORRENTING_PORT: &peerPort 54149
-            ports:
-              - protocol: UDP
-                containerPort: *peerPort
-                hostPort: *peerPort
-              - protocol: TCP
-                containerPort: *peerPort
-                hostPort: *peerPort
+              # Listening port for peers. NordVPN has no port forwarding, so
+              # this is never reachable from outside: qBittorrent runs passive
+              # (non-connectable) and only makes outgoing peer connections.
+              TORRENTING_PORT: 54149
     service:
       main:
         type: LoadBalancer
@@ -51,14 +130,6 @@ spec:
           http:
             port: *webPort
             protocol: TCP
-          tcp:
-            port: *peerPort
-            protocol: TCP
-            targetPort: *peerPort
-          udp:
-            port: *peerPort
-            protocol: UDP
-            targetPort: *peerPort
     route:
       internal:
         hostnames: ["${APP}.${SECRET_DOMAIN}"]
@@ -66,16 +137,6 @@ spec:
           - name: envoy-internal
             namespace: network
             sectionName: https
-        rules:
-          - backendRefs: [{}]
-      external:
-        parentRefs:
-          - name: envoy-external
-            namespace: network
-            sectionName: trnt-tcp
-          - name: envoy-external
-            namespace: network
-            sectionName: trnt-udp
         rules:
           - backendRefs: [{}]
     persistence:
