@@ -66,6 +66,25 @@ spec:
             - context: resource
               statements:
                 - set(attributes["service.name"], attributes["k8s.container.name"]) where attributes["service.name"] == nil
+        # Serilog's short level tags ("[18:53:44] [INF] ...", e.g. Jellyfin)
+        # aren't recognised by Loki's level detection (they end up as
+        # "unknown"); map them to a proper severity, which Loki uses.
+        transform/severity:
+          log_statements:
+            - context: log
+              statements:
+                - set(severity_text, "trace") where IsMatch(body, "^\\[[0-9:]{8}\\] \\[VRB\\]")
+                - set(severity_number, SEVERITY_NUMBER_TRACE) where IsMatch(body, "^\\[[0-9:]{8}\\] \\[VRB\\]")
+                - set(severity_text, "debug") where IsMatch(body, "^\\[[0-9:]{8}\\] \\[DBG\\]")
+                - set(severity_number, SEVERITY_NUMBER_DEBUG) where IsMatch(body, "^\\[[0-9:]{8}\\] \\[DBG\\]")
+                - set(severity_text, "info") where IsMatch(body, "^\\[[0-9:]{8}\\] \\[INF\\]")
+                - set(severity_number, SEVERITY_NUMBER_INFO) where IsMatch(body, "^\\[[0-9:]{8}\\] \\[INF\\]")
+                - set(severity_text, "warn") where IsMatch(body, "^\\[[0-9:]{8}\\] \\[WRN\\]")
+                - set(severity_number, SEVERITY_NUMBER_WARN) where IsMatch(body, "^\\[[0-9:]{8}\\] \\[WRN\\]")
+                - set(severity_text, "error") where IsMatch(body, "^\\[[0-9:]{8}\\] \\[ERR\\]")
+                - set(severity_number, SEVERITY_NUMBER_ERROR) where IsMatch(body, "^\\[[0-9:]{8}\\] \\[ERR\\]")
+                - set(severity_text, "fatal") where IsMatch(body, "^\\[[0-9:]{8}\\] \\[FTL\\]")
+                - set(severity_number, SEVERITY_NUMBER_FATAL) where IsMatch(body, "^\\[[0-9:]{8}\\] \\[FTL\\]")
       exporters:
         debug: null
         otlphttp/loki:
@@ -74,7 +93,7 @@ spec:
         pipelines:
           logs:
             receivers: []
-            processors: [memory_limiter, transform/service-name, batch]
+            processors: [memory_limiter, transform/service-name, transform/severity, batch]
             exporters: [otlphttp/loki]
           metrics: null
           traces: null
