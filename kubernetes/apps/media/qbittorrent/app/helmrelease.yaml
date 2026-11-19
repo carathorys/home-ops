@@ -132,6 +132,29 @@ spec:
               # No TORRENTING_PORT: the listening port is the one Proton
               # forwards, set by gluetun's port forwarding command
               # (scripts/qbittorrent-port.sh) together with the interface.
+          # qBittorrent writes its log (torrents, trackers, peers, errors) only
+          # to a file on the config volume; follow it on stdout so the
+          # otel-agent ships it to Loki like every other container's output.
+          # tail -F follows the file by name across qBittorrent's rotations.
+          logs:
+            image:
+              # renovate: datasource=docker depName=busybox
+              repository: busybox
+              tag: 1.38.0
+            command: ["tail", "-n", "0", "-F", "/logs/qbittorrent.log"]
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 1m
+                memory: 8Mi
+              limits:
+                memory: 32Mi
     service:
       main:
         type: LoadBalancer
@@ -158,6 +181,10 @@ spec:
             main:
               - path: /config
                 readOnly: false
+            logs:
+              - path: /logs
+                subPath: qBittorrent/logs
+                readOnly: true
       downloads:
         type: persistentVolumeClaim
         existingClaim: downloads
