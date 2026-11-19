@@ -132,6 +132,11 @@ spec:
               # No TORRENTING_PORT: the listening port is the one Proton
               # forwards, set by gluetun's port forwarding command
               # (scripts/qbittorrent-port.sh) together with the interface.
+            resources:
+              requests:
+                memory: 512Mi
+              limits:
+                memory: 2Gi
           # qBittorrent writes its log (torrents, trackers, peers, errors) only
           # to a file on the config volume; follow it on stdout so the
           # otel-agent ships it to Loki like every other container's output.
