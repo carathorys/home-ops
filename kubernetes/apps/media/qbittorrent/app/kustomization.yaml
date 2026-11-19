@@ -10,7 +10,7 @@ resources:
 configMapGenerator:
   - name: qbittorrent-scripts
     files:
-      - fetch-wireguard-key.sh=./resources/fetch-wireguard-key.sh
+      - qbittorrent-port.sh=./resources/qbittorrent-port.sh
   - name: qbittorrent-loki-rules
     files:
       - qbittorrent.yaml=./lokirule.yaml

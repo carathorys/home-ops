@@ -27,46 +27,21 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
-          # Never cluster DNS, so tracker lookups can't leak outside the VPN.
-          # 127.0.0.1 is gluetun's own DNS server (DNS over TLS in the tunnel).
-          # 1.1.1.1 serves the fetch-wireguard-key init container, which runs
-          # before gluetun; once gluetun is up its firewall only lets 1.1.1.1
-          # out through the tunnel. qBittorrent needs no cluster names; don't
-          # add containers here that do.
+          # Name resolution only through gluetun's own DNS server (DNS over TLS
+          # inside the tunnel), so tracker lookups can't leak via cluster DNS.
+          # qBittorrent needs no cluster names; don't add containers that do.
           dnsPolicy: None
           dnsConfig:
-            nameservers: ["127.0.0.1", "1.1.1.1"]
+            nameservers: ["127.0.0.1"]
             options:
               - name: ndots
                 value: "1"
         initContainers:
-          # Runs first (init containers start in name order): exchanges the
-          # NordVPN access token for the NordLynx private key and writes it to
-          # the in-memory vpn-secrets volume as wg0.conf for gluetun.
-          fetch-wireguard-key:
-            image:
-              # renovate: datasource=docker depName=alpine
-              repository: alpine
-              tag: 3.24.4
-            command: ["/bin/sh", "/scripts/fetch-wireguard-key.sh"]
-            env:
-              NORDVPN_ACCESS_TOKEN:
-                valueFrom:
-                  secretKeyRef:
-                    name: qbittorrent-vpn
-                    key: NORDVPN_ACCESS_TOKEN
-            resources:
-              requests:
-                cpu: 10m
-                memory: 16Mi
-              limits:
-                memory: 64Mi
-          # Native sidecar (restartPolicy: Always): starts after the key is
-          # fetched, and the
+          # Native sidecar (restartPolicy: Always): starts first, and the
           # qBittorrent container only starts once the tunnel is up (startup
           # probe). It shares the pod network namespace, so all of
-          # qBittorrent's internet traffic leaves through NordVPN (WireGuard);
-          # gluetun's firewall drops anything else (kill switch).
+          # qBittorrent's internet traffic leaves through ProtonVPN
+          # (WireGuard); gluetun's firewall drops anything else (kill switch).
           gluetun:
             image:
               # renovate: datasource=docker depName=ghcr.io/qdm12/gluetun
@@ -75,21 +50,35 @@ spec:
             restartPolicy: Always
             env:
               TZ: "Europe/Budapest"
-              VPN_SERVICE_PROVIDER: nordvpn
+              VPN_SERVICE_PROVIDER: protonvpn
               VPN_TYPE: wireguard
               # Talos' kernel has WireGuard built in, so no /dev/net/tun needed
               WIREGUARD_IMPLEMENTATION: kernelspace
-              # qBittorrent is bound to this interface (Options -> Advanced)
               VPN_INTERFACE: tun0
               SERVER_COUNTRIES: Hungary
+              # Only P2P servers, which are the ones that can forward a port
+              # (needs a paid Proton plan; free servers allow no P2P)
+              PORT_FORWARD_ONLY: "on"
+              # Active mode: gluetun requests an inbound port from Proton
+              # (NAT-PMP), opens it in its firewall on tun0, and keeps it alive.
+              # Proton picks the port and may change it on reconnect, so the
+              # commands below (re)configure qBittorrent through its WebUI API.
+              VPN_PORT_FORWARDING: "on"
+              # {{PORT}} and {{VPN_INTERFACE}} are gluetun's placeholders; they
+              # are escaped because app-template renders values as Go templates.
+              VPN_PORT_FORWARDING_UP_COMMAND: '/bin/sh /scripts/qbittorrent-port.sh up {{ "{{PORT}}" }} {{ "{{VPN_INTERFACE}}" }}'
+              VPN_PORT_FORWARDING_DOWN_COMMAND: /bin/sh /scripts/qbittorrent-port.sh down
               # WebUI (qui, envoy-internal, LoadBalancer, kubelet probes)
               FIREWALL_INPUT_PORTS: "8080"
               # Pods, Services and LAN stay on eth0. Required for replies to
               # inbound WebUI connections too, else they go into the tunnel.
               FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16,192.168.0.0/16
               VERSION_INFORMATION: "off"
-              # The private key comes from /run/secrets/wg0.conf (vpn-secrets),
-              # written by the fetch-wireguard-key init container.
+              WIREGUARD_PRIVATE_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: qbittorrent-vpn
+                    key: WIREGUARD_PRIVATE_KEY
             securityContext:
               capabilities:
                 add: ["NET_ADMIN"]
@@ -140,10 +129,9 @@ spec:
               PUID: ${APP_UID}
               PGID: ${APP_GID}
               WEBUI_PORT: &webPort 8080
-              # Listening port for peers. NordVPN has no port forwarding, so
-              # this is never reachable from outside: qBittorrent runs passive
-              # (non-connectable) and only makes outgoing peer connections.
-              TORRENTING_PORT: 54149
+              # No TORRENTING_PORT: the listening port is the one Proton
+              # forwards, set by gluetun's port forwarding command
+              # (scripts/qbittorrent-port.sh) together with the interface.
     service:
       main:
         type: LoadBalancer
@@ -178,23 +166,12 @@ spec:
             main:
               - path: /downloads
                 readOnly: false
+      # gluetun's port forwarding up/down command
       scripts:
         type: configMap
         name: qbittorrent-scripts
         advancedMounts:
           main:
-            fetch-wireguard-key:
-              - path: /scripts
-                readOnly: true
-      # NordLynx private key (wg0.conf), in memory only, never on disk
-      vpn-secrets:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 1Mi
-        advancedMounts:
-          main:
-            fetch-wireguard-key:
-              - path: /run/secrets
             gluetun:
-              - path: /run/secrets
+              - path: /scripts
                 readOnly: true
