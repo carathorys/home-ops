@@ -25,6 +25,15 @@ spec:
     tempo:
       reportingEnabled: false
       retention: 168h # 7 days
+      # The backend worker polls the scheduler for compaction/retention jobs and
+      # logs every empty answer as level=error ("error calling scheduler ... no
+      # jobs found"), backing off to at most max_period (default 1m). With
+      # little data there is rarely a job, so poll less often: same work, up
+      # to 10 minutes later, ~6 instead of ~60 noise lines per hour.
+      backendWorker:
+        backoff:
+          min_period: 30s
+          max_period: 10m
       # receivers: the chart default (OTLP gRPC 4317 / HTTP 4318, plus Jaeger)
       # is kept as is; the chart's Service template requires the Jaeger keys.
       resources:
