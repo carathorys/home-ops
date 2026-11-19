@@ -8,6 +8,9 @@ resources:
   - helmrelease.yaml
 
 configMapGenerator:
+  - name: qbittorrent-scripts
+    files:
+      - fetch-wireguard-key.sh=./resources/fetch-wireguard-key.sh
   - name: qbittorrent-loki-rules
     files:
       - qbittorrent.yaml=./lokirule.yaml

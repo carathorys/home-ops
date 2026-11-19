@@ -27,17 +27,42 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
-          # Name resolution only through gluetun's own DNS server (DNS over TLS
-          # inside the tunnel), so tracker lookups can't leak via cluster DNS.
-          # qBittorrent needs no cluster names; don't add containers that do.
+          # Never cluster DNS, so tracker lookups can't leak outside the VPN.
+          # 127.0.0.1 is gluetun's own DNS server (DNS over TLS in the tunnel).
+          # 1.1.1.1 serves the fetch-wireguard-key init container, which runs
+          # before gluetun; once gluetun is up its firewall only lets 1.1.1.1
+          # out through the tunnel. qBittorrent needs no cluster names; don't
+          # add containers here that do.
           dnsPolicy: None
           dnsConfig:
-            nameservers: ["127.0.0.1"]
+            nameservers: ["127.0.0.1", "1.1.1.1"]
             options:
               - name: ndots
                 value: "1"
         initContainers:
-          # Native sidecar (restartPolicy: Always): starts first, and the
+          # Runs first (init containers start in name order): exchanges the
+          # NordVPN access token for the NordLynx private key and writes it to
+          # the in-memory vpn-secrets volume as wg0.conf for gluetun.
+          fetch-wireguard-key:
+            image:
+              # renovate: datasource=docker depName=docker.io/library/alpine
+              repository: docker.io/library/alpine
+              tag: 3.24.4
+            command: ["/bin/sh", "/scripts/fetch-wireguard-key.sh"]
+            env:
+              NORDVPN_ACCESS_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: qbittorrent-vpn
+                    key: NORDVPN_ACCESS_TOKEN
+            resources:
+              requests:
+                cpu: 10m
+                memory: 16Mi
+              limits:
+                memory: 64Mi
+          # Native sidecar (restartPolicy: Always): starts after the key is
+          # fetched, and the
           # qBittorrent container only starts once the tunnel is up (startup
           # probe). It shares the pod network namespace, so all of
           # qBittorrent's internet traffic leaves through NordVPN (WireGuard);
@@ -63,11 +88,8 @@ spec:
               # inbound WebUI connections too, else they go into the tunnel.
               FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16,192.168.0.0/16
               VERSION_INFORMATION: "off"
-              WIREGUARD_PRIVATE_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: qbittorrent-vpn
-                    key: WIREGUARD_PRIVATE_KEY
+              # The private key comes from /run/secrets/wg0.conf (vpn-secrets),
+              # written by the fetch-wireguard-key init container.
             securityContext:
               capabilities:
                 add: ["NET_ADMIN"]
@@ -156,3 +178,23 @@ spec:
             main:
               - path: /downloads
                 readOnly: false
+      scripts:
+        type: configMap
+        name: qbittorrent-scripts
+        advancedMounts:
+          main:
+            fetch-wireguard-key:
+              - path: /scripts
+                readOnly: true
+      # NordLynx private key (wg0.conf), in memory only, never on disk
+      vpn-secrets:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 1Mi
+        advancedMounts:
+          main:
+            fetch-wireguard-key:
+              - path: /run/secrets
+            gluetun:
+              - path: /run/secrets
+                readOnly: true
