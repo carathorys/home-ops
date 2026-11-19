@@ -1,0 +1,15 @@
+---
+# Per-application dashboards, in the "apps" folder.
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: app-tankstat
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folderRef: apps
+  configMapRef:
+    name: grafana-dashboard-app-tankstat
+    key: app-tankstat.json

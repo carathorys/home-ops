@@ -1,7 +1,7 @@
 {
   "uid": "cluster-overview",
   "title": "dashboard",
-  "description": "Cluster health at a glance: nodes, namespaces and current problems.",
+  "description": "Cluster health at a glance: nodes, namespaces, logs and current problems.",
   "tags": ["kubernetes", "overview", "managed-by-gitops"],
   "editable": true,
   "graphTooltip": 1,
@@ -32,6 +32,20 @@
         "current": {
           "text": "prometheus",
           "value": "prometheus"
+        },
+        "hide": 0,
+        "refresh": 1,
+        "regex": "",
+        "options": []
+      },
+      {
+        "name": "loki",
+        "label": "Logs",
+        "type": "datasource",
+        "query": "loki",
+        "current": {
+          "text": "loki",
+          "value": "loki"
         },
         "hide": 0,
         "refresh": 1,
@@ -916,7 +930,7 @@
       "id": 16,
       "type": "timeseries",
       "title": "CPU temperature",
-      "description": "AMD Tctl (k10temp) per node. These Ryzen CPUs throttle at about 100 °C. esutha is a VM and has no sensor.",
+      "description": "AMD Tctl (k10temp) per node. These Ryzen CPUs throttle at about 100 \u00b0C. esutha is a VM and has no sensor.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -1590,7 +1604,7 @@
     {
       "id": 24,
       "type": "row",
-      "title": "Problems",
+      "title": "Logs",
       "collapsed": false,
       "gridPos": {
         "h": 1,
@@ -1602,6 +1616,181 @@
     },
     {
       "id": 25,
+      "type": "timeseries",
+      "title": "Log lines by namespace",
+      "description": "Lines written to stdout/stderr by all pods, per namespace.",
+      "datasource": {
+        "type": "loki",
+        "uid": "${loki}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 51
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${loki}"
+          },
+          "expr": "sum by (k8s_namespace_name) (count_over_time({k8s_namespace_name=~\".+\"} [$__auto]))",
+          "legendFormat": "{{k8s_namespace_name}}",
+          "refId": "A",
+          "queryType": "range"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": ["mean", "max"],
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 1,
+            "fillOpacity": 60,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 26,
+      "type": "timeseries",
+      "title": "Errors by namespace",
+      "description": "Lines Loki detected as error/critical/fatal level. Open the namespace's ns: dashboard for details.",
+      "datasource": {
+        "type": "loki",
+        "uid": "${loki}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 51
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${loki}"
+          },
+          "expr": "sum by (k8s_namespace_name) (count_over_time({k8s_namespace_name=~\".+\"} | detected_level=~\"(?i)(err|error|crit|critical|fatal|panic|emerg|alert)\" [$__auto]))",
+          "legendFormat": "{{k8s_namespace_name}}",
+          "refId": "A",
+          "queryType": "range"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": ["mean", "max"],
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 1,
+            "fillOpacity": 60,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 27,
+      "type": "logs",
+      "title": "Recent errors (all namespaces)",
+      "datasource": {
+        "type": "loki",
+        "uid": "${loki}"
+      },
+      "description": "Newest first. Expand a line to see its namespace, pod and other labels.",
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 59
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${loki}"
+          },
+          "expr": "{k8s_namespace_name=~\".+\"} | detected_level=~\"(?i)(err|error|crit|critical|fatal|panic|emerg|alert)\"",
+          "legendFormat": "",
+          "refId": "A",
+          "queryType": "range"
+        }
+      ],
+      "options": {
+        "showTime": true,
+        "wrapLogMessage": true,
+        "sortOrder": "Descending",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "dedupStrategy": "none",
+        "showCommonLabels": false,
+        "showLabels": false
+      }
+    },
+    {
+      "id": 28,
+      "type": "row",
+      "title": "Problems",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 69
+      },
+      "panels": []
+    },
+    {
+      "id": 29,
       "type": "table",
       "title": "Firing alerts",
       "description": "",
@@ -1613,7 +1802,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 51
+        "y": 70
       },
       "targets": [
         {
@@ -1663,7 +1852,7 @@
       }
     },
     {
-      "id": 26,
+      "id": 30,
       "type": "table",
       "title": "Unhealthy pods",
       "description": "",
@@ -1675,7 +1864,7 @@
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 51
+        "y": 70
       },
       "targets": [
         {
@@ -1732,7 +1921,7 @@
       }
     },
     {
-      "id": 27,
+      "id": 31,
       "type": "table",
       "title": "Restarting containers (24h)",
       "description": "",
@@ -1744,7 +1933,7 @@
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 51
+        "y": 70
       },
       "targets": [
         {

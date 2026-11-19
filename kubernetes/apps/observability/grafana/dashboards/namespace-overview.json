@@ -64,6 +64,33 @@
           "value": ["$__all"]
         },
         "options": []
+      },
+      {
+        "name": "loki",
+        "label": "Logs",
+        "type": "datasource",
+        "query": "loki",
+        "current": {
+          "text": "loki",
+          "value": "loki"
+        },
+        "hide": 0,
+        "refresh": 1,
+        "regex": "",
+        "options": []
+      },
+      {
+        "name": "search",
+        "label": "Search logs",
+        "type": "textbox",
+        "query": "",
+        "hide": 0,
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "options": [],
+        "description": "Case-insensitive regex applied to the log lines, e.g. error|timeout"
       }
     ]
   },
@@ -827,9 +854,8 @@
     {
       "id": 13,
       "type": "row",
-      "title": "$workload",
+      "title": "Logs",
       "collapsed": false,
-      "repeat": "workload",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -841,6 +867,184 @@
     {
       "id": 14,
       "type": "timeseries",
+      "title": "Log lines by workload",
+      "description": "Lines written to stdout/stderr per workload.",
+      "datasource": {
+        "type": "loki",
+        "uid": "${loki}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 28
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${loki}"
+          },
+          "expr": "sum by (workload) (count_over_time({k8s_namespace_name=\"$namespace\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$workload\" [$__auto]))",
+          "legendFormat": "{{workload}}",
+          "refId": "A",
+          "queryType": "range"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": ["mean", "max"],
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 1,
+            "fillOpacity": 60,
+            "showPoints": "never",
+            "spanNulls": true,
+            "axisSoftMin": 0,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 15,
+      "type": "timeseries",
+      "title": "Errors by workload",
+      "description": "Lines Loki detected as error/critical/fatal level. Apps that log without a level are not counted.",
+      "datasource": {
+        "type": "loki",
+        "uid": "${loki}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 28
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${loki}"
+          },
+          "expr": "sum by (workload) (count_over_time({k8s_namespace_name=\"$namespace\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$workload\" | detected_level=~\"(?i)(err|error|crit|critical|fatal|panic|emerg|alert)\" [$__auto]))",
+          "legendFormat": "{{workload}}",
+          "refId": "A",
+          "queryType": "range"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": ["mean", "max"],
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 1,
+            "fillOpacity": 60,
+            "showPoints": "never",
+            "spanNulls": true,
+            "axisSoftMin": 0,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 16,
+      "type": "logs",
+      "title": "Logs (filter with the Search box)",
+      "datasource": {
+        "type": "loki",
+        "uid": "${loki}"
+      },
+      "description": "Newest first. Expand a line for its labels; tankstat lines with a trace_id link to Tempo.",
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${loki}"
+          },
+          "expr": "{k8s_namespace_name=\"$namespace\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$workload\" |~ \"(?i)$search\"",
+          "legendFormat": "",
+          "refId": "A",
+          "queryType": "range"
+        }
+      ],
+      "options": {
+        "showTime": true,
+        "wrapLogMessage": true,
+        "sortOrder": "Descending",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "dedupStrategy": "none",
+        "showCommonLabels": false,
+        "showLabels": false
+      }
+    },
+    {
+      "id": 17,
+      "type": "row",
+      "title": "$workload",
+      "collapsed": false,
+      "repeat": "workload",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 48
+      },
+      "panels": []
+    },
+    {
+      "id": 18,
+      "type": "timeseries",
       "title": "CPU",
       "description": "",
       "datasource": {
@@ -851,7 +1055,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 28
+        "y": 49
       },
       "targets": [
         {
@@ -986,7 +1190,7 @@
       }
     },
     {
-      "id": 15,
+      "id": 19,
       "type": "timeseries",
       "title": "Memory (working set)",
       "description": "",
@@ -998,7 +1202,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 28
+        "y": 49
       },
       "targets": [
         {
@@ -1133,7 +1337,7 @@
       }
     },
     {
-      "id": 16,
+      "id": 20,
       "type": "timeseries",
       "title": "Network (receive up / transmit down)",
       "description": "",
@@ -1145,7 +1349,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 28
+        "y": 49
       },
       "targets": [
         {
@@ -1217,7 +1421,7 @@
       }
     },
     {
-      "id": 17,
+      "id": 21,
       "type": "timeseries",
       "title": "Container restarts (per hour)",
       "description": "",
@@ -1229,7 +1433,7 @@
         "h": 6,
         "w": 12,
         "x": 0,
-        "y": 36
+        "y": 57
       },
       "targets": [
         {
@@ -1279,7 +1483,7 @@
       }
     },
     {
-      "id": 18,
+      "id": 22,
       "type": "timeseries",
       "title": "Ready pods",
       "description": "Ready pods should match running pods; a gap means failing readiness probes.",
@@ -1291,7 +1495,7 @@
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 36
+        "y": 57
       },
       "targets": [
         {

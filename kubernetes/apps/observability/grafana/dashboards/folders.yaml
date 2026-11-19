@@ -11,3 +11,16 @@ spec:
       grafana.internal/instance: grafana-deployment
   title: k8s
   uid: k8s
+---
+# Per-application dashboards (metrics, logs and traces of one app)
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanafolder_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaFolder
+metadata:
+  name: apps
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  title: apps
+  uid: apps

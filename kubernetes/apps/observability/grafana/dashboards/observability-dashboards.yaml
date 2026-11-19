@@ -1,0 +1,34 @@
+---
+# Health of the telemetry pipeline itself (collectors, Loki, Tempo), in the
+# existing "observability" folder next to the Grafana Operator dashboard.
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: telemetry-pipeline
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: observability
+  configMapRef:
+    name: grafana-dashboard-telemetry-pipeline
+    key: telemetry-pipeline.json
+---
+# Detailed OpenTelemetry Collector dashboard from grafana.com (Monitoring
+# Artist, maintained). Pick the collector with its "job" dropdown: the gateway
+# is otel-collector, the per-node agents observability/otel-agent-agent.
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: otel-collector
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: observability
+  uid: otel-collector # linked from the telemetry pipeline dashboard
+  grafanaCom:
+    id: 15983
+    revision: 31
