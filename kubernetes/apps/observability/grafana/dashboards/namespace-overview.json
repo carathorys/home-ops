@@ -69,7 +69,7 @@
   },
   "links": [
     {
-      "title": "Cluster overview",
+      "title": "k8s dashboard",
       "type": "link",
       "url": "/d/cluster-overview",
       "icon": "dashboard",
@@ -81,7 +81,7 @@
       "asDropdown": false
     },
     {
-      "title": "Other namespaces",
+      "title": "ns: dashboards",
       "type": "dashboards",
       "tags": ["namespace"],
       "asDropdown": true,

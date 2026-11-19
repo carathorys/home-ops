@@ -1,6 +1,6 @@
 {
   "uid": "cluster-overview",
-  "title": "Cluster overview",
+  "title": "dashboard",
   "description": "Cluster health at a glance: nodes, namespaces and current problems.",
   "tags": ["kubernetes", "overview", "managed-by-gitops"],
   "editable": true,
@@ -14,7 +14,7 @@
   "timezone": "browser",
   "links": [
     {
-      "title": "Namespace dashboards",
+      "title": "ns: dashboards",
       "type": "dashboards",
       "tags": ["namespace"],
       "asDropdown": true,

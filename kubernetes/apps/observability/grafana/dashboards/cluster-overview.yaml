@@ -8,7 +8,7 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: overview
+  folderRef: k8s
   configMapRef:
     name: grafana-dashboard-cluster-overview
     key: cluster-overview.json

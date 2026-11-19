@@ -1,5 +1,5 @@
 ---
-# One "Namespace overview" dashboard per namespace, all built from the shared
+# One "ns: <namespace>" dashboard per namespace, all built from the shared
 # namespace-overview.json; each sets its own uid, title, folder and namespace.
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -10,14 +10,14 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: auth
+  folderRef: k8s
   uid: namespace-auth
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
   patch:
     scripts:
-      - '.title = "Namespace: auth"'
+      - '.title = "ns: auth"'
       # "namespace" is a constant variable, whose value Grafana always takes
       # from .query, so set that (not just the current selection)
       - '.templating.list |= map(if .name == "namespace" then .query = "auth" | .current = {"text": "auth", "value": "auth"} | .options = [] else . end)'
@@ -31,14 +31,14 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: cert-manager
+  folderRef: k8s
   uid: namespace-cert-manager
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
   patch:
     scripts:
-      - '.title = "Namespace: cert-manager"'
+      - '.title = "ns: cert-manager"'
       # "namespace" is a constant variable, whose value Grafana always takes
       # from .query, so set that (not just the current selection)
       - '.templating.list |= map(if .name == "namespace" then .query = "cert-manager" | .current = {"text": "cert-manager", "value": "cert-manager"} | .options = [] else . end)'
@@ -52,14 +52,14 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: dbms
+  folderRef: k8s
   uid: namespace-dbms
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
   patch:
     scripts:
-      - '.title = "Namespace: dbms"'
+      - '.title = "ns: dbms"'
       # "namespace" is a constant variable, whose value Grafana always takes
       # from .query, so set that (not just the current selection)
       - '.templating.list |= map(if .name == "namespace" then .query = "dbms" | .current = {"text": "dbms", "value": "dbms"} | .options = [] else . end)'
@@ -73,14 +73,14 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: default
+  folderRef: k8s
   uid: namespace-default
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
   patch:
     scripts:
-      - '.title = "Namespace: default"'
+      - '.title = "ns: default"'
       # "namespace" is a constant variable, whose value Grafana always takes
       # from .query, so set that (not just the current selection)
       - '.templating.list |= map(if .name == "namespace" then .query = "default" | .current = {"text": "default", "value": "default"} | .options = [] else . end)'
@@ -94,14 +94,14 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: flux-system
+  folderRef: k8s
   uid: namespace-flux-system
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
   patch:
     scripts:
-      - '.title = "Namespace: flux-system"'
+      - '.title = "ns: flux-system"'
       # "namespace" is a constant variable, whose value Grafana always takes
       # from .query, so set that (not just the current selection)
       - '.templating.list |= map(if .name == "namespace" then .query = "flux-system" | .current = {"text": "flux-system", "value": "flux-system"} | .options = [] else . end)'
@@ -115,14 +115,14 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: home-assistant
+  folderRef: k8s
   uid: namespace-home-assistant
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
   patch:
     scripts:
-      - '.title = "Namespace: home-assistant"'
+      - '.title = "ns: home-assistant"'
       # "namespace" is a constant variable, whose value Grafana always takes
       # from .query, so set that (not just the current selection)
       - '.templating.list |= map(if .name == "namespace" then .query = "home-assistant" | .current = {"text": "home-assistant", "value": "home-assistant"} | .options = [] else . end)'
@@ -136,14 +136,14 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: immich
+  folderRef: k8s
   uid: namespace-immich
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
   patch:
     scripts:
-      - '.title = "Namespace: immich"'
+      - '.title = "ns: immich"'
       # "namespace" is a constant variable, whose value Grafana always takes
       # from .query, so set that (not just the current selection)
       - '.templating.list |= map(if .name == "namespace" then .query = "immich" | .current = {"text": "immich", "value": "immich"} | .options = [] else . end)'
@@ -157,14 +157,14 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: kube-system
+  folderRef: k8s
   uid: namespace-kube-system
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
   patch:
     scripts:
-      - '.title = "Namespace: kube-system"'
+      - '.title = "ns: kube-system"'
       # "namespace" is a constant variable, whose value Grafana always takes
       # from .query, so set that (not just the current selection)
       - '.templating.list |= map(if .name == "namespace" then .query = "kube-system" | .current = {"text": "kube-system", "value": "kube-system"} | .options = [] else . end)'
@@ -178,14 +178,14 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: media
+  folderRef: k8s
   uid: namespace-media
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
   patch:
     scripts:
-      - '.title = "Namespace: media"'
+      - '.title = "ns: media"'
       # "namespace" is a constant variable, whose value Grafana always takes
       # from .query, so set that (not just the current selection)
       - '.templating.list |= map(if .name == "namespace" then .query = "media" | .current = {"text": "media", "value": "media"} | .options = [] else . end)'
@@ -199,14 +199,14 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: network
+  folderRef: k8s
   uid: namespace-network
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
   patch:
     scripts:
-      - '.title = "Namespace: network"'
+      - '.title = "ns: network"'
       # "namespace" is a constant variable, whose value Grafana always takes
       # from .query, so set that (not just the current selection)
       - '.templating.list |= map(if .name == "namespace" then .query = "network" | .current = {"text": "network", "value": "network"} | .options = [] else . end)'
@@ -220,14 +220,14 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: observability
+  folderRef: k8s
   uid: namespace-observability
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
   patch:
     scripts:
-      - '.title = "Namespace: observability"'
+      - '.title = "ns: observability"'
       # "namespace" is a constant variable, whose value Grafana always takes
       # from .query, so set that (not just the current selection)
       - '.templating.list |= map(if .name == "namespace" then .query = "observability" | .current = {"text": "observability", "value": "observability"} | .options = [] else . end)'
@@ -241,14 +241,14 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: secrets
+  folderRef: k8s
   uid: namespace-secrets
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
   patch:
     scripts:
-      - '.title = "Namespace: secrets"'
+      - '.title = "ns: secrets"'
       # "namespace" is a constant variable, whose value Grafana always takes
       # from .query, so set that (not just the current selection)
       - '.templating.list |= map(if .name == "namespace" then .query = "secrets" | .current = {"text": "secrets", "value": "secrets"} | .options = [] else . end)'
@@ -262,14 +262,14 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: system
+  folderRef: k8s
   uid: namespace-system
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
   patch:
     scripts:
-      - '.title = "Namespace: system"'
+      - '.title = "ns: system"'
       # "namespace" is a constant variable, whose value Grafana always takes
       # from .query, so set that (not just the current selection)
       - '.templating.list |= map(if .name == "namespace" then .query = "system" | .current = {"text": "system", "value": "system"} | .options = [] else . end)'
@@ -283,14 +283,14 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana-deployment
-  folder: tools
+  folderRef: k8s
   uid: namespace-tools
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
   patch:
     scripts:
-      - '.title = "Namespace: tools"'
+      - '.title = "ns: tools"'
       # "namespace" is a constant variable, whose value Grafana always takes
       # from .query, so set that (not just the current selection)
       - '.templating.list |= map(if .name == "namespace" then .query = "tools" | .current = {"text": "tools", "value": "tools"} | .options = [] else . end)'
