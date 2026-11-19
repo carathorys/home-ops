@@ -393,7 +393,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(instance:node_cpu_utilisation:rate5m{job=\"node-exporter\"} * on (instance) instance:node_num_cpu:sum) / sum(instance:node_num_cpu:sum)",
+          "expr": "sum(max by (instance) (instance:node_cpu_utilisation:rate5m{job=\"node-exporter\"}) * on (instance) max by (instance) (instance:node_num_cpu:sum)) / sum(max by (instance) (instance:node_num_cpu:sum))",
           "legendFormat": "",
           "refId": "A",
           "instant": true,
@@ -933,7 +933,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "max by (nodename) (node_hwmon_temp_celsius * on (instance, chip) group_left (chip_name) node_hwmon_chip_names{chip_name=\"k10temp\"})",
+          "expr": "max by (nodename) (node_hwmon_temp_celsius * on (instance, chip) group_left (chip_name) max by (instance, chip, chip_name) (node_hwmon_chip_names{chip_name=\"k10temp\"}))",
           "legendFormat": "{{nodename}}",
           "refId": "A"
         }
@@ -1012,7 +1012,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "max by (nodename) (node_hwmon_temp_celsius * on (instance, chip) group_left (chip_name) node_hwmon_chip_names{chip_name=\"amdgpu\"})",
+          "expr": "max by (nodename) (node_hwmon_temp_celsius * on (instance, chip) group_left (chip_name) max by (instance, chip, chip_name) (node_hwmon_chip_names{chip_name=\"amdgpu\"}))",
           "legendFormat": "{{nodename}}",
           "refId": "A"
         }
