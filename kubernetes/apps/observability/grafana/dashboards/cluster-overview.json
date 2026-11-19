@@ -915,8 +915,8 @@
     {
       "id": 16,
       "type": "timeseries",
-      "title": "Hottest sensor",
-      "description": "Highest hardware temperature sensor per node.",
+      "title": "CPU temperature",
+      "description": "AMD Tctl (k10temp) per node. These Ryzen CPUs throttle at about 100 °C. esutha is a VM and has no sensor.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -933,7 +933,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "max by (nodename) (node_hwmon_temp_celsius * on (instance) group_left (nodename) node_uname_info)",
+          "expr": "max by (nodename) (node_hwmon_temp_celsius * on (instance, chip) group_left (chip_name) node_hwmon_chip_names{chip_name=\"k10temp\"})",
           "legendFormat": "{{nodename}}",
           "refId": "A"
         }
@@ -965,7 +965,27 @@
             "stacking": {
               "mode": "none",
               "group": "A"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
             }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 80
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
           }
         },
         "overrides": []
@@ -973,6 +993,214 @@
     },
     {
       "id": 17,
+      "type": "timeseries",
+      "title": "GPU temperature",
+      "description": "amdgpu edge temperature of the integrated GPU per node.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 22
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "max by (nodename) (node_hwmon_temp_celsius * on (instance, chip) group_left (chip_name) node_hwmon_chip_names{chip_name=\"amdgpu\"})",
+          "legendFormat": "{{nodename}}",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 80
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 18,
+      "type": "timeseries",
+      "title": "GPU utilisation",
+      "description": "amdgpu busy percent (node-exporter drm collector).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 22
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "max by (nodename) (node_drm_gpu_busy_percent)",
+          "legendFormat": "{{nodename}}",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            }
+          },
+          "min": 0,
+          "max": 100
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 19,
+      "type": "timeseries",
+      "title": "GPU memory used",
+      "description": "Integrated GPUs mostly use GTT, i.e. system RAM mapped for the GPU (e.g. loaded Ollama/Immich models).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 22
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by (nodename) (node_drm_memory_vram_used_bytes)",
+          "legendFormat": "{{nodename}} VRAM",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by (nodename) (node_drm_memory_gtt_used_bytes)",
+          "legendFormat": "{{nodename}} GTT (system RAM)",
+          "refId": "B"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            }
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 20,
       "type": "row",
       "title": "Namespaces",
       "collapsed": false,
@@ -980,12 +1208,12 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 30
       },
       "panels": []
     },
     {
-      "id": 18,
+      "id": 21,
       "type": "timeseries",
       "title": "CPU by namespace",
       "description": "",
@@ -997,7 +1225,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 23
+        "y": 31
       },
       "targets": [
         {
@@ -1046,7 +1274,7 @@
       }
     },
     {
-      "id": 19,
+      "id": 22,
       "type": "timeseries",
       "title": "Memory by namespace",
       "description": "",
@@ -1058,7 +1286,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 23
+        "y": 31
       },
       "targets": [
         {
@@ -1107,7 +1335,7 @@
       }
     },
     {
-      "id": 20,
+      "id": 23,
       "type": "table",
       "title": "Namespaces (click a name to open its dashboard)",
       "description": "",
@@ -1119,7 +1347,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 39
       },
       "targets": [
         {
@@ -1360,7 +1588,7 @@
       }
     },
     {
-      "id": 21,
+      "id": 24,
       "type": "row",
       "title": "Problems",
       "collapsed": false,
@@ -1368,12 +1596,12 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 50
       },
       "panels": []
     },
     {
-      "id": 22,
+      "id": 25,
       "type": "table",
       "title": "Firing alerts",
       "description": "",
@@ -1385,7 +1613,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 43
+        "y": 51
       },
       "targets": [
         {
@@ -1435,7 +1663,7 @@
       }
     },
     {
-      "id": 23,
+      "id": 26,
       "type": "table",
       "title": "Unhealthy pods",
       "description": "",
@@ -1447,7 +1675,7 @@
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 43
+        "y": 51
       },
       "targets": [
         {
@@ -1504,7 +1732,7 @@
       }
     },
     {
-      "id": 24,
+      "id": 27,
       "type": "table",
       "title": "Restarting containers (24h)",
       "description": "",
@@ -1516,7 +1744,7 @@
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 43
+        "y": 51
       },
       "targets": [
         {
