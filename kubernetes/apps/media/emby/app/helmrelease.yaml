@@ -24,20 +24,8 @@ spec:
         replicas: ${REPLICAS}
         annotations:
           reloader.stakater.com/auto: "true"
-        pod:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: feature.node.kubernetes.io/amd-gpu
-                        operator: In
-                        values:
-                          - "true"
         containers:
           main:
-            securityContext:
-              privileged: true
             image:
               # renovate: datasource=docker depName=ghcr.io/linuxserver/emby
               repository: ghcr.io/linuxserver/emby
@@ -52,6 +40,9 @@ spec:
                 memory: 1Gi
               limits:
                 memory: 4Gi
+                # AMD iGPU render node (/dev/dri/renderD128) for VAAPI
+                # transcoding, from generic-device-plugin (shared device)
+                devic.es/dri: 1
     service:
       main:
         type: LoadBalancer
@@ -74,11 +65,6 @@ spec:
               - identifier: main
                 port: *port
     persistence:
-      dri:
-        type: hostPath
-        hostPath: /dev/dri
-        globalMounts:
-          - path: /dev/dri
       config:
         type: persistentVolumeClaim
         existingClaim: emby

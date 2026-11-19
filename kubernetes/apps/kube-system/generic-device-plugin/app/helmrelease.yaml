@@ -27,3 +27,10 @@ spec:
           - count: 10
             paths:
               - path: /dev/dri/renderD128
+      # AMD KFD (ROCm compute, e.g. Ollama), requested as "devic.es/kfd";
+      # ROCm needs it together with devic.es/dri.
+      - name: kfd
+        groups:
+          - count: 10
+            paths:
+              - path: /dev/kfd

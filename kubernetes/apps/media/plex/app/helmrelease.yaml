@@ -19,30 +19,18 @@ spec:
   uninstall:
     keepHistory: false
   values:
-
     controllers:
       main:
         replicas: ${REPLICAS}
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: feature.node.kubernetes.io/amd-gpu
-                        operator: In
-                        values:
-                          - "true"
           annotations:
             reloader.stakater.com/auto: "true"
             # kubernetes.io/egress-bandwidth: "250000k"
             # kubernetes.io/ingress-bandwidth: "250000k"
         containers:
           main:
-            securityContext:
-              privileged: true
             image:
               # renovate: datasource=docker depName=ghcr.io/linuxserver/plex
               repository: ghcr.io/linuxserver/plex
@@ -61,6 +49,9 @@ spec:
               limits:
                 # cpu: 10m
                 memory: 10Gi
+                # AMD iGPU render node (/dev/dri/renderD128) for hardware
+                # transcoding, from generic-device-plugin (shared device)
+                devic.es/dri: 1
     service:
       main:
         type: LoadBalancer
@@ -84,11 +75,6 @@ spec:
               - identifier: main
                 port: *port
     persistence:
-      dri:
-        type: hostPath
-        hostPath: /dev/dri
-        globalMounts:
-          - path: /dev/dri
       config:
         type: persistentVolumeClaim
         existingClaim: plex

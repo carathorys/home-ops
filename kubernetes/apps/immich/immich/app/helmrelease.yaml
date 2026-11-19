@@ -87,15 +87,6 @@ spec:
           secret.reloader.stakater.com/reload: *secret
         replicas: 2
         pod:
-          # affinity:
-          #   nodeAffinity:
-          #     requiredDuringSchedulingIgnoredDuringExecution:
-          #       nodeSelectorTerms:
-          #         - matchExpressions:
-          #             - key: feature.node.kubernetes.io/amd-gpu
-          #               operator: In
-          #               values:
-          #                 - "true"
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
@@ -141,6 +132,12 @@ spec:
               requests:
                 cpu: 100m
                 memory: 250Mi
+              limits:
+                # AMD iGPU render node (/dev/dri/renderD128) for video
+                # transcoding, from generic-device-plugin (shared device).
+                # Only microservices transcodes; server and machine-learning
+                # (CPU image) don't use the GPU.
+                devic.es/dri: 1
       machine-learning:
         strategy: RollingUpdate
         replicas: 2
@@ -224,11 +221,6 @@ spec:
               - identifier: server
                 port: *serverPort
     persistence:
-      dri:
-        type: hostPath
-        hostPath: /dev/dri
-        globalMounts:
-          - path: /dev/dri
       config:
         type: secret
         name: *secret

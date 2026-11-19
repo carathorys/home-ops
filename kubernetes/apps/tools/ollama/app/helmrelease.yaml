@@ -31,8 +31,6 @@ spec:
             kubernetes.io/hostname: avarath
         containers:
           main:
-            securityContext:
-              privileged: true
             image:
               # renovate: datasource=docker depName=ollama/ollama
               repository: ollama/ollama
@@ -104,6 +102,11 @@ spec:
               requests:
                 cpu: 100m
                 memory: 2Gi
+              limits:
+                # Radeon 780M for ROCm, from generic-device-plugin (shared):
+                # the render node (/dev/dri/renderD128) plus KFD (/dev/kfd)
+                devic.es/dri: 1
+                devic.es/kfd: 1
     service:
       main:
         controller: main
@@ -111,18 +114,6 @@ spec:
           http:
             port: *port
     persistence:
-      kfd:
-        type: hostPath
-        hostPath: /dev/kfd
-        hostPathType: CharDevice
-        globalMounts:
-          - path: /dev/kfd
-      dri:
-        type: hostPath
-        hostPath: /dev/dri
-        hostPathType: Directory
-        globalMounts:
-          - path: /dev/dri
       shm:
         type: emptyDir
         medium: Memory
