@@ -67,6 +67,28 @@
       }
     ]
   },
+  "links": [
+    {
+      "title": "Cluster overview",
+      "type": "link",
+      "url": "/d/cluster-overview",
+      "icon": "dashboard",
+      "keepTime": true,
+      "includeVars": false,
+      "targetBlank": false,
+      "tooltip": "",
+      "tags": [],
+      "asDropdown": false
+    },
+    {
+      "title": "Other namespaces",
+      "type": "dashboards",
+      "tags": ["namespace"],
+      "asDropdown": true,
+      "keepTime": true,
+      "includeVars": false
+    }
+  ],
   "annotations": {
     "list": []
   },

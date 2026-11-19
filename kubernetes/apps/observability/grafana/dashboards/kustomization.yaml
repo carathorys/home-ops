@@ -3,8 +3,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - cluster-overview.yaml
   - namespace-dashboards.yaml
 configMapGenerator:
+  - name: grafana-dashboard-cluster-overview
+    files:
+      - cluster-overview.json
   - name: grafana-dashboard-namespace-overview
     files:
       - namespace-overview.json

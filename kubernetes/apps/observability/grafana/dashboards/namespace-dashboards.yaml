@@ -15,12 +15,12 @@ spec:
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
-  variables:
-    - name: namespace
-      value: auth
   patch:
     scripts:
       - '.title = "Namespace: auth"'
+      # "namespace" is a constant variable, whose value Grafana always takes
+      # from .query, so set that (not just the current selection)
+      - '.templating.list |= map(if .name == "namespace" then .query = "auth" | .current = {"text": "auth", "value": "auth"} | .options = [] else . end)'
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -36,12 +36,12 @@ spec:
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
-  variables:
-    - name: namespace
-      value: cert-manager
   patch:
     scripts:
       - '.title = "Namespace: cert-manager"'
+      # "namespace" is a constant variable, whose value Grafana always takes
+      # from .query, so set that (not just the current selection)
+      - '.templating.list |= map(if .name == "namespace" then .query = "cert-manager" | .current = {"text": "cert-manager", "value": "cert-manager"} | .options = [] else . end)'
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -57,12 +57,12 @@ spec:
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
-  variables:
-    - name: namespace
-      value: dbms
   patch:
     scripts:
       - '.title = "Namespace: dbms"'
+      # "namespace" is a constant variable, whose value Grafana always takes
+      # from .query, so set that (not just the current selection)
+      - '.templating.list |= map(if .name == "namespace" then .query = "dbms" | .current = {"text": "dbms", "value": "dbms"} | .options = [] else . end)'
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -78,12 +78,12 @@ spec:
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
-  variables:
-    - name: namespace
-      value: default
   patch:
     scripts:
       - '.title = "Namespace: default"'
+      # "namespace" is a constant variable, whose value Grafana always takes
+      # from .query, so set that (not just the current selection)
+      - '.templating.list |= map(if .name == "namespace" then .query = "default" | .current = {"text": "default", "value": "default"} | .options = [] else . end)'
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -99,12 +99,12 @@ spec:
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
-  variables:
-    - name: namespace
-      value: flux-system
   patch:
     scripts:
       - '.title = "Namespace: flux-system"'
+      # "namespace" is a constant variable, whose value Grafana always takes
+      # from .query, so set that (not just the current selection)
+      - '.templating.list |= map(if .name == "namespace" then .query = "flux-system" | .current = {"text": "flux-system", "value": "flux-system"} | .options = [] else . end)'
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -120,12 +120,12 @@ spec:
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
-  variables:
-    - name: namespace
-      value: home-assistant
   patch:
     scripts:
       - '.title = "Namespace: home-assistant"'
+      # "namespace" is a constant variable, whose value Grafana always takes
+      # from .query, so set that (not just the current selection)
+      - '.templating.list |= map(if .name == "namespace" then .query = "home-assistant" | .current = {"text": "home-assistant", "value": "home-assistant"} | .options = [] else . end)'
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -141,12 +141,12 @@ spec:
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
-  variables:
-    - name: namespace
-      value: immich
   patch:
     scripts:
       - '.title = "Namespace: immich"'
+      # "namespace" is a constant variable, whose value Grafana always takes
+      # from .query, so set that (not just the current selection)
+      - '.templating.list |= map(if .name == "namespace" then .query = "immich" | .current = {"text": "immich", "value": "immich"} | .options = [] else . end)'
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -162,12 +162,12 @@ spec:
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
-  variables:
-    - name: namespace
-      value: kube-system
   patch:
     scripts:
       - '.title = "Namespace: kube-system"'
+      # "namespace" is a constant variable, whose value Grafana always takes
+      # from .query, so set that (not just the current selection)
+      - '.templating.list |= map(if .name == "namespace" then .query = "kube-system" | .current = {"text": "kube-system", "value": "kube-system"} | .options = [] else . end)'
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -183,12 +183,12 @@ spec:
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
-  variables:
-    - name: namespace
-      value: media
   patch:
     scripts:
       - '.title = "Namespace: media"'
+      # "namespace" is a constant variable, whose value Grafana always takes
+      # from .query, so set that (not just the current selection)
+      - '.templating.list |= map(if .name == "namespace" then .query = "media" | .current = {"text": "media", "value": "media"} | .options = [] else . end)'
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -204,12 +204,12 @@ spec:
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
-  variables:
-    - name: namespace
-      value: network
   patch:
     scripts:
       - '.title = "Namespace: network"'
+      # "namespace" is a constant variable, whose value Grafana always takes
+      # from .query, so set that (not just the current selection)
+      - '.templating.list |= map(if .name == "namespace" then .query = "network" | .current = {"text": "network", "value": "network"} | .options = [] else . end)'
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -225,12 +225,12 @@ spec:
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
-  variables:
-    - name: namespace
-      value: observability
   patch:
     scripts:
       - '.title = "Namespace: observability"'
+      # "namespace" is a constant variable, whose value Grafana always takes
+      # from .query, so set that (not just the current selection)
+      - '.templating.list |= map(if .name == "namespace" then .query = "observability" | .current = {"text": "observability", "value": "observability"} | .options = [] else . end)'
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -246,12 +246,12 @@ spec:
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
-  variables:
-    - name: namespace
-      value: secrets
   patch:
     scripts:
       - '.title = "Namespace: secrets"'
+      # "namespace" is a constant variable, whose value Grafana always takes
+      # from .query, so set that (not just the current selection)
+      - '.templating.list |= map(if .name == "namespace" then .query = "secrets" | .current = {"text": "secrets", "value": "secrets"} | .options = [] else . end)'
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -267,12 +267,12 @@ spec:
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
-  variables:
-    - name: namespace
-      value: system
   patch:
     scripts:
       - '.title = "Namespace: system"'
+      # "namespace" is a constant variable, whose value Grafana always takes
+      # from .query, so set that (not just the current selection)
+      - '.templating.list |= map(if .name == "namespace" then .query = "system" | .current = {"text": "system", "value": "system"} | .options = [] else . end)'
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -288,9 +288,9 @@ spec:
   configMapRef:
     name: grafana-dashboard-namespace-overview
     key: namespace-overview.json
-  variables:
-    - name: namespace
-      value: tools
   patch:
     scripts:
       - '.title = "Namespace: tools"'
+      # "namespace" is a constant variable, whose value Grafana always takes
+      # from .query, so set that (not just the current selection)
+      - '.templating.list |= map(if .name == "namespace" then .query = "tools" | .current = {"text": "tools", "value": "tools"} | .options = [] else . end)'

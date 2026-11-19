@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: cluster-overview
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folder: overview
+  configMapRef:
+    name: grafana-dashboard-cluster-overview
+    key: cluster-overview.json
