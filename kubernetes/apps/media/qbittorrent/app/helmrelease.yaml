@@ -45,8 +45,8 @@ spec:
           # the in-memory vpn-secrets volume as wg0.conf for gluetun.
           fetch-wireguard-key:
             image:
-              # renovate: datasource=docker depName=docker.io/library/alpine
-              repository: docker.io/library/alpine
+              # renovate: datasource=docker depName=alpine
+              repository: alpine
               tag: 3.24.4
             command: ["/bin/sh", "/scripts/fetch-wireguard-key.sh"]
             env:
