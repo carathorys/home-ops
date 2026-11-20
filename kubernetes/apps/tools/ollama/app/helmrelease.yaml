@@ -27,8 +27,24 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
-          nodeSelector:
-            kubernetes.io/hostname: avarath
+          affinity:
+            nodeAffinity:
+              # Never hummianet: only the 780M (avarath) and 890M (esutha)
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: kubernetes.io/hostname
+                        operator: In
+                        values: ["avarath", "esutha"]
+              # Prefer avarath: ROCm works there with the gfx 11.0.0 override
+              # below; esutha's 890M (gfx1150) is the fallback
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 100
+                  preference:
+                    matchExpressions:
+                      - key: kubernetes.io/hostname
+                        operator: In
+                        values: ["avarath"]
         containers:
           main:
             image:
