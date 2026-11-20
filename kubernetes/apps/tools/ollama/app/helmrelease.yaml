@@ -36,15 +36,15 @@ spec:
                       - key: kubernetes.io/hostname
                         operator: In
                         values: ["avarath", "esutha"]
-              # Prefer avarath: ROCm works there with the gfx 11.0.0 override
-              # below; esutha's 890M (gfx1150) is the fallback
+              # TEST: prefer esutha's 890M (gfx1150); revert to avarath if
+              # Ollama can't use that GPU
               preferredDuringSchedulingIgnoredDuringExecution:
                 - weight: 100
                   preference:
                     matchExpressions:
                       - key: kubernetes.io/hostname
                         operator: In
-                        values: ["avarath"]
+                        values: ["esutha"]
         containers:
           main:
             image:
