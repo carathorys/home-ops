@@ -12,6 +12,22 @@ ui:
   title: Status | Gatus
   header: Status
   default-sort-by: group
+# Endpoint down/up alerts to Home Assistant (webhook automation -> phone push).
+# The URL is read from the environment by Gatus ($$ escapes Flux substitution);
+# HA_GATUS_WEBHOOK_URL comes from the gatus-alerting ExternalSecret.
+alerting:
+  custom:
+    url: "$${HA_GATUS_WEBHOOK_URL}"
+    method: POST
+    headers:
+      Content-Type: application/json
+    body: |
+      {"source": "gatus", "status": "[ALERT_TRIGGERED_OR_RESOLVED]", "name": "[ENDPOINT_NAME]", "group": "[ENDPOINT_GROUP]", "url": "[ENDPOINT_URL]", "description": "[ALERT_DESCRIPTION]"}
+    default-alert:
+      enabled: true
+      failure-threshold: 3
+      success-threshold: 2
+      send-on-resolved: true
 default-external-web: &default-external-web
   group: external
   interval: 1m
@@ -19,6 +35,8 @@ default-external-web: &default-external-web
     dns-resolver: tcp://1.1.1.1:53
   conditions:
     - "len([BODY]) > 0"
+  alerts:
+    - type: custom
 
 default-internal-web: &default-internal-web
   group: internal
@@ -30,6 +48,8 @@ default-internal-web: &default-internal-web
     dns-resolver: tcp://10.43.0.10:53
   conditions:
     - "len([BODY]) > 0"
+  alerts:
+    - type: custom
 
 default-internal-tcp: &default-internal-tcp
   group: internal
@@ -41,6 +61,8 @@ default-internal-tcp: &default-internal-tcp
     dns-resolver: tcp://10.43.0.10:53
   conditions:
     - "[CONNECTED] == true"
+  alerts:
+    - type: custom
 
 endpoints:
   - name: auth

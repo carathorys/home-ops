@@ -53,6 +53,9 @@ spec:
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
               CUSTOM_WEB_PORT: &port 8081
+            envFrom:
+              - secretRef:
+                  name: gatus-alerting # HA_GATUS_WEBHOOK_URL
             probes:
               liveness: &probes
                 enabled: true
