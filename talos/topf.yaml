@@ -35,7 +35,9 @@ nodes:
   - host: "esutha"
     ip: "192.168.20.3"
     role: control-plane
-    schematicId: "52f3c41149f133d6ce1f1bf8c6d7d508a50523733b8bfb2272d89da766998826"
+    # iscsi-tools, nfsrahead, qemu-guest-agent + amdgpu (Radeon 890M passed
+    # through from Proxmox); no amd-ucode, the hypervisor loads CPU microcode
+    schematicId: "6506a248be565f2af3c49be03ce182e21eeb8967c68a887321c51825fe725a97"
     data:
       installDisk: "/dev/sda"
       installDiskSerial: ""
