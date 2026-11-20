@@ -26,7 +26,59 @@ spec:
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
-      enabled: false
+      enabled: true
+      # Alerts go to Home Assistant (webhook automation -> phone push); the
+      # always-firing Watchdog pings healthchecks.io as a dead man's switch.
+      # Both URLs come from the alertmanager-secrets ExternalSecret (Bitwarden).
+      config:
+        global:
+          resolve_timeout: 5m
+        route:
+          receiver: home-assistant
+          group_by: ["alertname", "namespace"]
+          group_wait: 1m
+          group_interval: 5m
+          repeat_interval: 12h
+          routes:
+            - receiver: healthchecks
+              matchers: ['alertname = "Watchdog"']
+              group_wait: 0s
+              group_interval: 5m
+              repeat_interval: 5m
+            - receiver: "null"
+              matchers: ['alertname = "InfoInhibitor"']
+        inhibit_rules:
+          - source_matchers: ['severity = "critical"']
+            target_matchers: ['severity =~ "warning|info"']
+            equal: ["namespace", "alertname"]
+          - source_matchers: ['alertname = "InfoInhibitor"']
+            target_matchers: ['severity = "info"']
+            equal: ["namespace"]
+        receivers:
+          - name: "null"
+          - name: home-assistant
+            webhook_configs:
+              - url_file: /etc/alertmanager/secrets/alertmanager-secrets/ha-webhook-url
+                send_resolved: true
+          - name: healthchecks
+            webhook_configs:
+              - url_file: /etc/alertmanager/secrets/alertmanager-secrets/healthchecks-url
+                send_resolved: false
+      alertmanagerSpec:
+        secrets: ["alertmanager-secrets"]
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: iscsi
+              resources:
+                requests:
+                  storage: 1Gi
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            memory: 128Mi
 
     grafana:
       enabled: false
@@ -62,7 +114,9 @@ spec:
             regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
 
     kubeControllerManager:
-      enabled: true
+      # Talos binds the controller-manager to localhost: scraping it only
+      # produced permanent TargetDown/InstanceUnreachable alerts
+      enabled: false
       endpoints: &cp
         - 10.11.0.16
         - 10.11.0.17
@@ -144,11 +198,7 @@ spec:
               namespace: network
               sectionName: https
       prometheusSpec:
-        alertingEndpoints:
-          - namespace: observability
-            name: alertmanager
-            port: 9093
-            apiVersion: v2
+        # no alertingEndpoints: the chart points Prometheus at its own Alertmanager
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         ruleSelectorNilUsesHelmValues: false
