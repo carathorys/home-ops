@@ -10,7 +10,7 @@ spec:
     spec:
       chart: node-feature-discovery
       reconcileStrategy: ChartVersion
-      version: 0.18.0
+      version: 0.20.1
       sourceRef:
         kind: HelmRepository
         name: node-feature-discovery
