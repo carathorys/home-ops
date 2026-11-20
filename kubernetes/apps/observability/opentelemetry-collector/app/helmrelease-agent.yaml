@@ -66,9 +66,9 @@ spec:
             - context: resource
               statements:
                 - set(attributes["service.name"], attributes["k8s.container.name"]) where attributes["service.name"] == nil
-        # Serilog's short level tags ("[18:53:44] [INF] ...", e.g. Jellyfin)
-        # aren't recognised by Loki's level detection (they end up as
+        # Level formats Loki's own detection doesn't recognise (stored as
         # "unknown"); map them to a proper severity, which Loki uses.
+        # Serilog's short level tags ("[18:53:44] [INF] ...", e.g. Jellyfin):
         transform/severity:
           log_statements:
             - context: log
@@ -85,6 +85,18 @@ spec:
                 - set(severity_number, SEVERITY_NUMBER_ERROR) where IsMatch(body, "^\\[[0-9:]{8}\\] \\[ERR\\]")
                 - set(severity_text, "fatal") where IsMatch(body, "^\\[[0-9:]{8}\\] \\[FTL\\]")
                 - set(severity_number, SEVERITY_NUMBER_FATAL) where IsMatch(body, "^\\[[0-9:]{8}\\] \\[FTL\\]")
+                # Plex Media Server / Scanner logs (followed by the plex pod's
+                # *-log containers): "Nov 20, 2026 05:07:56.480 [thread] LEVEL - "
+                - set(severity_text, "trace") where IsMatch(body, "^[A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4} [0-9:.]+ \\[[0-9]+\\] VERBOSE - ")
+                - set(severity_number, SEVERITY_NUMBER_TRACE) where IsMatch(body, "^[A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4} [0-9:.]+ \\[[0-9]+\\] VERBOSE - ")
+                - set(severity_text, "debug") where IsMatch(body, "^[A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4} [0-9:.]+ \\[[0-9]+\\] DEBUG - ")
+                - set(severity_number, SEVERITY_NUMBER_DEBUG) where IsMatch(body, "^[A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4} [0-9:.]+ \\[[0-9]+\\] DEBUG - ")
+                - set(severity_text, "info") where IsMatch(body, "^[A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4} [0-9:.]+ \\[[0-9]+\\] INFO - ")
+                - set(severity_number, SEVERITY_NUMBER_INFO) where IsMatch(body, "^[A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4} [0-9:.]+ \\[[0-9]+\\] INFO - ")
+                - set(severity_text, "warn") where IsMatch(body, "^[A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4} [0-9:.]+ \\[[0-9]+\\] WARN - ")
+                - set(severity_number, SEVERITY_NUMBER_WARN) where IsMatch(body, "^[A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4} [0-9:.]+ \\[[0-9]+\\] WARN - ")
+                - set(severity_text, "error") where IsMatch(body, "^[A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4} [0-9:.]+ \\[[0-9]+\\] ERROR - ")
+                - set(severity_number, SEVERITY_NUMBER_ERROR) where IsMatch(body, "^[A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4} [0-9:.]+ \\[[0-9]+\\] ERROR - ")
       exporters:
         debug: null
         otlphttp/loki:
