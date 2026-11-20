@@ -29,22 +29,16 @@ spec:
         pod:
           affinity:
             nodeAffinity:
-              # Never hummianet: only the 780M (avarath) and 890M (esutha)
+              # Only the 780M (avarath) or 890M (esutha), either one: ROCm
+              # offloads all layers on both with HSA_OVERRIDE_GFX_VERSION
+              # 11.0.0. hummianet is left to the media servers, which in turn
+              # avoid the node Ollama runs on.
               requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                   - matchExpressions:
                       - key: kubernetes.io/hostname
                         operator: In
                         values: ["avarath", "esutha"]
-              # TEST: prefer esutha's 890M (gfx1150); revert to avarath if
-              # Ollama can't use that GPU
-              preferredDuringSchedulingIgnoredDuringExecution:
-                - weight: 100
-                  preference:
-                    matchExpressions:
-                      - key: kubernetes.io/hostname
-                        operator: In
-                        values: ["esutha"]
         containers:
           main:
             image:
@@ -119,9 +113,10 @@ spec:
                 cpu: 100m
                 memory: 2Gi
               limits:
-                # Radeon 780M for ROCm, from generic-device-plugin (shared):
-                # the render node (/dev/dri/renderD128) plus KFD (/dev/kfd)
-                devic.es/dri: 1
+                # iGPU for ROCm: the render node plus KFD (/dev/kfd). 6 of a
+                # node's 10 GPU units, leaving at most 4 for other GPU pods on
+                # its node (see generic-device-plugin)
+                devic.es/dri: 6
                 devic.es/kfd: 1
     service:
       main:

@@ -133,16 +133,24 @@ spec:
                 cpu: 100m
                 memory: 250Mi
               limits:
-                # AMD iGPU render node (/dev/dri/renderD128) for video
-                # transcoding, from generic-device-plugin (shared device).
-                # Only microservices transcodes; server and machine-learning
-                # (CPU image) don't use the GPU.
+                # AMD iGPU render node for video transcoding: 1 of a node's
+                # 10 GPU units (see generic-device-plugin)
                 devic.es/dri: 1
       machine-learning:
         strategy: RollingUpdate
         replicas: 2
         pod:
           enableServiceLinks: false
+          affinity:
+            # Only avarath and esutha, never hummianet (kept for the media
+            # servers); the spread below prefers one replica on each
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: kubernetes.io/hostname
+                        operator: In
+                        values: ["avarath", "esutha"]
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
@@ -151,7 +159,10 @@ spec:
           topologySpreadConstraints:
             - maxSkew: 1
               topologyKey: kubernetes.io/hostname
-              whenUnsatisfiable: DoNotSchedule
+              # Preference only: with just two allowed nodes, a replica whose
+              # node has no free GPU units (e.g. Ollama plus media servers)
+              # runs on the other node instead of staying Pending
+              whenUnsatisfiable: ScheduleAnyway
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/instance: *appName
@@ -172,6 +183,10 @@ spec:
               requests:
                 cpu: 100m
                 memory: 250Mi
+              limits:
+                # 3 of a node's 10 GPU units (see generic-device-plugin). The
+                # image is CPU-only today, so this reserves room for placement
+                devic.es/dri: 3
             probes:
               liveness: &probes
                 enabled: true

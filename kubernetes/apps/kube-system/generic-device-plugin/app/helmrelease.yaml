@@ -18,10 +18,16 @@ spec:
       pullPolicy: IfNotPresent
     devices:
       # Requested by pods as "devic.es/dri" (the plugin's default domain).
-      # AMD iGPU render node (VAAPI transcoding, Vulkan). Shared, not
-      # exclusive: up to 10 pods per node may hold it at once. Nodes without
-      # the device (esutha) advertise 0, so GPU pods only land on avarath and
-      # hummianet.
+      # AMD iGPU render node (VAAPI transcoding, ROCm, Vulkan), shared by all
+      # its pods. Each GPU node (avarath 780M, esutha 890M, hummianet) offers
+      # 10 "GPU units"; pods request units by weight, so heavy users can't
+      # pile up on one node:
+      #   Ollama 6 | Immich ML 3 (x2) | Jellyfin, Emby, Plex 2 | Immich
+      #   microservices 1 (x2)   -> 20 of 30 units in total
+      # Next to Ollama (6) at most 4 units remain for everything else, e.g.
+      # one Immich ML + one microservices, or two media servers.
+      # Units only steer placement; they don't limit actual GPU use.
+      # (Ollama and Immich ML are kept off hummianet by node affinity.)
       - name: dri
         groups:
           - count: 10

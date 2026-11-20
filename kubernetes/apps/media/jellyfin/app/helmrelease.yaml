@@ -42,9 +42,9 @@ spec:
                 memory: 2Gi
               limits:
                 memory: 10Gi
-                # AMD iGPU render node (/dev/dri/renderD128) for VAAPI
-                # transcoding, from generic-device-plugin (shared device)
-                devic.es/dri: 1
+                # AMD iGPU render node for VAAPI transcoding: 2 of a node's
+                # 10 GPU units (see generic-device-plugin)
+                devic.es/dri: 2
 
     service:
       main:

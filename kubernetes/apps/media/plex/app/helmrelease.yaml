@@ -49,9 +49,9 @@ spec:
               limits:
                 # cpu: 10m
                 memory: 10Gi
-                # AMD iGPU render node (/dev/dri/renderD128) for hardware
-                # transcoding, from generic-device-plugin (shared device)
-                devic.es/dri: 1
+                # AMD iGPU render node for hardware transcoding: 2 of a node's
+                # 10 GPU units (see generic-device-plugin)
+                devic.es/dri: 2
           # Plex writes its logs only to files (logs emptyDir). These follow
           # them on stdout so the otel-agent ships them to Loki, one source
           # (k8s_container_name) per log; tail -F follows the files by name
