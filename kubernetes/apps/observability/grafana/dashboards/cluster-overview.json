@@ -39,6 +39,30 @@
         "options": []
       },
       {
+        "name": "node",
+        "label": "Node",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "query": {
+          "query": "label_values(kube_node_info, node)",
+          "refId": "node"
+        },
+        "definition": "label_values(kube_node_info, node)",
+        "multi": false,
+        "includeAll": false,
+        "refresh": 1,
+        "sort": 1,
+        "hide": 0,
+        "current": {
+          "text": "avarath",
+          "value": "avarath"
+        },
+        "options": []
+      },
+      {
         "name": "loki",
         "label": "Logs",
         "type": "datasource",
@@ -1216,7 +1240,7 @@
     {
       "id": 20,
       "type": "row",
-      "title": "Namespaces",
+      "title": "Node: $node",
       "collapsed": false,
       "gridPos": {
         "h": 1,
@@ -1229,6 +1253,527 @@
     {
       "id": 21,
       "type": "timeseries",
+      "title": "CPU by mode",
+      "description": "Where the node's CPU time goes. user = processes; system, irq and softirq = the kernel; steal = a hypervisor took it (VMs only). High system/irq with little pod CPU points at the node, not an app.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 31
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by (mode) (rate(node_cpu_seconds_total{nodename=\"$node\", mode!=\"idle\"}[$__rate_interval]))",
+          "legendFormat": "{{mode}}",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "suffix: cores",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 22,
+      "type": "timeseries",
+      "title": "CPU by namespace",
+      "description": "CPU used by containers on this node. The gap to 'CPU by mode' is time spent outside pods (kubelet, containerd, etcd, kernel).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 31
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by (namespace) (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{node=\"$node\"})",
+          "legendFormat": "{{namespace}}",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "suffix: cores",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 23,
+      "type": "timeseries",
+      "title": "Memory by namespace",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 31
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by (namespace) (node_namespace_pod_container:container_memory_working_set_bytes{node=\"$node\", container!=\"\"})",
+          "legendFormat": "{{namespace}}",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 24,
+      "type": "timeseries",
+      "title": "Top 10 pods by CPU",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 39
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "topk(10, sum by (namespace, pod) (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{node=\"$node\"}))",
+          "legendFormat": "{{namespace}}/{{pod}}",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": ["mean", "max"],
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "suffix: cores",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            }
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 25,
+      "type": "timeseries",
+      "title": "GPU",
+      "description": "iGPU busy and share of its memory (VRAM + GTT) in use. Empty on nodes without a GPU (esutha).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 39
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "max(node_drm_gpu_busy_percent{nodename=\"$node\"}) / 100",
+          "legendFormat": "busy",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(node_drm_memory_gtt_used_bytes{nodename=\"$node\"} + node_drm_memory_vram_used_bytes{nodename=\"$node\"}) / sum(node_drm_memory_gtt_size_bytes{nodename=\"$node\"} + node_drm_memory_vram_size_bytes{nodename=\"$node\"})",
+          "legendFormat": "memory used",
+          "refId": "B"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            }
+          },
+          "min": 0,
+          "max": 1
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 26,
+      "type": "table",
+      "title": "Pods on $node",
+      "description": "Sorted by CPU. Requests are what the pod reserved; usage far above request is what crowds a node.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 24,
+        "x": 0,
+        "y": 48
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by (namespace, pod) (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{node=\"$node\"})",
+          "legendFormat": "",
+          "refId": "A",
+          "instant": true,
+          "range": false,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by (namespace, pod) (node_namespace_pod_container:container_memory_working_set_bytes{node=\"$node\", container!=\"\"})",
+          "legendFormat": "",
+          "refId": "B",
+          "instant": true,
+          "range": false,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by (namespace, pod) (kube_pod_container_resource_requests{node=\"$node\", resource=\"cpu\"})",
+          "legendFormat": "",
+          "refId": "C",
+          "instant": true,
+          "range": false,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by (namespace, pod) (kube_pod_container_resource_requests{node=\"$node\", resource=\"memory\"})",
+          "legendFormat": "",
+          "refId": "D",
+          "instant": true,
+          "range": false,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "renameByName": {
+              "namespace": "Namespace",
+              "pod": "Pod",
+              "Value #A": "CPU (cores)",
+              "Value #B": "Memory",
+              "Value #C": "CPU request",
+              "Value #D": "Memory request"
+            },
+            "indexByName": {
+              "namespace": 0,
+              "pod": 1,
+              "Value #A": 2,
+              "Value #C": 3,
+              "Value #B": 4,
+              "Value #D": 5
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "sort": [
+              {
+                "field": "CPU (cores)",
+                "desc": true
+              }
+            ]
+          }
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "No pods",
+          "custom": {
+            "align": "auto"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU (cores)"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "mode": "basic"
+                }
+              },
+              {
+                "id": "max",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU request"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory request"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Namespace"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Open namespace dashboard",
+                    "url": "/d/namespace-${__value.raw}?${__url_time_range}&${datasource:queryparam}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 27,
+      "type": "row",
+      "title": "Namespaces",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 65
+      },
+      "panels": []
+    },
+    {
+      "id": 28,
+      "type": "timeseries",
       "title": "CPU by namespace",
       "description": "",
       "datasource": {
@@ -1239,7 +1784,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 31
+        "y": 66
       },
       "targets": [
         {
@@ -1288,7 +1833,7 @@
       }
     },
     {
-      "id": 22,
+      "id": 29,
       "type": "timeseries",
       "title": "Memory by namespace",
       "description": "",
@@ -1300,7 +1845,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 31
+        "y": 66
       },
       "targets": [
         {
@@ -1349,7 +1894,7 @@
       }
     },
     {
-      "id": 23,
+      "id": 30,
       "type": "table",
       "title": "Namespaces (click a name to open its dashboard)",
       "description": "",
@@ -1361,7 +1906,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 39
+        "y": 74
       },
       "targets": [
         {
@@ -1602,7 +2147,7 @@
       }
     },
     {
-      "id": 24,
+      "id": 31,
       "type": "row",
       "title": "Logs",
       "collapsed": false,
@@ -1610,12 +2155,12 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 50
+        "y": 85
       },
       "panels": []
     },
     {
-      "id": 25,
+      "id": 32,
       "type": "timeseries",
       "title": "Log lines by namespace",
       "description": "Lines written to stdout/stderr by all pods, per namespace.",
@@ -1627,7 +2172,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 51
+        "y": 86
       },
       "targets": [
         {
@@ -1677,7 +2222,7 @@
       }
     },
     {
-      "id": 26,
+      "id": 33,
       "type": "timeseries",
       "title": "Errors by namespace",
       "description": "Lines Loki detected as error/critical/fatal level. Open the namespace's ns: dashboard for details.",
@@ -1689,7 +2234,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 51
+        "y": 86
       },
       "targets": [
         {
@@ -1739,7 +2284,7 @@
       }
     },
     {
-      "id": 27,
+      "id": 34,
       "type": "logs",
       "title": "Recent errors (all namespaces)",
       "datasource": {
@@ -1751,7 +2296,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 59
+        "y": 94
       },
       "targets": [
         {
@@ -1777,7 +2322,7 @@
       }
     },
     {
-      "id": 28,
+      "id": 35,
       "type": "row",
       "title": "Problems",
       "collapsed": false,
@@ -1785,12 +2330,12 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 69
+        "y": 104
       },
       "panels": []
     },
     {
-      "id": 29,
+      "id": 36,
       "type": "table",
       "title": "Firing alerts",
       "description": "",
@@ -1802,7 +2347,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 70
+        "y": 105
       },
       "targets": [
         {
@@ -1852,7 +2397,7 @@
       }
     },
     {
-      "id": 30,
+      "id": 37,
       "type": "table",
       "title": "Unhealthy pods",
       "description": "",
@@ -1864,7 +2409,7 @@
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 70
+        "y": 105
       },
       "targets": [
         {
@@ -1921,7 +2466,7 @@
       }
     },
     {
-      "id": 31,
+      "id": 38,
       "type": "table",
       "title": "Restarting containers (24h)",
       "description": "",
@@ -1933,7 +2478,7 @@
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 70
+        "y": 105
       },
       "targets": [
         {
