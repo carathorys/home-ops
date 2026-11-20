@@ -6,6 +6,9 @@ resources:
   - volume.yaml
   - helmrelease.yaml
 configMapGenerator:
+  - name: plex-scripts
+    files:
+      - follow-scanner-logs.sh=./resources/follow-scanner-logs.sh
   - name: plex-loki-rules
     files:
       - plex.yaml=./lokirule.yaml

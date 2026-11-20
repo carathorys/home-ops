@@ -52,6 +52,41 @@ spec:
                 # AMD iGPU render node (/dev/dri/renderD128) for hardware
                 # transcoding, from generic-device-plugin (shared device)
                 devic.es/dri: 1
+          # Plex writes its logs only to files (logs emptyDir). These follow
+          # them on stdout so the otel-agent ships them to Loki, one source
+          # (k8s_container_name) per log; tail -F follows the files by name
+          # across Plex's rotations (.log -> .1.log).
+          server-log:
+            image: &logImage # renovate: datasource=docker depName=busybox
+              repository: busybox
+              tag: 1.38.0
+            command: ["tail", "-n", "0", "-F", "/logs/Plex Media Server.log"]
+            securityContext: &logSecurityContext
+              runAsUser: ${APP_UID}
+              runAsGroup: ${APP_GID}
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources: &logResources
+              requests:
+                cpu: 1m
+                memory: 8Mi
+              limits:
+                memory: 32Mi
+          # Per-transcode session reports (XML): hardware vs software, speed
+          transcoder-log:
+            image: *logImage
+            command: ["tail", "-n", "0", "-F", "/logs/Plex Transcoder Statistics.log"]
+            securityContext: *logSecurityContext
+            resources: *logResources
+          # Matcher, Analysis and Chapter Thumbnails scanner logs as one
+          # source; each line is suffixed with its scanner, e.g. " [Matcher]"
+          scanner-log:
+            image: *logImage
+            command: ["/bin/sh", "/scripts/follow-scanner-logs.sh"]
+            securityContext: *logSecurityContext
+            resources: *logResources
     service:
       main:
         type: LoadBalancer
@@ -78,8 +113,10 @@ spec:
       config:
         type: persistentVolumeClaim
         existingClaim: plex
-        globalMounts:
-          - path: /config
+        advancedMounts:
+          main:
+            main:
+              - path: /config
       movies:
         type: persistentVolumeClaim
         existingClaim: movies
@@ -142,11 +179,29 @@ spec:
           main:
             main:
               - path: /config/Library/Application Support/Plex Media Server/Logs
+            server-log: &logMount
+              - path: /logs
+                readOnly: true
+            transcoder-log: *logMount
+            scanner-log: *logMount
+      # follow-scanner-logs.sh
+      scripts:
+        type: configMap
+        name: plex-scripts
+        advancedMounts:
+          main:
+            scanner-log:
+              - path: /scripts
+                readOnly: true
       plex-cache:
         type: emptyDir
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Cache
+        advancedMounts:
+          main:
+            main:
+              - path: /config/Library/Application Support/Plex Media Server/Cache
       tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp
+        advancedMounts:
+          main:
+            main:
+              - path: /tmp
