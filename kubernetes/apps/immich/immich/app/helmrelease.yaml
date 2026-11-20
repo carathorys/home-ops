@@ -202,11 +202,22 @@ spec:
                     port: &mlPort 3003
                   initialDelaySeconds: 0
                   periodSeconds: 10
-                  timeoutSeconds: 1
+                  timeoutSeconds: 5
                   failureThreshold: 5
               readiness: *probes
+              # With ROCm, MIGraphX compiles each preloaded model for the GPU
+              # at start (~25 s per model, /ping unresponsive meanwhile); give
+              # it up to 15 minutes before liveness can restart the container
               startup:
-                enabled: false
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *mlPort
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 90
     service:
       server:
         controller: server
