@@ -6,9 +6,14 @@ metadata:
   name: node-feature-discovery
 spec:
   interval: 1h
-  chartRef:
-    kind: OCIRepository
-    name: node-feature-discovery
+  chart:
+    spec:
+      chart: node-feature-discovery
+      reconcileStrategy: ChartVersion
+      version: 0.18.0
+      sourceRef:
+        kind: HelmRepository
+        name: node-feature-discovery
   maxHistory: 3
   install:
     createNamespace: true
