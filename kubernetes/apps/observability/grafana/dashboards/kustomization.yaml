@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - folders.yaml
   - cluster-overview.yaml
+  - gpu.yaml
   - namespace-dashboards.yaml
   - app-dashboards.yaml
   - observability-dashboards.yaml
@@ -15,6 +16,9 @@ configMapGenerator:
   - name: grafana-dashboard-namespace-overview
     files:
       - namespace-overview.json
+  - name: grafana-dashboard-gpu
+    files:
+      - gpu.json
   - name: grafana-dashboard-app-tankstat
     files:
       - app-tankstat.json
