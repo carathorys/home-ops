@@ -31,6 +31,13 @@ spec:
     presets:
       kubernetesAttributes:
         enabled: true # identifies the sending pod by its connection IP
+    # Read access to Kubernetes events for the k8s_events receiver below
+    # (wired by hand instead of the chart preset, to get its own pipeline)
+    clusterRole:
+      rules:
+        - apiGroups: [""]
+          resources: ["events"]
+          verbs: ["get", "list", "watch"]
     ports:
       jaeger-compact: { enabled: false }
       jaeger-thrift: { enabled: false }
@@ -50,6 +57,24 @@ spec:
         jaeger: null
         zipkin: null
         prometheus: null # own metrics are scraped through the ServiceMonitor
+        # Kubernetes events of all namespaces (scheduling decisions such as
+        # "Successfully assigned x to avarath" or "Insufficient devic.es/dri",
+        # pulls, probe failures, OOM kills), kept in Loki beyond the API's ~1h
+        k8s_events: {}
+      processors:
+        transform/events:
+          log_statements:
+            - context: resource
+              statements:
+                - set(attributes["service.name"], "k8s-events")
+            # The receiver maps Normal/Warning to severity numbers, but keeps
+            # "Normal"/"Warning" as text, which Loki doesn't read as a level
+            - context: log
+              statements:
+                - set(severity_text, "info") where severity_number == SEVERITY_NUMBER_INFO
+                - set(severity_text, "warn") where severity_number == SEVERITY_NUMBER_WARN
+                - set(severity_text, "error") where severity_number == SEVERITY_NUMBER_ERROR
+                - set(severity_text, "fatal") where severity_number == SEVERITY_NUMBER_FATAL
       exporters:
         debug: null
         otlphttp/prometheus:
@@ -69,6 +94,10 @@ spec:
           logs:
             receivers: [otlp]
             processors: [memory_limiter, batch]
+            exporters: [otlphttp/loki]
+          logs/events:
+            receivers: [k8s_events]
+            processors: [memory_limiter, transform/events, batch]
             exporters: [otlphttp/loki]
           traces:
             receivers: [otlp]
