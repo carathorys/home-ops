@@ -80,6 +80,34 @@
         "options": []
       },
       {
+        "name": "container",
+        "label": "Container",
+        "description": "Narrows the log panels to these containers, e.g. a pod's log-file sidecar without its VPN or init output",
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "${loki}"
+        },
+        "query": {
+          "type": 1,
+          "label": "k8s_container_name",
+          "stream": "{k8s_namespace_name=\"$namespace\"}",
+          "refId": "LokiVariableQueryEditor-VariableQuery"
+        },
+        "definition": "label_values({k8s_namespace_name=\"$namespace\"}, k8s_container_name)",
+        "multi": true,
+        "includeAll": true,
+        "allValue": ".*",
+        "refresh": 2,
+        "sort": 1,
+        "hide": 0,
+        "current": {
+          "text": ["All"],
+          "value": ["$__all"]
+        },
+        "options": []
+      },
+      {
         "name": "search",
         "label": "Search logs",
         "type": "textbox",
@@ -885,7 +913,7 @@
             "type": "loki",
             "uid": "${loki}"
           },
-          "expr": "sum by (workload) (count_over_time({k8s_namespace_name=\"$namespace\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$workload\" [$__auto]))",
+          "expr": "sum by (workload) (count_over_time({k8s_namespace_name=\"$namespace\", k8s_container_name=~\"$container\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$workload\" [$__auto]))",
           "legendFormat": "{{workload}}",
           "refId": "A",
           "queryType": "range"
@@ -948,7 +976,7 @@
             "type": "loki",
             "uid": "${loki}"
           },
-          "expr": "sum by (workload) (count_over_time({k8s_namespace_name=\"$namespace\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$workload\" | detected_level=~\"(?i)(err|error|crit|critical|fatal|panic|emerg|alert)\" [$__auto]))",
+          "expr": "sum by (workload) (count_over_time({k8s_namespace_name=\"$namespace\", k8s_container_name=~\"$container\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$workload\" | detected_level=~\"(?i)(err|error|crit|critical|fatal|panic|emerg|alert)\" [$__auto]))",
           "legendFormat": "{{workload}}",
           "refId": "A",
           "queryType": "range"
@@ -1011,7 +1039,7 @@
             "type": "loki",
             "uid": "${loki}"
           },
-          "expr": "{k8s_namespace_name=\"$namespace\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$workload\" |~ \"(?i)$search\"",
+          "expr": "{k8s_namespace_name=\"$namespace\", k8s_container_name=~\"$container\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$workload\" |~ \"(?i)$search\"",
           "legendFormat": "",
           "refId": "A",
           "queryType": "range"
