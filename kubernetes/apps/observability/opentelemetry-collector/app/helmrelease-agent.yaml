@@ -97,6 +97,15 @@ spec:
                 - set(severity_number, SEVERITY_NUMBER_WARN) where IsMatch(body, "^[A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4} [0-9:.]+ \\[[0-9]+\\] WARN - ")
                 - set(severity_text, "error") where IsMatch(body, "^[A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4} [0-9:.]+ \\[[0-9]+\\] ERROR - ")
                 - set(severity_number, SEVERITY_NUMBER_ERROR) where IsMatch(body, "^[A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4} [0-9:.]+ \\[[0-9]+\\] ERROR - ")
+                # qBittorrent's log file (followed by the qbittorrent pod's
+                # logs container): "(N) 2026-11-22T07:21:48 - ", where the tag
+                # is Normal, Information, Warning or Critical
+                - set(severity_text, "info") where IsMatch(body, "^\\([NI]\\) [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:]{8} - ")
+                - set(severity_number, SEVERITY_NUMBER_INFO) where IsMatch(body, "^\\([NI]\\) [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:]{8} - ")
+                - set(severity_text, "warn") where IsMatch(body, "^\\(W\\) [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:]{8} - ")
+                - set(severity_number, SEVERITY_NUMBER_WARN) where IsMatch(body, "^\\(W\\) [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:]{8} - ")
+                - set(severity_text, "error") where IsMatch(body, "^\\(C\\) [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:]{8} - ")
+                - set(severity_number, SEVERITY_NUMBER_ERROR) where IsMatch(body, "^\\(C\\) [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:]{8} - ")
       exporters:
         debug: null
         otlphttp/loki:
