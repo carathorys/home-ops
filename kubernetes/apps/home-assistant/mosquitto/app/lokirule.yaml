@@ -4,11 +4,11 @@ groups:
     rules:
       - alert: EmbyDatabaseBusy
         expr: |
-          sum by (app) (count_over_time({app="mosquitto"} |~ "(?i)retry busy DB"[2m])) > 0
+          sum by (service_name) (count_over_time({service_name="mosquitto"} |~ "(?i)retry busy DB"[2m])) > 0
         for: 2m
         labels:
           severity: critical
           category: logs
         annotations:
-          app: "{{ $labels.app }}"
-          summary: "{{ $labels.app }} is experiencing database issues"
+          app: "{{ $labels.service_name }}"
+          summary: "{{ $labels.service_name }} is experiencing database issues"

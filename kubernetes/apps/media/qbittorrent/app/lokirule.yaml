@@ -2,12 +2,16 @@
 groups:
   - name: qbittorrent
     rules:
+      # libtorrent rejected a torrent's fast resume data (files moved, missing
+      # or storage not mounted); qBittorrent 5 logs it as
+      # "(W) ... - Failed to restore torrent. ..."
+      # It is one line, logged once at startup, so the expression is only true
+      # for the 5m window: no "for", else the alert lapses while still pending.
       - alert: QbittorrentFastResumeRejected
         expr: |
-          sum by (app) (count_over_time({app="qbittorrent"} |~ "(?i)fast resume rejected"[5m])) > 0
-        for: 5m
+          sum by (service_name) (count_over_time({service_name="qbittorrent"} |~ "(?i)failed to restore torrent"[5m])) > 0
         annotations:
           summary: >-
-            {{ $labels.app }} has a torrent with fast resume rejected
+            {{ $labels.service_name }} has a torrent with fast resume rejected
         labels:
           severity: critical
