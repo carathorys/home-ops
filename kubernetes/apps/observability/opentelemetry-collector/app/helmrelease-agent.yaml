@@ -66,6 +66,14 @@ spec:
             - context: resource
               statements:
                 - set(attributes["service.name"], attributes["k8s.container.name"]) where attributes["service.name"] == nil
+        # Plex access tokens in URLs and headers (e.g. cloudflared's failed
+        # request lines) must not end up in Loki.
+        transform/redact:
+          log_statements:
+            - context: log
+              statements:
+                - replace_pattern(body, "(?i)x-plex-token=[^&\\s\"']+", "X-Plex-Token=REDACTED")
+                - 'replace_pattern(body, "(?i)x-plex-token(\"?\\s*(?::|=>)\\s*\"?)[^&\\s\"'',]+", "X-Plex-Token$${1}REDACTED")'
         # Level formats Loki's own detection doesn't recognise (stored as
         # "unknown"); map them to a proper severity, which Loki uses.
         # Serilog's short level tags ("[18:53:44] [INF] ...", e.g. Jellyfin):
@@ -114,7 +122,8 @@ spec:
         pipelines:
           logs:
             receivers: []
-            processors: [memory_limiter, transform/service-name, transform/severity, batch]
+            processors:
+              [memory_limiter, transform/service-name, transform/redact, transform/severity, batch]
             exporters: [otlphttp/loki]
           metrics: null
           traces: null
