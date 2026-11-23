@@ -1,0 +1,91 @@
+---
+# Alerts for the GitOps machinery itself: a Flux Kustomization or
+# HelmRelease that stays failing, and ExternalSecrets that stop syncing.
+# On 2026-11-21 a stale bitwarden-sdk-server certificate broke every
+# ExternalSecret, and Flux blocked 27 Kustomizations behind them for ~35h
+# without a single alert.
+# They live here, not with the apps, because the PrometheusRule CRD only
+# exists once kube-prometheus-stack is installed.
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: gitops
+spec:
+  groups:
+    - name: flux
+      rules:
+        # flux_resource_info comes from flux-operator; exported_namespace is
+        # the resource's namespace. DependencyNotReady is only a symptom, so
+        # just the failing resource itself alerts, not everything behind it.
+        # While it retries, ready/reason flip between False (HealthCheckFailed)
+        # and Unknown (Progressing), so they are aggregated away.
+        - alert: FluxReconciliationFailing
+          expr: |
+            max by (exported_namespace, kind, name) (
+              flux_resource_info{kind=~"Kustomization|HelmRelease", ready!="True", reason!="DependencyNotReady", suspended!="True"}
+            )
+          # longer than the longest Kustomization timeout (25m)
+          for: 30m
+          labels:
+            severity: critical
+          annotations:
+            summary: >-
+              Flux {{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} has not been Ready for 30 minutes
+            description: >-
+              Its changes are not being applied, and everything that depends on
+              it is blocked. Check `flux get ks -A` / `flux get hr -A` and the
+              resource's status conditions.
+        - alert: FluxSourceFailing
+          expr: |
+            max by (exported_namespace, kind, name) (
+              flux_resource_info{kind=~"GitRepository|OCIRepository|HelmRepository|HelmChart|Bucket", ready="False", suspended!="True"}
+            )
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: >-
+              Flux cannot fetch {{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} for an hour
+            description: >-
+              New revisions from it are not applied. Many sources failing at
+              once usually means the cluster cannot reach the internet.
+        - alert: FluxMetricsAbsent
+          expr: absent(flux_resource_info{kind="Kustomization"})
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: flux-operator's flux_resource_info metric is missing
+            description: >-
+              The Flux alerts cannot fire without it. Check the flux-operator
+              pod and its PodMonitor/ServiceMonitor.
+    - name: external-secrets
+      rules:
+        - alert: ExternalSecretSyncFailing
+          expr: |
+            max by (exported_namespace, name) (
+              externalsecret_status_condition{condition="Ready", status="False"}
+            ) == 1
+          for: 30m
+          labels:
+            severity: critical
+          annotations:
+            summary: >-
+              ExternalSecret {{ $labels.exported_namespace }}/{{ $labels.name }} has not synced for 30 minutes
+            description: >-
+              The Secret keeps its last value, but changes in Bitwarden are not
+              applied, and Flux Kustomizations that wait on the ExternalSecret
+              fail their health checks. Check `kubectl describe externalsecret`
+              and the bitwarden-sdk-server logs ("tls: bad certificate" means
+              it serves a stale certificate: restart it).
+        - alert: ExternalSecretsMetricsAbsent
+          expr: absent(externalsecret_status_condition)
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: external-secrets' externalsecret_status_condition metric is missing
+            description: >-
+              The ExternalSecret alert cannot fire without it. Check the
+              external-secrets controller and its ServiceMonitor.
