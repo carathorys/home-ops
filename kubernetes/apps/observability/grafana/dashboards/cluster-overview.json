@@ -831,7 +831,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\"node-exporter\"}",
+          "expr": "sum by (nodename) (rate(node_network_receive_bytes_total{job=\"node-exporter\", device=~\"bond.*\"}[$__rate_interval]) * on (instance) group_left (nodename) node_uname_info{job=\"node-exporter\"})",
           "legendFormat": "{{nodename}} receive",
           "refId": "A"
         },
@@ -840,7 +840,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\"node-exporter\"}",
+          "expr": "sum by (nodename) (rate(node_network_transmit_bytes_total{job=\"node-exporter\", device=~\"bond.*\"}[$__rate_interval]) * on (instance) group_left (nodename) node_uname_info{job=\"node-exporter\"})",
           "legendFormat": "{{nodename}} transmit",
           "refId": "B"
         }
