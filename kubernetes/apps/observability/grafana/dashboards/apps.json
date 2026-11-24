@@ -136,6 +136,32 @@
         "options": []
       },
       {
+        "name": "breakdown",
+        "label": "Show",
+        "type": "custom",
+        "description": "Split the 'Selected apps' panels per pod, or add up each app's pods",
+        "query": "per pod : pod,per app : workload",
+        "options": [
+          {
+            "text": "per pod",
+            "value": "pod",
+            "selected": true
+          },
+          {
+            "text": "per app",
+            "value": "workload",
+            "selected": false
+          }
+        ],
+        "current": {
+          "text": "per pod",
+          "value": "pod"
+        },
+        "multi": false,
+        "includeAll": false,
+        "hide": 0
+      },
+      {
         "name": "loki",
         "label": "Logs",
         "type": "datasource",
@@ -210,8 +236,8 @@
     {
       "id": 22,
       "type": "timeseries",
-      "title": "CPU by app",
-      "description": "",
+      "title": "CPU",
+      "description": "Stacked per pod or per app (see Show); the dashed line is all selected apps together.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -228,9 +254,18 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (namespace, workload) (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{namespace=~\"$namespace\"} * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
-          "legendFormat": "{{namespace}}/{{workload}}",
+          "expr": "sum by (namespace, workload, $breakdown) (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{namespace=~\"$namespace\"} * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
+          "legendFormat": "{{namespace}}/{{$breakdown}}",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by () (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{namespace=~\"$namespace\"} * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
+          "legendFormat": "total",
+          "refId": "T"
         }
       ],
       "options": {
@@ -266,14 +301,48 @@
             "mode": "palette-classic"
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "T"
+            },
+            "properties": [
+              {
+                "id": "custom.stacking",
+                "value": {
+                  "mode": "none",
+                  "group": "A"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "fill": "dash",
+                  "dash": [10, 10]
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "text"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
       "id": 23,
       "type": "timeseries",
-      "title": "Memory by app",
-      "description": "",
+      "title": "Memory (working set)",
+      "description": "Stacked per pod or per app (see Show); the dashed line is all selected apps together.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -290,9 +359,18 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (namespace, workload) (node_namespace_pod_container:container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\"} * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
-          "legendFormat": "{{namespace}}/{{workload}}",
+          "expr": "sum by (namespace, workload, $breakdown) (node_namespace_pod_container:container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\"} * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
+          "legendFormat": "{{namespace}}/{{$breakdown}}",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by () (node_namespace_pod_container:container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\"} * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
+          "legendFormat": "total",
+          "refId": "T"
         }
       ],
       "options": {
@@ -328,13 +406,47 @@
             "mode": "palette-classic"
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "T"
+            },
+            "properties": [
+              {
+                "id": "custom.stacking",
+                "value": {
+                  "mode": "none",
+                  "group": "A"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "fill": "dash",
+                  "dash": [10, 10]
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "text"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
       "id": 24,
       "type": "timeseries",
-      "title": "Network by app (receive up / transmit down)",
+      "title": "Network (receive up / transmit down)",
       "description": "hostNetwork pods (e.g. cilium, node-exporter) report the node's traffic.",
       "datasource": {
         "type": "prometheus",
@@ -352,8 +464,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (namespace, workload) (rate(container_network_receive_bytes_total{namespace=~\"$namespace\", interface!=\"lo\"}[$__rate_interval]) * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
-          "legendFormat": "{{namespace}}/{{workload}} receive",
+          "expr": "sum by (namespace, workload, $breakdown) (rate(container_network_receive_bytes_total{namespace=~\"$namespace\", interface!=\"lo\"}[$__rate_interval]) * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
+          "legendFormat": "{{namespace}}/{{$breakdown}} receive",
           "refId": "A"
         },
         {
@@ -361,8 +473,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (namespace, workload) (rate(container_network_transmit_bytes_total{namespace=~\"$namespace\", interface!=\"lo\"}[$__rate_interval]) * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
-          "legendFormat": "{{namespace}}/{{workload}} transmit",
+          "expr": "sum by (namespace, workload, $breakdown) (rate(container_network_transmit_bytes_total{namespace=~\"$namespace\", interface!=\"lo\"}[$__rate_interval]) * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
+          "legendFormat": "{{namespace}}/{{$breakdown}} transmit",
           "refId": "B"
         }
       ],
@@ -418,7 +530,7 @@
     {
       "id": 25,
       "type": "timeseries",
-      "title": "Container restarts by app (per hour)",
+      "title": "Container restarts (per hour)",
       "description": "",
       "datasource": {
         "type": "prometheus",
@@ -436,8 +548,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "round(sum by (namespace, workload) (increase(kube_pod_container_status_restarts_total{namespace=~\"$namespace\"}[1h]) * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"})))",
-          "legendFormat": "{{namespace}}/{{workload}}",
+          "expr": "round(sum by (namespace, workload, $breakdown) (increase(kube_pod_container_status_restarts_total{namespace=~\"$namespace\"}[1h]) * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"})))",
+          "legendFormat": "{{namespace}}/{{$breakdown}}",
           "refId": "A"
         }
       ],
@@ -480,7 +592,7 @@
     {
       "id": 26,
       "type": "timeseries",
-      "title": "Log lines by app",
+      "title": "Log lines",
       "description": "Lines written to stdout/stderr per workload.",
       "datasource": {
         "type": "loki",
@@ -498,8 +610,8 @@
             "type": "loki",
             "uid": "${loki}"
           },
-          "expr": "sum by (k8s_namespace_name, workload) (count_over_time({k8s_namespace_name=~\"$namespace\", k8s_pod_name=~\"$pod\", k8s_container_name=~\"$container\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$app\" [$__auto]))",
-          "legendFormat": "{{k8s_namespace_name}}/{{workload}}",
+          "expr": "sum by (k8s_namespace_name, workload, $breakdown) (count_over_time({k8s_namespace_name=~\"$namespace\", k8s_pod_name=~\"$pod\", k8s_container_name=~\"$container\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$app\" | label_format pod=`{{ .k8s_pod_name }}` [$__auto]))",
+          "legendFormat": "{{k8s_namespace_name}}/{{$breakdown}}",
           "refId": "A",
           "queryType": "range"
         }
@@ -543,7 +655,7 @@
     {
       "id": 27,
       "type": "timeseries",
-      "title": "Errors by app",
+      "title": "Errors",
       "description": "Lines Loki detected as error/critical/fatal level. Apps that log without a level are not counted.",
       "datasource": {
         "type": "loki",
@@ -561,8 +673,8 @@
             "type": "loki",
             "uid": "${loki}"
           },
-          "expr": "sum by (k8s_namespace_name, workload) (count_over_time({k8s_namespace_name=~\"$namespace\", k8s_pod_name=~\"$pod\", k8s_container_name=~\"$container\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$app\" | detected_level=~\"(?i)(err|error|crit|critical|fatal|panic|emerg|alert)\" [$__auto]))",
-          "legendFormat": "{{k8s_namespace_name}}/{{workload}}",
+          "expr": "sum by (k8s_namespace_name, workload, $breakdown) (count_over_time({k8s_namespace_name=~\"$namespace\", k8s_pod_name=~\"$pod\", k8s_container_name=~\"$container\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$app\" | label_format pod=`{{ .k8s_pod_name }}` | detected_level=~\"(?i)(err|error|crit|critical|fatal|panic|emerg|alert)\" [$__auto]))",
+          "legendFormat": "{{k8s_namespace_name}}/{{$breakdown}}",
           "refId": "A",
           "queryType": "range"
         }
@@ -685,8 +797,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum (kube_pod_container_resource_requests{namespace=~\"$namespace\", resource=\"cpu\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
-          "legendFormat": "requests",
+          "expr": "max(sum by (pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", resource=\"cpu\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"})))",
+          "legendFormat": "requests (per pod)",
           "refId": "B"
         },
         {
@@ -694,8 +806,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum (kube_pod_container_resource_limits{namespace=~\"$namespace\", resource=\"cpu\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
-          "legendFormat": "limits",
+          "expr": "max(sum by (pod) (kube_pod_container_resource_limits{namespace=~\"$namespace\", resource=\"cpu\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"})))",
+          "legendFormat": "limits (per pod)",
           "refId": "C"
         }
       ],
@@ -832,8 +944,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum (kube_pod_container_resource_requests{namespace=~\"$namespace\", resource=\"memory\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
-          "legendFormat": "requests",
+          "expr": "max(sum by (pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", resource=\"memory\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"})))",
+          "legendFormat": "requests (per pod)",
           "refId": "B"
         },
         {
@@ -841,8 +953,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum (kube_pod_container_resource_limits{namespace=~\"$namespace\", resource=\"memory\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
-          "legendFormat": "limits",
+          "expr": "max(sum by (pod) (kube_pod_container_resource_limits{namespace=~\"$namespace\", resource=\"memory\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"})))",
+          "legendFormat": "limits (per pod)",
           "refId": "C"
         }
       ],
