@@ -1,8 +1,7 @@
 {
-  "uid": "namespace-overview",
-  "title": "Namespace overview",
-  "description": "Per-namespace resources, with one row per workload (Deployment/StatefulSet/DaemonSet).",
-  "tags": ["kubernetes", "namespace", "managed-by-gitops"],
+  "annotations": {
+    "list": []
+  },
   "editable": true,
   "graphTooltip": 1,
   "refresh": "1m",
@@ -12,6 +11,35 @@
     "to": "now"
   },
   "timezone": "browser",
+  "uid": "app-overview",
+  "title": "apps",
+  "tags": ["kubernetes", "app", "managed-by-gitops"],
+  "links": [
+    {
+      "title": "k8s dashboard",
+      "type": "link",
+      "url": "/d/cluster-overview",
+      "icon": "dashboard",
+      "keepTime": true,
+      "includeVars": false,
+      "targetBlank": false,
+      "tooltip": "",
+      "tags": [],
+      "asDropdown": false
+    },
+    {
+      "title": "namespaces",
+      "type": "link",
+      "url": "/d/namespaces",
+      "icon": "apps",
+      "keepTime": true,
+      "includeVars": false,
+      "targetBlank": false,
+      "tooltip": "",
+      "tags": [],
+      "asDropdown": false
+    }
+  ],
   "templating": {
     "list": [
       {
@@ -31,34 +59,76 @@
       {
         "name": "namespace",
         "label": "Namespace",
-        "type": "constant",
-        "query": "default",
-        "hide": 2,
-        "current": {
-          "text": "default",
-          "value": "default"
-        },
-        "options": []
-      },
-      {
-        "name": "workload",
-        "label": "Workload",
         "type": "query",
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
         },
         "query": {
-          "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\"}, workload)",
-          "refId": "workload"
+          "query": "label_values(kube_namespace_status_phase, namespace)",
+          "refId": "namespace"
         },
-        "definition": "label_values(namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\"}, workload)",
+        "definition": "label_values(kube_namespace_status_phase, namespace)",
         "multi": true,
         "includeAll": true,
         "allValue": ".+",
         "refresh": 2,
         "sort": 1,
         "hide": 0,
+        "regex": "",
+        "current": {
+          "text": ["media"],
+          "value": ["media"]
+        },
+        "options": []
+      },
+      {
+        "name": "app",
+        "label": "App",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "query": {
+          "query": "query_result(count by (app) (label_join(namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\"}, \"app\", \"/\", \"namespace\", \"workload\")))",
+          "refId": "app"
+        },
+        "definition": "query_result(count by (app) (label_join(namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\"}, \"app\", \"/\", \"namespace\", \"workload\")))",
+        "multi": true,
+        "includeAll": true,
+        "allValue": ".+",
+        "refresh": 2,
+        "sort": 1,
+        "hide": 0,
+        "regex": "/app=\"(?<text>[^/\"]+\\/(?<value>[^\"]+))\"/",
+        "current": {
+          "text": ["media/plex"],
+          "value": ["plex"]
+        },
+        "options": [],
+        "description": "Deployments, StatefulSets, DaemonSets and Jobs of the selected namespaces"
+      },
+      {
+        "name": "pod",
+        "label": "Pod",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "query": {
+          "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\"}, pod)",
+          "refId": "pod"
+        },
+        "definition": "label_values(namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\"}, pod)",
+        "multi": true,
+        "includeAll": true,
+        "allValue": ".+",
+        "refresh": 2,
+        "sort": 1,
+        "hide": 0,
+        "regex": "",
         "current": {
           "text": ["All"],
           "value": ["$__all"]
@@ -82,7 +152,6 @@
       {
         "name": "container",
         "label": "Container",
-        "description": "Narrows the log panels to these containers, e.g. a pod's log-file sidecar without its VPN or init output",
         "type": "query",
         "datasource": {
           "type": "loki",
@@ -91,21 +160,23 @@
         "query": {
           "type": 1,
           "label": "k8s_container_name",
-          "stream": "{k8s_namespace_name=\"$namespace\"}",
+          "stream": "{k8s_namespace_name=~\"$namespace\", k8s_pod_name=~\"$pod\"}",
           "refId": "LokiVariableQueryEditor-VariableQuery"
         },
-        "definition": "label_values({k8s_namespace_name=\"$namespace\"}, k8s_container_name)",
+        "definition": "label_values({k8s_namespace_name=~\"$namespace\", k8s_pod_name=~\"$pod\"}, k8s_container_name)",
         "multi": true,
         "includeAll": true,
         "allValue": ".*",
         "refresh": 2,
         "sort": 1,
         "hide": 0,
+        "regex": "",
         "current": {
           "text": ["All"],
           "value": ["$__all"]
         },
-        "options": []
+        "options": [],
+        "description": "Narrows the log panels to these containers, e.g. a pod's log-file sidecar without its VPN or init output"
       },
       {
         "name": "search",
@@ -122,36 +193,11 @@
       }
     ]
   },
-  "links": [
-    {
-      "title": "k8s dashboard",
-      "type": "link",
-      "url": "/d/cluster-overview",
-      "icon": "dashboard",
-      "keepTime": true,
-      "includeVars": false,
-      "targetBlank": false,
-      "tooltip": "",
-      "tags": [],
-      "asDropdown": false
-    },
-    {
-      "title": "ns: dashboards",
-      "type": "dashboards",
-      "tags": ["namespace"],
-      "asDropdown": true,
-      "keepTime": true,
-      "includeVars": false
-    }
-  ],
-  "annotations": {
-    "list": []
-  },
   "panels": [
     {
-      "id": 1,
+      "id": 21,
       "type": "row",
-      "title": "Namespace overview",
+      "title": "Selected apps",
       "collapsed": false,
       "gridPos": {
         "h": 1,
@@ -162,395 +208,19 @@
       "panels": []
     },
     {
-      "id": 2,
-      "type": "stat",
-      "title": "Running pods",
-      "description": "Pods in phase Running.",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 0,
-        "y": 1
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum(kube_pod_status_phase{namespace=\"$namespace\", phase=\"Running\"})",
-          "legendFormat": "",
-          "refId": "A",
-          "instant": true,
-          "range": false
-        }
-      ],
-      "options": {
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "colorMode": "value",
-        "graphMode": "none",
-        "textMode": "value",
-        "justifyMode": "center"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "none",
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              }
-            ]
-          },
-          "color": {
-            "mode": "thresholds"
-          }
-        },
-        "overrides": []
-      }
-    },
-    {
-      "id": 3,
-      "type": "stat",
-      "title": "Unhealthy pods",
-      "description": "Pods stuck in Pending, Failed or Unknown.",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 4,
-        "y": 1
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum(kube_pod_status_phase{namespace=\"$namespace\", phase=~\"Pending|Failed|Unknown\"})",
-          "legendFormat": "",
-          "refId": "A",
-          "instant": true,
-          "range": false
-        }
-      ],
-      "options": {
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "colorMode": "background",
-        "graphMode": "none",
-        "textMode": "value",
-        "justifyMode": "center"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "none",
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
-              }
-            ]
-          },
-          "color": {
-            "mode": "thresholds"
-          }
-        },
-        "overrides": []
-      }
-    },
-    {
-      "id": 4,
-      "type": "stat",
-      "title": "Restarts (24h)",
-      "description": "Container restarts in the last 24 hours.",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 8,
-        "y": 1
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "round(sum(increase(kube_pod_container_status_restarts_total{namespace=\"$namespace\"}[24h])))",
-          "legendFormat": "",
-          "refId": "A",
-          "instant": true,
-          "range": false
-        }
-      ],
-      "options": {
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "colorMode": "background",
-        "graphMode": "none",
-        "textMode": "value",
-        "justifyMode": "center"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "none",
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "orange",
-                "value": 1
-              },
-              {
-                "color": "red",
-                "value": 5
-              }
-            ]
-          },
-          "color": {
-            "mode": "thresholds"
-          }
-        },
-        "overrides": []
-      }
-    },
-    {
-      "id": 5,
-      "type": "stat",
-      "title": "CPU usage",
-      "description": "CPU cores used by all containers (5m rate).",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 12,
-        "y": 1
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{namespace=\"$namespace\"})",
-          "legendFormat": "",
-          "refId": "A",
-          "instant": true,
-          "range": false
-        }
-      ],
-      "options": {
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "colorMode": "value",
-        "graphMode": "none",
-        "textMode": "value",
-        "justifyMode": "center"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "suffix: cores",
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              }
-            ]
-          },
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2
-        },
-        "overrides": []
-      }
-    },
-    {
-      "id": 6,
-      "type": "stat",
-      "title": "Memory (working set)",
-      "description": "Working set memory of all containers.",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 16,
-        "y": 1
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum(node_namespace_pod_container:container_memory_working_set_bytes{namespace=\"$namespace\", container!=\"\"})",
-          "legendFormat": "",
-          "refId": "A",
-          "instant": true,
-          "range": false
-        }
-      ],
-      "options": {
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "colorMode": "value",
-        "graphMode": "none",
-        "textMode": "value",
-        "justifyMode": "center"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "bytes",
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              }
-            ]
-          },
-          "color": {
-            "mode": "thresholds"
-          }
-        },
-        "overrides": []
-      }
-    },
-    {
-      "id": 7,
-      "type": "stat",
-      "title": "Fullest volume",
-      "description": "Highest PVC usage in the namespace (block/iSCSI volumes report it; NFS may not).",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 20,
-        "y": 1
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "max(kubelet_volume_stats_used_bytes{namespace=\"$namespace\"} / kubelet_volume_stats_capacity_bytes{namespace=\"$namespace\"})",
-          "legendFormat": "",
-          "refId": "A",
-          "instant": true,
-          "range": false
-        }
-      ],
-      "options": {
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "colorMode": "background",
-        "graphMode": "none",
-        "textMode": "value",
-        "justifyMode": "center"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "percentunit",
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "orange",
-                "value": 0.8
-              },
-              {
-                "color": "red",
-                "value": 0.9
-              }
-            ]
-          },
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 1
-        },
-        "overrides": []
-      }
-    },
-    {
-      "id": 8,
+      "id": 22,
       "type": "timeseries",
-      "title": "CPU by workload",
+      "title": "CPU by app",
       "description": "",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
         "x": 0,
-        "y": 5
+        "y": 1,
+        "w": 12,
+        "h": 8
       },
       "targets": [
         {
@@ -558,8 +228,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (workload) (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{namespace=\"$namespace\"} * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"}))",
-          "legendFormat": "{{workload}}",
+          "expr": "sum by (namespace, workload) (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{namespace=~\"$namespace\"} * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
+          "legendFormat": "{{namespace}}/{{workload}}",
           "refId": "A"
         }
       ],
@@ -600,19 +270,19 @@
       }
     },
     {
-      "id": 9,
+      "id": 23,
       "type": "timeseries",
-      "title": "Memory by workload",
+      "title": "Memory by app",
       "description": "",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
         "x": 12,
-        "y": 5
+        "y": 1,
+        "w": 12,
+        "h": 8
       },
       "targets": [
         {
@@ -620,8 +290,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (workload) (node_namespace_pod_container:container_memory_working_set_bytes{namespace=\"$namespace\", container!=\"\"} * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"}))",
-          "legendFormat": "{{workload}}",
+          "expr": "sum by (namespace, workload) (node_namespace_pod_container:container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\"} * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
+          "legendFormat": "{{namespace}}/{{workload}}",
           "refId": "A"
         }
       ],
@@ -662,19 +332,19 @@
       }
     },
     {
-      "id": 10,
+      "id": 24,
       "type": "timeseries",
-      "title": "Network by workload (receive up / transmit down)",
+      "title": "Network by app (receive up / transmit down)",
       "description": "hostNetwork pods (e.g. cilium, node-exporter) report the node's traffic.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
         "x": 0,
-        "y": 13
+        "y": 9,
+        "w": 12,
+        "h": 8
       },
       "targets": [
         {
@@ -682,8 +352,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (workload) (rate(container_network_receive_bytes_total{namespace=\"$namespace\", interface!=\"lo\"}[$__rate_interval]) * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"}))",
-          "legendFormat": "{{workload}} receive",
+          "expr": "sum by (namespace, workload) (rate(container_network_receive_bytes_total{namespace=~\"$namespace\", interface!=\"lo\"}[$__rate_interval]) * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
+          "legendFormat": "{{namespace}}/{{workload}} receive",
           "refId": "A"
         },
         {
@@ -691,8 +361,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (workload) (rate(container_network_transmit_bytes_total{namespace=\"$namespace\", interface!=\"lo\"}[$__rate_interval]) * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"}))",
-          "legendFormat": "{{workload}} transmit",
+          "expr": "sum by (namespace, workload) (rate(container_network_transmit_bytes_total{namespace=~\"$namespace\", interface!=\"lo\"}[$__rate_interval]) * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
+          "legendFormat": "{{namespace}}/{{workload}} transmit",
           "refId": "B"
         }
       ],
@@ -746,19 +416,19 @@
       }
     },
     {
-      "id": 11,
+      "id": 25,
       "type": "timeseries",
-      "title": "Container restarts by workload (per hour)",
+      "title": "Container restarts by app (per hour)",
       "description": "",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
         "x": 12,
-        "y": 13
+        "y": 9,
+        "w": 12,
+        "h": 8
       },
       "targets": [
         {
@@ -766,8 +436,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "round(sum by (workload) (increase(kube_pod_container_status_restarts_total{namespace=\"$namespace\"}[1h]) * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"})))",
-          "legendFormat": "{{workload}}",
+          "expr": "round(sum by (namespace, workload) (increase(kube_pod_container_status_restarts_total{namespace=~\"$namespace\"}[1h]) * on (namespace, pod) group_left (workload) max by (namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"})))",
+          "legendFormat": "{{namespace}}/{{workload}}",
           "refId": "A"
         }
       ],
@@ -808,104 +478,19 @@
       }
     },
     {
-      "id": 12,
-      "type": "bargauge",
-      "title": "Volume usage",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "description": "PVC usage from kubelet volume stats (NFS-backed volumes may not report).",
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 21
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "max by (persistentvolumeclaim) (kubelet_volume_stats_used_bytes{namespace=\"$namespace\"} / kubelet_volume_stats_capacity_bytes{namespace=\"$namespace\"})",
-          "legendFormat": "{{persistentvolumeclaim}}",
-          "refId": "A",
-          "instant": true,
-          "range": false
-        }
-      ],
-      "options": {
-        "displayMode": "gradient",
-        "orientation": "horizontal",
-        "showUnfilled": true,
-        "valueMode": "color",
-        "namePlacement": "left",
-        "sizing": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        }
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "percentunit",
-          "min": 0,
-          "max": 1,
-          "decimals": 1,
-          "noValue": "No PVC metrics",
-          "color": {
-            "mode": "thresholds"
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "orange",
-                "value": 0.8
-              },
-              {
-                "color": "red",
-                "value": 0.9
-              }
-            ]
-          }
-        },
-        "overrides": []
-      }
-    },
-    {
-      "id": 13,
-      "type": "row",
-      "title": "Logs",
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 27
-      },
-      "panels": []
-    },
-    {
-      "id": 14,
+      "id": 26,
       "type": "timeseries",
-      "title": "Log lines by workload",
+      "title": "Log lines by app",
       "description": "Lines written to stdout/stderr per workload.",
       "datasource": {
         "type": "loki",
         "uid": "${loki}"
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
         "x": 0,
-        "y": 28
+        "y": 17,
+        "w": 12,
+        "h": 8
       },
       "targets": [
         {
@@ -913,8 +498,8 @@
             "type": "loki",
             "uid": "${loki}"
           },
-          "expr": "sum by (workload) (count_over_time({k8s_namespace_name=\"$namespace\", k8s_container_name=~\"$container\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$workload\" [$__auto]))",
-          "legendFormat": "{{workload}}",
+          "expr": "sum by (k8s_namespace_name, workload) (count_over_time({k8s_namespace_name=~\"$namespace\", k8s_pod_name=~\"$pod\", k8s_container_name=~\"$container\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$app\" [$__auto]))",
+          "legendFormat": "{{k8s_namespace_name}}/{{workload}}",
           "refId": "A",
           "queryType": "range"
         }
@@ -956,19 +541,19 @@
       }
     },
     {
-      "id": 15,
+      "id": 27,
       "type": "timeseries",
-      "title": "Errors by workload",
+      "title": "Errors by app",
       "description": "Lines Loki detected as error/critical/fatal level. Apps that log without a level are not counted.",
       "datasource": {
         "type": "loki",
         "uid": "${loki}"
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
         "x": 12,
-        "y": 28
+        "y": 17,
+        "w": 12,
+        "h": 8
       },
       "targets": [
         {
@@ -976,8 +561,8 @@
             "type": "loki",
             "uid": "${loki}"
           },
-          "expr": "sum by (workload) (count_over_time({k8s_namespace_name=\"$namespace\", k8s_container_name=~\"$container\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$workload\" | detected_level=~\"(?i)(err|error|crit|critical|fatal|panic|emerg|alert)\" [$__auto]))",
-          "legendFormat": "{{workload}}",
+          "expr": "sum by (k8s_namespace_name, workload) (count_over_time({k8s_namespace_name=~\"$namespace\", k8s_pod_name=~\"$pod\", k8s_container_name=~\"$container\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$app\" | detected_level=~\"(?i)(err|error|crit|critical|fatal|panic|emerg|alert)\" [$__auto]))",
+          "legendFormat": "{{k8s_namespace_name}}/{{workload}}",
           "refId": "A",
           "queryType": "range"
         }
@@ -1019,7 +604,7 @@
       }
     },
     {
-      "id": 16,
+      "id": 28,
       "type": "logs",
       "title": "Logs (filter with the Search box)",
       "datasource": {
@@ -1028,10 +613,10 @@
       },
       "description": "Newest first. Expand a line for its labels; tankstat lines with a trace_id link to Tempo.",
       "gridPos": {
-        "h": 12,
-        "w": 24,
         "x": 0,
-        "y": 36
+        "y": 25,
+        "w": 24,
+        "h": 12
       },
       "targets": [
         {
@@ -1039,7 +624,7 @@
             "type": "loki",
             "uid": "${loki}"
           },
-          "expr": "{k8s_namespace_name=\"$namespace\", k8s_container_name=~\"$container\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$workload\" |~ \"(?i)$search\"",
+          "expr": "{k8s_namespace_name=~\"$namespace\", k8s_pod_name=~\"$pod\", k8s_container_name=~\"$container\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$app\" |~ \"(?i)$search\"",
           "legendFormat": "",
           "refId": "A",
           "queryType": "range"
@@ -1057,21 +642,21 @@
       }
     },
     {
-      "id": 17,
+      "id": 29,
       "type": "row",
-      "title": "$workload",
+      "title": "$app",
       "collapsed": false,
-      "repeat": "workload",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 48
+        "y": 37
       },
-      "panels": []
+      "panels": [],
+      "repeat": "app"
     },
     {
-      "id": 18,
+      "id": 30,
       "type": "timeseries",
       "title": "CPU",
       "description": "",
@@ -1080,10 +665,10 @@
         "uid": "${datasource}"
       },
       "gridPos": {
-        "h": 8,
-        "w": 8,
         "x": 0,
-        "y": 49
+        "y": 38,
+        "w": 8,
+        "h": 8
       },
       "targets": [
         {
@@ -1091,7 +676,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (pod) (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{namespace=\"$namespace\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"}))",
+          "expr": "sum by (pod) (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{namespace=~\"$namespace\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
           "legendFormat": "{{pod}}",
           "refId": "A"
         },
@@ -1100,7 +685,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum (kube_pod_container_resource_requests{namespace=\"$namespace\", resource=\"cpu\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"}))",
+          "expr": "sum (kube_pod_container_resource_requests{namespace=~\"$namespace\", resource=\"cpu\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
           "legendFormat": "requests",
           "refId": "B"
         },
@@ -1109,7 +694,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum (kube_pod_container_resource_limits{namespace=\"$namespace\", resource=\"cpu\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"}))",
+          "expr": "sum (kube_pod_container_resource_limits{namespace=~\"$namespace\", resource=\"cpu\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
           "legendFormat": "limits",
           "refId": "C"
         }
@@ -1218,7 +803,7 @@
       }
     },
     {
-      "id": 19,
+      "id": 31,
       "type": "timeseries",
       "title": "Memory (working set)",
       "description": "",
@@ -1227,10 +812,10 @@
         "uid": "${datasource}"
       },
       "gridPos": {
-        "h": 8,
-        "w": 8,
         "x": 8,
-        "y": 49
+        "y": 38,
+        "w": 8,
+        "h": 8
       },
       "targets": [
         {
@@ -1238,7 +823,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (pod) (node_namespace_pod_container:container_memory_working_set_bytes{namespace=\"$namespace\", container!=\"\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"}))",
+          "expr": "sum by (pod) (node_namespace_pod_container:container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
           "legendFormat": "{{pod}}",
           "refId": "A"
         },
@@ -1247,7 +832,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum (kube_pod_container_resource_requests{namespace=\"$namespace\", resource=\"memory\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"}))",
+          "expr": "sum (kube_pod_container_resource_requests{namespace=~\"$namespace\", resource=\"memory\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
           "legendFormat": "requests",
           "refId": "B"
         },
@@ -1256,7 +841,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum (kube_pod_container_resource_limits{namespace=\"$namespace\", resource=\"memory\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"}))",
+          "expr": "sum (kube_pod_container_resource_limits{namespace=~\"$namespace\", resource=\"memory\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
           "legendFormat": "limits",
           "refId": "C"
         }
@@ -1365,7 +950,7 @@
       }
     },
     {
-      "id": 20,
+      "id": 32,
       "type": "timeseries",
       "title": "Network (receive up / transmit down)",
       "description": "",
@@ -1374,10 +959,10 @@
         "uid": "${datasource}"
       },
       "gridPos": {
-        "h": 8,
-        "w": 8,
         "x": 16,
-        "y": 49
+        "y": 38,
+        "w": 8,
+        "h": 8
       },
       "targets": [
         {
@@ -1385,7 +970,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (pod) (rate(container_network_receive_bytes_total{namespace=\"$namespace\", interface!=\"lo\"}[$__rate_interval]) * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"}))",
+          "expr": "sum by (pod) (rate(container_network_receive_bytes_total{namespace=~\"$namespace\", interface!=\"lo\"}[$__rate_interval]) * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
           "legendFormat": "{{pod}} receive",
           "refId": "A"
         },
@@ -1394,7 +979,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (pod) (rate(container_network_transmit_bytes_total{namespace=\"$namespace\", interface!=\"lo\"}[$__rate_interval]) * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"}))",
+          "expr": "sum by (pod) (rate(container_network_transmit_bytes_total{namespace=~\"$namespace\", interface!=\"lo\"}[$__rate_interval]) * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
           "legendFormat": "{{pod}} transmit",
           "refId": "B"
         }
@@ -1449,7 +1034,7 @@
       }
     },
     {
-      "id": 21,
+      "id": 33,
       "type": "timeseries",
       "title": "Container restarts (per hour)",
       "description": "",
@@ -1458,10 +1043,10 @@
         "uid": "${datasource}"
       },
       "gridPos": {
-        "h": 6,
-        "w": 12,
         "x": 0,
-        "y": 57
+        "y": 46,
+        "w": 8,
+        "h": 6
       },
       "targets": [
         {
@@ -1469,8 +1054,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "round(sum by (pod, container) (increase(kube_pod_container_status_restarts_total{namespace=\"$namespace\"}[1h]) * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"})))",
-          "legendFormat": "{{pod}} / {{container}}",
+          "expr": "round(sum by (pod, container) (increase(kube_pod_container_status_restarts_total{namespace=~\"$namespace\"}[1h]) * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"})))",
+          "legendFormat": "{{pod}} {{container}}",
           "refId": "A"
         }
       ],
@@ -1511,7 +1096,7 @@
       }
     },
     {
-      "id": 22,
+      "id": 34,
       "type": "timeseries",
       "title": "Ready pods",
       "description": "Ready pods should match running pods; a gap means failing readiness probes.",
@@ -1520,10 +1105,10 @@
         "uid": "${datasource}"
       },
       "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 12,
-        "y": 57
+        "x": 8,
+        "y": 46,
+        "w": 8,
+        "h": 6
       },
       "targets": [
         {
@@ -1531,7 +1116,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum (kube_pod_status_ready{namespace=\"$namespace\", condition=\"true\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"}))",
+          "expr": "sum (kube_pod_status_ready{namespace=~\"$namespace\", condition=\"true\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
           "legendFormat": "ready",
           "refId": "A"
         },
@@ -1540,7 +1125,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum ((kube_pod_status_phase{namespace=\"$namespace\", phase=\"Running\"} == 1) * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=\"$namespace\", workload=~\"$workload\"}))",
+          "expr": "sum ((kube_pod_status_phase{namespace=~\"$namespace\", phase=\"Running\"} == 1) * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"}))",
           "legendFormat": "running",
           "refId": "B"
         }
@@ -1580,6 +1165,117 @@
         },
         "overrides": []
       }
+    },
+    {
+      "id": 35,
+      "type": "bargauge",
+      "title": "Volume usage",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "Volumes mounted by this app's pods (NFS volumes may not report).",
+      "gridPos": {
+        "x": 16,
+        "y": 46,
+        "w": 8,
+        "h": 6
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "max by (persistentvolumeclaim) ((kubelet_volume_stats_used_bytes{namespace=~\"$namespace\"} / kubelet_volume_stats_capacity_bytes{namespace=~\"$namespace\"}) * on (namespace, persistentvolumeclaim) group_left () max by (namespace, persistentvolumeclaim) (kube_pod_spec_volumes_persistentvolumeclaims_info{namespace=~\"$namespace\"} * on (namespace, pod) group_left () max by (namespace, pod) (namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$app\", pod=~\"$pod\"})))",
+          "legendFormat": "{{persistentvolumeclaim}}",
+          "refId": "A",
+          "instant": true,
+          "range": false
+        }
+      ],
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal",
+        "showUnfilled": true,
+        "valueMode": "color",
+        "namePlacement": "left",
+        "sizing": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1,
+          "decimals": 1,
+          "noValue": "No PVC metrics",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.8
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 36,
+      "type": "logs",
+      "title": "Logs",
+      "datasource": {
+        "type": "loki",
+        "uid": "${loki}"
+      },
+      "description": "Newest first. Expand a line for its labels; tankstat lines with a trace_id link to Tempo.",
+      "gridPos": {
+        "x": 0,
+        "y": 52,
+        "w": 24,
+        "h": 10
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${loki}"
+          },
+          "expr": "{k8s_namespace_name=~\"$namespace\", k8s_pod_name=~\"$pod\", k8s_container_name=~\"$container\"} | label_format workload=`{{ or .k8s_deployment_name .k8s_statefulset_name .k8s_daemonset_name .k8s_cronjob_name .k8s_job_name .k8s_container_name }}` | workload=~\"$app\" |~ \"(?i)$search\"",
+          "legendFormat": "",
+          "refId": "A",
+          "queryType": "range"
+        }
+      ],
+      "options": {
+        "showTime": true,
+        "wrapLogMessage": true,
+        "sortOrder": "Descending",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "dedupStrategy": "none",
+        "showCommonLabels": false,
+        "showLabels": false
+      }
     }
-  ]
+  ],
+  "version": 1
 }

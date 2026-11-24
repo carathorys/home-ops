@@ -1,5 +1,21 @@
 ---
 # Per-application dashboards, in the "apps" folder.
+# "apps": any app (workload) of any namespace, selected at the top.
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: app-overview
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folderRef: apps
+  uid: app-overview
+  configMapRef:
+    name: grafana-dashboard-apps
+    key: apps.json
+---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard

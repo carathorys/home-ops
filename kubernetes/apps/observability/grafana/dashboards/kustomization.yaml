@@ -6,16 +6,19 @@ resources:
   - folders.yaml
   - cluster-overview.yaml
   - gpu.yaml
-  - namespace-dashboards.yaml
+  - namespaces.yaml
   - app-dashboards.yaml
   - observability-dashboards.yaml
 configMapGenerator:
   - name: grafana-dashboard-cluster-overview
     files:
       - cluster-overview.json
-  - name: grafana-dashboard-namespace-overview
+  - name: grafana-dashboard-namespaces
     files:
-      - namespace-overview.json
+      - namespaces.json
+  - name: grafana-dashboard-apps
+    files:
+      - apps.json
   - name: grafana-dashboard-gpu
     files:
       - gpu.json

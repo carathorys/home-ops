@@ -14,10 +14,18 @@
   "timezone": "browser",
   "links": [
     {
-      "title": "ns: dashboards",
-      "type": "dashboards",
-      "tags": ["namespace"],
-      "asDropdown": true,
+      "title": "namespaces",
+      "type": "link",
+      "url": "/d/namespaces",
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": true
+    },
+    {
+      "title": "apps",
+      "type": "link",
+      "url": "/d/app-overview",
+      "icon": "apps",
       "includeVars": false,
       "keepTime": true
     }
@@ -1749,7 +1757,7 @@
                 "value": [
                   {
                     "title": "Open namespace dashboard",
-                    "url": "/d/namespace-${__value.raw}?${__url_time_range}&${datasource:queryparam}"
+                    "url": "/d/namespaces?var-namespace=${__value.raw}&${__url_time_range}&${datasource:queryparam}"
                   }
                 ]
               }
@@ -2037,7 +2045,7 @@
                 "value": [
                   {
                     "title": "Open namespace dashboard",
-                    "url": "/d/namespace-${__value.raw}?${__url_time_range}&${datasource:queryparam}"
+                    "url": "/d/namespaces?var-namespace=${__value.raw}&${__url_time_range}&${datasource:queryparam}"
                   }
                 ]
               }

@@ -14,9 +14,9 @@
   "timezone": "browser",
   "links": [
     {
-      "title": "ns: tools",
+      "title": "namespace: tools",
       "type": "link",
-      "url": "/d/namespace-tools",
+      "url": "/d/namespaces?var-namespace=tools",
       "icon": "dashboard",
       "keepTime": true,
       "includeVars": false,

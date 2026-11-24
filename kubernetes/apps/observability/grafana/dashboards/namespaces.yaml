@@ -1,0 +1,16 @@
+---
+# One dashboard for all namespaces; pick one or more at the top.
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: namespaces
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana-deployment
+  folderRef: k8s
+  uid: namespaces
+  configMapRef:
+    name: grafana-dashboard-namespaces
+    key: namespaces.json
