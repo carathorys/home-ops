@@ -114,6 +114,83 @@ spec:
                 - set(severity_number, SEVERITY_NUMBER_WARN) where IsMatch(body, "^\\(W\\) [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:]{8} - ")
                 - set(severity_text, "error") where IsMatch(body, "^\\(C\\) [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:]{8} - ")
                 - set(severity_number, SEVERITY_NUMBER_ERROR) where IsMatch(body, "^\\(C\\) [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:]{8} - ")
+                # klog (Kubernetes components, CSI sidecars, NFD, cert-manager):
+                # "I1123 12:16:04.594934       1 file.go:368] "
+                - set(severity_text, "info") where IsMatch(body, "^I[0-9]{4} [0-9:.]+ +[0-9]+ ")
+                - set(severity_number, SEVERITY_NUMBER_INFO) where IsMatch(body, "^I[0-9]{4} [0-9:.]+ +[0-9]+ ")
+                - set(severity_text, "warn") where IsMatch(body, "^W[0-9]{4} [0-9:.]+ +[0-9]+ ")
+                - set(severity_number, SEVERITY_NUMBER_WARN) where IsMatch(body, "^W[0-9]{4} [0-9:.]+ +[0-9]+ ")
+                - set(severity_text, "error") where IsMatch(body, "^E[0-9]{4} [0-9:.]+ +[0-9]+ ")
+                - set(severity_number, SEVERITY_NUMBER_ERROR) where IsMatch(body, "^E[0-9]{4} [0-9:.]+ +[0-9]+ ")
+                - set(severity_text, "fatal") where IsMatch(body, "^F[0-9]{4} [0-9:.]+ +[0-9]+ ")
+                - set(severity_number, SEVERITY_NUMBER_FATAL) where IsMatch(body, "^F[0-9]{4} [0-9:.]+ +[0-9]+ ")
+                # Jackett: "11-23 07:21:53 Info "
+                - set(severity_text, "debug") where IsMatch(body, "^[0-9]{2}-[0-9]{2} [0-9:]{8} Debug ")
+                - set(severity_number, SEVERITY_NUMBER_DEBUG) where IsMatch(body, "^[0-9]{2}-[0-9]{2} [0-9:]{8} Debug ")
+                - set(severity_text, "info") where IsMatch(body, "^[0-9]{2}-[0-9]{2} [0-9:]{8} Info ")
+                - set(severity_number, SEVERITY_NUMBER_INFO) where IsMatch(body, "^[0-9]{2}-[0-9]{2} [0-9:]{8} Info ")
+                - set(severity_text, "warn") where IsMatch(body, "^[0-9]{2}-[0-9]{2} [0-9:]{8} Warn ")
+                - set(severity_number, SEVERITY_NUMBER_WARN) where IsMatch(body, "^[0-9]{2}-[0-9]{2} [0-9:]{8} Warn ")
+                - set(severity_text, "error") where IsMatch(body, "^[0-9]{2}-[0-9]{2} [0-9:]{8} Error ")
+                - set(severity_number, SEVERITY_NUMBER_ERROR) where IsMatch(body, "^[0-9]{2}-[0-9]{2} [0-9:]{8} Error ")
+                # cloudflared ("2026-11-23T06:59:26Z ERR ") and gluetun
+                # ("2026-11-23T11:21:39+01:00 WARN ")
+                - set(severity_text, "debug") where IsMatch(body, "^[0-9-]{10}T[0-9:]{8}(Z|[+-][0-9:]{5}) (DBG|DEBUG) ")
+                - set(severity_number, SEVERITY_NUMBER_DEBUG) where IsMatch(body, "^[0-9-]{10}T[0-9:]{8}(Z|[+-][0-9:]{5}) (DBG|DEBUG) ")
+                - set(severity_text, "info") where IsMatch(body, "^[0-9-]{10}T[0-9:]{8}(Z|[+-][0-9:]{5}) (INF|INFO) ")
+                - set(severity_number, SEVERITY_NUMBER_INFO) where IsMatch(body, "^[0-9-]{10}T[0-9:]{8}(Z|[+-][0-9:]{5}) (INF|INFO) ")
+                - set(severity_text, "warn") where IsMatch(body, "^[0-9-]{10}T[0-9:]{8}(Z|[+-][0-9:]{5}) (WRN|WARN) ")
+                - set(severity_number, SEVERITY_NUMBER_WARN) where IsMatch(body, "^[0-9-]{10}T[0-9:]{8}(Z|[+-][0-9:]{5}) (WRN|WARN) ")
+                - set(severity_text, "error") where IsMatch(body, "^[0-9-]{10}T[0-9:]{8}(Z|[+-][0-9:]{5}) (ERR|ERROR) ")
+                - set(severity_number, SEVERITY_NUMBER_ERROR) where IsMatch(body, "^[0-9-]{10}T[0-9:]{8}(Z|[+-][0-9:]{5}) (ERR|ERROR) ")
+                - set(severity_text, "fatal") where IsMatch(body, "^[0-9-]{10}T[0-9:]{8}Z FTL ")
+                - set(severity_number, SEVERITY_NUMBER_FATAL) where IsMatch(body, "^[0-9-]{10}T[0-9:]{8}Z FTL ")
+                # Tautulli ("2026-11-23 07:26:34 - ERROR :: ") and Home
+                # Assistant, whose warnings and errors start with a colour code
+                # ("2026-11-23 10:01:11.984+01:00 ERROR (Thread-5) ")
+                - set(severity_text, "debug") where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.+]+ (- DEBUG ::|DEBUG \\()")
+                - set(severity_number, SEVERITY_NUMBER_DEBUG) where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.+]+ (- DEBUG ::|DEBUG \\()")
+                - set(severity_text, "info") where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.+]+ (- INFO ::|INFO \\()")
+                - set(severity_number, SEVERITY_NUMBER_INFO) where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.+]+ (- INFO ::|INFO \\()")
+                - set(severity_text, "warn") where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.+]+ (- WARNING ::|WARNING \\()")
+                - set(severity_number, SEVERITY_NUMBER_WARN) where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.+]+ (- WARNING ::|WARNING \\()")
+                - set(severity_text, "error") where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.+]+ (- ERROR ::|ERROR \\()")
+                - set(severity_number, SEVERITY_NUMBER_ERROR) where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.+]+ (- ERROR ::|ERROR \\()")
+                - set(severity_text, "fatal") where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.+]+ CRITICAL \\(")
+                - set(severity_number, SEVERITY_NUMBER_FATAL) where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.+]+ CRITICAL \\(")
+                # Seerr, whose level is wrapped in a colour code
+                # ("2026-11-23T06:20:00.208Z [<colour>error<reset>][Plex Scan]: "),
+                # and controller-runtime/zap (grafana-operator:
+                # "2026-11-23T11:36:29Z<tab>error<tab>")
+                - set(severity_text, "debug") where IsMatch(body, "^[0-9-]{10}T[0-9:.]+Z(\\t| \\[(\\x1b\\[[0-9;]*m)?)debug")
+                - set(severity_number, SEVERITY_NUMBER_DEBUG) where IsMatch(body, "^[0-9-]{10}T[0-9:.]+Z(\\t| \\[(\\x1b\\[[0-9;]*m)?)debug")
+                - set(severity_text, "info") where IsMatch(body, "^[0-9-]{10}T[0-9:.]+Z(\\t| \\[(\\x1b\\[[0-9;]*m)?)info")
+                - set(severity_number, SEVERITY_NUMBER_INFO) where IsMatch(body, "^[0-9-]{10}T[0-9:.]+Z(\\t| \\[(\\x1b\\[[0-9;]*m)?)info")
+                - set(severity_text, "warn") where IsMatch(body, "^[0-9-]{10}T[0-9:.]+Z(\\t| \\[(\\x1b\\[[0-9;]*m)?)warn")
+                - set(severity_number, SEVERITY_NUMBER_WARN) where IsMatch(body, "^[0-9-]{10}T[0-9:.]+Z(\\t| \\[(\\x1b\\[[0-9;]*m)?)warn")
+                - set(severity_text, "error") where IsMatch(body, "^[0-9-]{10}T[0-9:.]+Z(\\t| \\[(\\x1b\\[[0-9;]*m)?)error")
+                - set(severity_number, SEVERITY_NUMBER_ERROR) where IsMatch(body, "^[0-9-]{10}T[0-9:.]+Z(\\t| \\[(\\x1b\\[[0-9;]*m)?)error")
+                # Gitea: "2026/11/23 12:58:23 HTTPRequest [I] router: "
+                - set(severity_text, "trace") where IsMatch(body, "^[0-9/]{10} [0-9:]{8} [^\\[]*\\[T\\] ")
+                - set(severity_number, SEVERITY_NUMBER_TRACE) where IsMatch(body, "^[0-9/]{10} [0-9:]{8} [^\\[]*\\[T\\] ")
+                - set(severity_text, "debug") where IsMatch(body, "^[0-9/]{10} [0-9:]{8} [^\\[]*\\[D\\] ")
+                - set(severity_number, SEVERITY_NUMBER_DEBUG) where IsMatch(body, "^[0-9/]{10} [0-9:]{8} [^\\[]*\\[D\\] ")
+                - set(severity_text, "info") where IsMatch(body, "^[0-9/]{10} [0-9:]{8} [^\\[]*\\[I\\] ")
+                - set(severity_number, SEVERITY_NUMBER_INFO) where IsMatch(body, "^[0-9/]{10} [0-9:]{8} [^\\[]*\\[I\\] ")
+                - set(severity_text, "warn") where IsMatch(body, "^[0-9/]{10} [0-9:]{8} [^\\[]*\\[W\\] ")
+                - set(severity_number, SEVERITY_NUMBER_WARN) where IsMatch(body, "^[0-9/]{10} [0-9:]{8} [^\\[]*\\[W\\] ")
+                - set(severity_text, "error") where IsMatch(body, "^[0-9/]{10} [0-9:]{8} [^\\[]*\\[E\\] ")
+                - set(severity_number, SEVERITY_NUMBER_ERROR) where IsMatch(body, "^[0-9/]{10} [0-9:]{8} [^\\[]*\\[E\\] ")
+                - set(severity_text, "fatal") where IsMatch(body, "^[0-9/]{10} [0-9:]{8} [^\\[]*\\[F\\] ")
+                - set(severity_number, SEVERITY_NUMBER_FATAL) where IsMatch(body, "^[0-9/]{10} [0-9:]{8} [^\\[]*\\[F\\] ")
+                # ONNX Runtime (immich machine-learning), after a colour code:
+                # "2026-11-23 06:53:19.824931778 [W:onnxruntime:Default, "
+                - set(severity_text, "info") where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.]+ \\[I:onnxruntime")
+                - set(severity_number, SEVERITY_NUMBER_INFO) where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.]+ \\[I:onnxruntime")
+                - set(severity_text, "warn") where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.]+ \\[W:onnxruntime")
+                - set(severity_number, SEVERITY_NUMBER_WARN) where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.]+ \\[W:onnxruntime")
+                - set(severity_text, "error") where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.]+ \\[E:onnxruntime")
+                - set(severity_number, SEVERITY_NUMBER_ERROR) where IsMatch(body, "^(\\x1b\\[[0-9;]*m)?[0-9-]{10} [0-9:.]+ \\[E:onnxruntime")
       exporters:
         debug: null
         otlphttp/loki:
